@@ -1,0 +1,246 @@
+{
+  "lesson": "u5_l1",
+  "title": "面向对象入门",
+  "questions": [
+    {
+      "id": "u5_l1_p1",
+      "type": "choice",
+      "stem": "关于「类」和「对象」，下列说法【正确】的是？",
+      "options": [
+        "类是具体的，对象是抽象的",
+        "类是图纸/模板，对象是按类创建出来的具体实例",
+        "一个类只能创建一个对象",
+        "对象就是类本身"
+      ],
+      "answer": 1,
+      "hint": "想想「图纸」和「房子」的比喻。",
+      "explain": "类是抽象的概念（图纸），对象是具体的实例（按图纸盖出的房子）。同一张图纸能盖很多栋房子，所以一个类可以创建很多对象。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "说反了：类是抽象模板，对象是具体实例。"
+        },
+        {
+          "opt": 2,
+          "why": "一个类能建多个对象——像一张图纸能盖很多栋房子。"
+        },
+        {
+          "opt": 3,
+          "why": "对象是由类创建出来的实例，不是类本身。"
+        }
+      ],
+      "concept": [
+        "类",
+        "对象"
+      ]
+    },
+    {
+      "id": "u5_l1_p2",
+      "type": "choice",
+      "stem": "用 Python 定义一个「魔法生物」类，正确写法是？",
+      "options": [
+        "class MagicalCreature:",
+        "def MagicalCreature:",
+        "object MagicalCreature:",
+        "new MagicalCreature:"
+      ],
+      "answer": 0,
+      "hint": "定义类用 class 关键字，不是 def。",
+      "explain": "定义类用 class 关键字，类名用大驼峰命名法（每个单词首字母大写），后面跟冒号。def 是定义函数的，new/object 都不是 Python 的类定义语法。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "def 是定义函数的关键字，定义类要用 class。"
+        },
+        {
+          "opt": 2,
+          "why": "object MagicalCreature 不是合法语法，class 后直接跟类名。"
+        },
+        {
+          "opt": 3,
+          "why": "new 是 Java 的写法，Python 创建/定义类都不用 new。"
+        }
+      ],
+      "concept": [
+        "类"
+      ]
+    },
+    {
+      "id": "u5_l1_p3",
+      "type": "fill",
+      "stem": "类中方法的第一个参数通常叫___，它代表「对象自己」。（填英文单词）",
+      "answer": "self",
+      "hint": "英文单词，意思是「自己」。",
+      "explain": "方法的第一个参数固定是 self，代表接收消息的对象本身。方法里用 self.属性名 访问自己的属性。",
+      "traps": [
+        {
+          "wrong": "this",
+          "why": "那是 Java 的叫法；Python 实例方法的第一个参数约定叫 self。"
+        },
+        {
+          "wrong": "cls",
+          "why": "cls 是类方法（@classmethod）的约定；实例方法用 self。"
+        }
+      ],
+      "concept": [
+        "方法",
+        "self"
+      ]
+    },
+    {
+      "id": "u5_l1_p4",
+      "type": "choice",
+      "stem": "关于 __init__ 方法，下列说法【正确】的是？",
+      "options": [
+        "创建对象时自动执行，负责给对象初始化属性",
+        "打印对象时自动执行",
+        "删除对象时自动执行",
+        "必须手动调用一次"
+      ],
+      "answer": 0,
+      "hint": "名字里 init 就是 initialize（初始化）。",
+      "explain": "__init__ 是初始化方法，用 类名(参数) 创建对象时自动执行，在方法里用 self.xxx = ... 给对象添加属性并赋初始值。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "打印对象时显示走的是 __str__；__init__ 在创建对象时自动执行。"
+        },
+        {
+          "opt": 2,
+          "why": "删除对象走的是 __del__；__init__ 负责创建时的初始化。"
+        },
+        {
+          "opt": 3,
+          "why": "不用手动调用——类名加括号创建对象时自动触发。"
+        }
+      ],
+      "concept": [
+        "__init__",
+        "属性"
+      ]
+    },
+    {
+      "id": "u5_l1_p5",
+      "type": "choice",
+      "stem": "运行下面的代码，输出结果是？\n\n```python\nclass Cat:\n    def __init__(self, name):\n        self.name = name\n\n    def meow(self):\n        print(f'{self.name}：喵~')\n\nc = Cat('小白')\nc.meow()\n```",
+      "options": [
+        "小白：喵~",
+        "Cat：喵~",
+        "报错",
+        "喵~：小白"
+      ],
+      "answer": 0,
+      "hint": "self.name 是谁的名字？",
+      "explain": "Cat('小白') 创建对象时，__init__ 把 name 设为'小白'；调用 meow 时 self 就是 c，所以打印 '小白：喵~'。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "self.name 存的是实例属性'小白'，不是类名 Cat。"
+        },
+        {
+          "opt": 2,
+          "why": "代码完全合法：创建对象、调用方法都正确，不会报错。"
+        },
+        {
+          "opt": 3,
+          "why": "输出顺序反了：f-string 先 self.name 再'喵'，是 小白：喵~。"
+        }
+      ],
+      "concept": [
+        "对象",
+        "self",
+        "方法"
+      ]
+    },
+    {
+      "id": "u5_l1_p6",
+      "type": "judge",
+      "stem": "s1 和 s2 是同一个类创建的两个对象，修改 s1 的属性不会影响 s2。",
+      "answer": true,
+      "hint": "两栋独立的房子，改一栋的装修不影响另一栋。",
+      "explain": "每个对象都有一份自己的属性：s1 和 s2 的 name 互不干扰。改 s1.name 只影响 s1，s2 还是原来的值。",
+      "concept": [
+        "对象",
+        "属性"
+      ]
+    },
+    {
+      "id": "u5_l1_p7",
+      "type": "debug",
+      "stem": "下面的程序想给宠物建档并打招呼，但 __init__ 方法的参数表写错了，导致创建对象时报错「参数数量不对」。找到问题并修复它。",
+      "code": "class Pet:\n    def __init__(name):        # ❌ 参数表写错了\n        self.name = name\n\n    def greet(self):\n        print(f'{self.name}：你好！')\n\nname = input()\np = Pet(name)\np.greet()",
+      "testcases": [
+        {
+          "input": "小黑",
+          "expected": "小黑：你好！"
+        },
+        {
+          "input": "咪咪",
+          "expected": "咪咪：你好！"
+        }
+      ],
+      "hint": "类里的方法，第一个参数必须是 self——代表对象自己。",
+      "explain": "实例方法的第一个参数必须是 self：改成 def __init__(self, name):。这样 Pet(name) 创建对象时，'name' 传给第二个参数 name，self 自动指向新对象。",
+      "concept": [
+        "调试",
+        "self",
+        "__init__"
+      ]
+    },
+    {
+      "id": "u5_l1_p8",
+      "type": "code",
+      "stem": "定义一个 Dog 类：__init__ 接收 name 并保存为属性；定义 bark 方法，打印 f'{self.name}：汪汪！'。程序会读入一个名字，创建 Dog 对象并调用 bark()。",
+      "code": "class Dog:\n    def __init__(self, name):\n        # 补全：把 name 存成属性\n        pass\n\n    def bark(self):\n        # 补全：打印 名字：汪汪！\n        pass\n\nname = input()\ndog = Dog(name)\ndog.bark()",
+      "testcases": [
+        {
+          "input": "旺财",
+          "expected": "旺财：汪汪！"
+        },
+        {
+          "input": "来福",
+          "expected": "来福：汪汪！"
+        }
+      ],
+      "hint": "构造方法里怎么把参数保存成对象自己的属性（注意前缀）？bark 方法里要取对象自己的属性，前缀怎么写？打印用什么函数？",
+      "explain": "Dog('旺财') 创建对象时 __init__ 把 name 存成'旺财'，bark 方法用 self.name 取出来打印出'旺财：汪汪！'。",
+      "concept": [
+        "类",
+        "__init__",
+        "方法"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u5_l1_quest",
+    "title": "剧情任务：造出你的第一只魔法生物",
+    "story": "走进魔法学院的大门，档案员奥术爷爷递给你一张空白的「魔法生物档案卡」：「孩子，学院里每一只魔法生物——小火龙、冰晶鹿、雷鸟——都要建一份专属档案。档案上记着它的名字和所属元素，还要写上它最拿手的施法动作。来，用你刚学的类，造出你的第一只魔法生物吧！」",
+    "stem": "定义 MagicalCreature 类：__init__ 接收 name（名字）和 element（元素）并保存为属性；定义 cast 方法，打印 f'{self.name}释放了{self.element}魔法！'。程序会读入名字和元素，创建生物并调用 cast()。",
+    "code": "class MagicalCreature:\n    def __init__(self, name, element):\n        # 补全：保存名字和元素为属性\n        pass\n\n    def cast(self):\n        # 补全：打印 名字释放了元素魔法！\n        pass\n\nname = input()\nelement = input()\ncreature = MagicalCreature(name, element)\ncreature.cast()",
+    "testcases": [
+      {
+        "input": "小火龙\n火",
+        "expected": "小火龙释放了火魔法！"
+      },
+      {
+        "input": "冰晶鹿\n冰",
+        "expected": "冰晶鹿释放了冰魔法！"
+      },
+      {
+        "input": "雷鸟\n雷",
+        "expected": "雷鸟释放了雷魔法！"
+      }
+    ],
+    "hint": "__init__ 里要把参数存成对象自己的属性，属性名前面要加什么前缀？cast 方法里想用对象自己的属性，怎么引用？用 f-string 打印时变量要包在什么符号里？",
+    "explain": "MagicalCreature('小火龙', '火') 创建对象时自动执行 __init__，把名字和元素存进对象自己的属性；调用 cast() 时用 self.name、self.element 取出档案内容打印。你的第一只魔法生物诞生了！",
+    "concept": [
+      "类",
+      "__init__",
+      "属性",
+      "方法"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「面向对象入门」一课 🎉\n\n**这一课你学会了**：\n1. 类 = 图纸（抽象概念），对象 = 按图纸盖的房子（具体实例），`类名()` 创建对象\n2. 类里定义的函数叫方法，第一个参数永远是 `self`（对象自己）\n3. `__init__` 是创建对象时自动执行的初始化方法，用 `self.xxx = ...` 给对象填属性\n4. 用 `对象.属性` 读数据，用 `对象.方法()` 发消息；每个对象的属性互相独立\n5. 类名用大驼峰命名法（`MagicalCreature`）；`Student` 没加括号只是类本身，`Student()` 才是对象\n\n**给魔法学院的新学徒点个赞**：你的第一只魔法生物已经诞生，档案员奥术爷爷都看呆了！下一课，去认识它的家族吧——继承、封装、多态在等你。"
+  }
+}
