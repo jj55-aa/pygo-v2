@@ -1,0 +1,252 @@
+{
+  "lesson": "u7_l2",
+  "title": "CSV 与 Excel",
+  "questions": [
+    {
+      "id": "u7_l2_p1",
+      "type": "choice",
+      "stem": "一份 CSV 文件里，一行数据 `小明,18,北京` 中的逗号起什么作用？",
+      "options": [
+        "分隔不同的列（字段）",
+        "标记这一行的结束",
+        "表示字符串的结束",
+        "没有作用，可以随便去掉"
+      ],
+      "answer": 0,
+      "hint": "想想 CSV 的全名：Comma Separated Values（逗号分隔值）。",
+      "explain": "CSV 用逗号把一行拆成几个字段：两个逗号把「小明,18,北京」分成三列。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "一行的结束是换行符（\\n），不是逗号。"
+        },
+        {
+          "opt": 2,
+          "why": "字符串的结束由引号或行长决定，逗号只负责分隔不同的列。"
+        },
+        {
+          "opt": 3,
+          "why": "去掉逗号，三列就挤成一列了，程序再也分不清姓名、年龄和城市。"
+        }
+      ],
+      "concept": [
+        "CSV",
+        "逗号分隔"
+      ]
+    },
+    {
+      "id": "u7_l2_p2",
+      "type": "choice",
+      "stem": "档案馆要把档案整理成电子表格：要求能存多张工作表、能加颜色和公式、要发给同事用 Excel 打开看。应该选哪种格式？",
+      "options": [
+        "CSV 纯文本文件",
+        "Excel 工作簿（.xlsx）",
+        "TXT 记事本文件",
+        "Python 脚本文件（.py）"
+      ],
+      "answer": 1,
+      "hint": "哪种格式自带「样式、公式、多张工作表」？",
+      "explain": "Excel 工作簿能存样式、公式和多张工作表，适合「给人看、要好看」；CSV 只有数据，适合通用交换。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "CSV 只有干巴巴的数据，没有样式，也装不下多张工作表。"
+        },
+        {
+          "opt": 2,
+          "why": "TXT 比 CSV 还「裸」，连逗号分隔的结构都没有。"
+        },
+        {
+          "opt": 3,
+          "why": ".py 是代码文件，不是存数据的表格格式。"
+        }
+      ],
+      "concept": [
+        "Excel",
+        "CSV",
+        "格式选择"
+      ]
+    },
+    {
+      "id": "u7_l2_p3",
+      "type": "judge",
+      "stem": "csv.reader 读出来的每一行是一个列表，列表里的元素全部是字符串——哪怕原数据里写的是数字 18，读出来也是 '18'。",
+      "answer": true,
+      "hint": "想想概念卡 1 的易错点第 1 条。",
+      "explain": "正确。CSV 是纯文本，reader 把每一列都当成字符串读出来，做算术前要先 int() / float() 转换。",
+      "concept": [
+        "csv.reader",
+        "字符串"
+      ]
+    },
+    {
+      "id": "u7_l2_p4",
+      "type": "fill",
+      "stem": "CSV 是 Comma Separated ______ 的缩写（填最后一个英文单词，小写）。",
+      "answer": [
+        "values",
+        "value",
+        "值",
+        "逗号分隔值"
+      ],
+      "hint": "逗号分隔的「什么」？Comma Separated ______。",
+      "explain": "CSV = Comma Separated Values，逗号分隔值——逗号把每一列（值）分开。",
+      "traps": [
+        {
+          "wrong": "names",
+          "why": "逗号分隔的是「值」（Values），不是名字。"
+        },
+        {
+          "wrong": "rows",
+          "why": "逗号分隔的是同一行里的各列值，不是行。"
+        }
+      ],
+      "concept": [
+        "CSV",
+        "概念"
+      ]
+    },
+    {
+      "id": "u7_l2_p5",
+      "type": "fill",
+      "stem": "用 open() 读取含中文的 CSV 文件时，为避免乱码，要指定编码参数 encoding='______'（填编码名）。",
+      "answer": [
+        "utf-8",
+        "utf8",
+        "utf_8",
+        "utf-8-sig",
+        "utf8-sig"
+      ],
+      "hint": "概念卡 1 的易错点第 2 条提到了哪个编码？",
+      "explain": "中文读出来乱码，十有八九是编码不对：open(\"档案.csv\", encoding=\"utf-8\")。想让 Excel 打开也不乱码，用 utf-8-sig。",
+      "traps": [
+        {
+          "wrong": "ascii",
+          "why": "ASCII 只支持英文字母和数字，读中文会报错或乱码。"
+        },
+        {
+          "wrong": "gbk",
+          "why": "gbk 是中文老编码，跨系统通用性差；本课的标准答案是 utf-8。"
+        }
+      ],
+      "concept": [
+        "encoding",
+        "utf-8",
+        "乱码"
+      ]
+    },
+    {
+      "id": "u7_l2_p6",
+      "type": "debug",
+      "stem": "下面的程序想统计《借阅记录》3 行数据的「借阅数」总和，可一运行就报 TypeError 崩溃了。报错指向 `total = total + row[1]` 这一行——观察报错信息，修复它。",
+      "code": "import csv\nimport io\n\n# 输入共 4 行：第 1 行是表头，后面 3 行是「书名,借阅数」\nlines = []\nfor _ in range(4):\n    lines.append(input())\n\ntext = \"\\n\".join(lines)\nrows = list(csv.reader(io.StringIO(text)))\n\ntotal = 0\nfor row in rows[1:]:\n    total = total + row[1]   # ← 问题出在这一行\n\nprint(total)",
+      "testcases": [
+        {
+          "input": "书名,借阅数\n《卷一》,90\n《卷二》,80\n《卷三》,70",
+          "expected": "240"
+        },
+        {
+          "input": "书名,借阅数\n《卷一》,10\n《卷二》,20\n《卷三》,30",
+          "expected": "60"
+        }
+      ],
+      "hint": "row[1] 是字符串（如 '90'），0 + '90' 会报「int 和 str 不能相加」——想想哪个函数能把字符串转成整数。",
+      "explain": "CSV 读出来全是字符串，0 + '90' 触发了 TypeError。修复：total = total + int(row[1])，90+80+70 = 240。",
+      "concept": [
+        "调试",
+        "int转换",
+        "csv.reader",
+        "TypeError"
+      ]
+    },
+    {
+      "id": "u7_l2_p7",
+      "type": "code",
+      "stem": "读入一行 CSV 文本（三个数字用逗号分隔，如 `10,20,30`），用 csv + io.StringIO 解析，把三个数转成整数求和并打印。\n\n输入示例：`10,20,30` → 期望输出：\n```\n60\n```",
+      "code": "import csv\nimport io\n\nline = input()          # 一行 CSV 文本，如：10,20,30\nrow = list(csv.reader(io.StringIO(line)))[0]\n# row = ['10', '20', '30']，注意：全是字符串！\n# TODO: 把 row 里的每个元素转成整数，求和并打印",
+      "testcases": [
+        {
+          "input": "10,20,30",
+          "expected": "60"
+        },
+        {
+          "input": "5,7,12",
+          "expected": "24"
+        },
+        {
+          "input": "1,2,3,4",
+          "expected": "10"
+        }
+      ],
+      "hint": "row 里全是字符串——怎么把每个元素转成数字再求和？可以写循环累加，也可以用内置的 sum() 配合生成式。",
+      "explain": "sum(int(x) for x in row) 把每个字符串转成整数再求和：10+20+30 = 60。",
+      "concept": [
+        "csv",
+        "io.StringIO",
+        "求和",
+        "int转换"
+      ]
+    },
+    {
+      "id": "u7_l2_p8",
+      "type": "code",
+      "stem": "档案馆的《借阅记录》以 CSV 形式给出：第 1 行是表头，后面 3 行是数据（书名,借阅数）。请读入这 4 行，用 csv + io.StringIO 解析，求出 3 行「借阅数」的总和并打印。\n\n输入示例：\n```\n书名,借阅数\n《Python入门》,12\n《档案管理》,8\n《数据库》,15\n```\n期望输出：\n```\n35\n```",
+      "code": "import csv\nimport io\n\n# 输入共 4 行：第 1 行是表头，后面 3 行是「书名,借阅数」\nlines = []\nfor _ in range(4):\n    lines.append(input())\n\ntext = \"\\n\".join(lines)\nrows = list(csv.reader(io.StringIO(text)))\n# rows[0] 是表头；rows[1:] 是 3 行数据，row[1] 是借阅数（字符串）\n# TODO: 把 3 行数据的借阅数转成整数，求和并打印",
+      "testcases": [
+        {
+          "input": "书名,借阅数\n《Python入门》,12\n《档案管理》,8\n《数据库》,15",
+          "expected": "35"
+        },
+        {
+          "input": "书名,借阅数\n《卷一》,5\n《卷二》,7\n《卷三》,9",
+          "expected": "21"
+        },
+        {
+          "input": "书名,借阅数\n《卷一》,20\n《卷二》,30\n《卷三》,50",
+          "expected": "100"
+        }
+      ],
+      "hint": "想想：怎么跳过表头那一行（提示：切片）？每一行里借阅数在第几个位置？它是字符串还是数字，怎么转换再累加？",
+      "explain": "for row in rows[1:]: total += int(row[1])，12+8+15 = 35。",
+      "concept": [
+        "csv",
+        "io.StringIO",
+        "列求和",
+        "跳过表头"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u7_l2_quest",
+    "title": "剧情任务：卷宗电子化",
+    "story": "档案馆的卷宗堆得像小山，馆长一拍桌子：「三天之内，把这些纸档案全部转成电子表格！」你撸起袖子，写下一个「档案归档」程序：把 3 条「姓名,部门」档案写入 CSV（用 io.StringIO 当虚拟文件，不落盘），再让 csv.reader 把它们读回来，按「第N条：姓名-部门」的格式归档打印。",
+    "stem": "补全程序最后的循环：把 CSV 读回来，按行打印「第N条：姓名-部门」。\n\n规则：\n- 输入会给你 3 条档案，每行一条「姓名,部门」\n- 程序已经帮你完成了「写入 CSV」部分\n- 你要补全「读回并打印」：遍历 reader，每行打印 `第N条：姓名-部门`（N 从 1 开始，冒号是英文冒号，姓名和部门之间用短横线 -）",
+    "code": "import csv\nimport io\n\n# 读入 3 条档案：每行一条「姓名,部门」\nrecords = []\nfor _ in range(3):\n    records.append(input().split(\",\"))\n\n# 归档：把 3 条档案写入 CSV（io.StringIO 当虚拟文件，不落盘）\nbuf = io.StringIO()\nwriter = csv.writer(buf)\nwriter.writerows(records)\n\n# 调档：把 CSV 文本读回来\ncsv_text = buf.getvalue()\nreader = csv.reader(io.StringIO(csv_text))\n# TODO: 遍历 reader，打印「第N条：姓名-部门」",
+    "testcases": [
+      {
+        "input": "林小满,档案部\n顾远山,修复部\n苏黎,编目部",
+        "expected": "第1条：林小满-档案部\n第2条：顾远山-修复部\n第3条：苏黎-编目部"
+      },
+      {
+        "input": "周正,古籍部\n许安宁,修复部\n白露,编目部",
+        "expected": "第1条：周正-古籍部\n第2条：许安宁-修复部\n第3条：白露-编目部"
+      },
+      {
+        "input": "沈书,档案部\n陆舟,修复部\n宋词,编目部",
+        "expected": "第1条：沈书-档案部\n第2条：陆舟-修复部\n第3条：宋词-编目部"
+      }
+    ],
+    "hint": "想想：遍历 reader 时怎么同时拿到序号和这一行的数据（提示：enumerate）？姓名和部门分别在 row 的哪个位置？怎么按「第N条：姓名-部门」拼出来打印？",
+    "explain": "for n, row in enumerate(reader, 1): print(f\"第{n}条：{row[0]}-{row[1]}\")。writer 把 3 条档案写进 buf，csv_text 拿到 CSV 文本，reader 再把它一行行读回来——写入、读回，一次完整的「归档」。",
+    "concept": [
+      "csv.writer",
+      "csv.reader",
+      "io.StringIO",
+      "CSV",
+      "enumerate"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「CSV 与 Excel」一课 🎉\n\n**这一课你学会了**：\n1. CSV = 逗号分隔的纯文本表格，任何软件都能打开，是数据交换的「通用语言」；读出来全是字符串，算数前先 int()\n2. csv.reader 把 CSV 一行行读成列表（列从 0 数起）；io.StringIO 把字符串包装成「虚拟文件」，判题环境不落盘也能练\n3. Excel 三件套：工作簿（.xlsx 文件）→ 工作表（Sheet）→ 单元格（坐标 A1）；openpyxl 是第三方库，要 pip install 才 import 得了\n4. 怎么选：简单通用、给程序用 → CSV；要样式/公式/多张表、给人看 → Excel；嵌套数据？那是 JSON 的地盘\n\n**剧情推进**：档案柜里的纸卷宗，终于变成了一行行整整齐齐的 CSV 电子表格！馆长翻着屏幕满意地点点头，忽然又皱起眉：「表格只能存『矩形』的数据——姓名、部门、数字还行，可那些嵌套的档案呢？一份卷宗里有借阅记录、有修复记录、还有历任保管员名单，一张表可装不下。」馆长指向角落里那台闪着绿光的机器：「下一站——JSON 序列化，让 Python 把嵌套的档案原样存进文件、再原样读出来！」"
+  }
+}
