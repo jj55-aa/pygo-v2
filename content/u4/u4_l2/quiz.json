@@ -1,0 +1,242 @@
+{
+  "lesson": "u4_l2",
+  "title": "函数的应用",
+  "quest": {
+    "id": "u4_l2_quest",
+    "title": "剧情任务：精工盖章",
+    "story": "老师傅看了你上一课封装的 stamp 函数，满意地点了点头：「工序还得再精细些——普通工件盖普通章，贵重工件要盖『精工』章。给 stamp 加一个默认参数，一道工序，两种用法！」",
+    "stem": "给 stamp 函数加上默认参数 fine=False：普通盖章返回 name + \"已盖章\"；精工盖章（fine=True）返回 name + \"精工盖章\"。程序读入零件名和 0/1 标记（0 普通、1 精工），输出对应的盖章结果。",
+    "code": "def stamp(name, fine=False):\n    # 补全 return 语句\n    pass\n\npart = input()\nkind = int(input())\nif kind == 1:\n    print(stamp(part, fine=True))\nelse:\n    print(stamp(part))",
+    "testcases": [
+      {
+        "input": "齿轮\n0",
+        "expected": "齿轮已盖章"
+      },
+      {
+        "input": "螺丝\n1",
+        "expected": "螺丝精工盖章"
+      }
+    ],
+    "hint": "函数里要根据 fine 的值分两种情况处理——用什么语句？精工（True）和普通（False）分别返回什么？",
+    "explain": "kind 为 0 时不传 fine（用默认 False）→ 普通盖章；kind 为 1 时传 fine=True → 精工盖章。默认参数让一个函数覆盖两种工序。",
+    "concept": [
+      "默认参数",
+      "关键字参数",
+      "封装"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「函数的应用」一课 🎉\n\n**这一课你学会了**：\n1. 默认参数：`def f(a, b=2)`，不传就用默认值；**必选参数在前，默认参数在后**；默认值别用列表这类可变对象（用 `None` 代替）\n2. 关键字参数：调用时写 `参数名=值`，顺序随便；混用时**位置参数在前**\n3. 作用域：函数外的变量是全局的，函数内的变量是局部的；局部变量外面用不了\n4. `global` 声明后才能在函数里改全局变量，但**能不用就不用**，多用参数 + 返回值\n\n**工坊学徒又进了一步**：盖章工序现在能一函数两用了，老师傅准备把更复杂的工序交给你！"
+  },
+  "questions": [
+    {
+      "id": "u4_l2_p1",
+      "type": "choice",
+      "stem": "运行下面的代码，输出结果是？\n\n```python\ndef f(x=5):\n    return x\n\nprint(f())\n```",
+      "options": [
+        "报错",
+        "5",
+        "0",
+        "None"
+      ],
+      "answer": 1,
+      "hint": "不传参数就用默认值。",
+      "explain": "f() 没有传参数，x 使用默认值 5，所以返回 5。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "有默认值的参数不传不会报错；f() 会使用默认值 5。"
+        },
+        {
+          "opt": 2,
+          "why": "默认值不是 0；x=5 才是默认值。"
+        },
+        {
+          "opt": 3,
+          "why": "函数里有 return x，返回的是 5，不是 None。"
+        }
+      ],
+      "concept": [
+        "默认参数"
+      ]
+    },
+    {
+      "id": "u4_l2_p2",
+      "type": "choice",
+      "stem": "运行下面的代码，输出结果是？\n\n```python\ndef add(a, b):\n    return a + b\n\nprint(add(b=2, a=1))\n```",
+      "options": [
+        "3",
+        "12",
+        "21",
+        "报错"
+      ],
+      "answer": 0,
+      "hint": "关键字参数按名字对号入座，顺序不重要。",
+      "explain": "这是关键字参数调用：按参数名传值，顺序无所谓。a=1、b=2，1 + 2 = 3。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "a、b 是整数不是字符串，做的是加法 1+2=3。"
+        },
+        {
+          "opt": 2,
+          "why": "关键字参数不是拼接；a=1、b=2 相加得 3。"
+        },
+        {
+          "opt": 3,
+          "why": "关键字参数完全合法，不会报错；结果是 3。"
+        }
+      ],
+      "concept": [
+        "关键字参数"
+      ]
+    },
+    {
+      "id": "u4_l2_p3",
+      "type": "fill",
+      "stem": "在函数【内部】定义的变量叫做___变量，它只能在函数内使用。",
+      "answer": [
+        "局部",
+        "局部变量",
+        "local"
+      ],
+      "hint": "两个字，和「全局」相对。",
+      "explain": "函数内部定义的变量是局部变量（local variable），函数外访问不到；模块顶层定义的才是全局变量。",
+      "traps": [
+        {
+          "wrong": "全局",
+          "why": "函数内定义的是局部变量；模块顶层定义的才是全局变量。"
+        },
+        {
+          "wrong": "私有",
+          "why": "Python 里没有「私有变量」这个说法；函数内定义的叫局部变量。"
+        }
+      ],
+      "concept": [
+        "作用域",
+        "局部变量"
+      ]
+    },
+    {
+      "id": "u4_l2_p4",
+      "type": "choice",
+      "stem": "运行下面的代码，会发生什么？\n\n```python\ndef calc():\n    num = 5\n    return num * 2\n\nprint(calc())\nprint(num)\n```",
+      "options": [
+        "打印 10 和 5",
+        "打印 10 和 10",
+        "先打印 10，然后报 NameError",
+        "直接报语法错误"
+      ],
+      "answer": 2,
+      "hint": "局部变量只能在函数内用，函数一结束就消失了。",
+      "explain": "calc() 正常返回 10；但 num 是函数内的局部变量，函数结束后就没了，函数外访问报 NameError: name 'num' is not defined。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "num 是局部变量，函数外访问不到，会报错而不是打印 5。"
+        },
+        {
+          "opt": 1,
+          "why": "num 的值只在函数内存在；函数外访问它报 NameError。"
+        },
+        {
+          "opt": 3,
+          "why": "语法没问题；是运行到 print(num) 时才报 NameError。"
+        }
+      ],
+      "concept": [
+        "作用域",
+        "局部变量"
+      ]
+    },
+    {
+      "id": "u4_l2_p5",
+      "type": "choice",
+      "stem": "下面这个函数定义会怎样？\n\n```python\ndef f(a=1, b):\n    return a + b\n```",
+      "options": [
+        "正常运行",
+        "报 SyntaxError：带默认值的参数不能在无默认值参数前面",
+        "报 TypeError",
+        "运行后返回 None"
+      ],
+      "answer": 1,
+      "hint": "必选项在前，默认项在后。",
+      "explain": "带默认值的参数必须放在不带默认值的参数后面。写成 def f(a=1, b) 直接报语法错误 SyntaxError。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "这种参数顺序不合法，定义时就报错，跑不起来。"
+        },
+        {
+          "opt": 2,
+          "why": "还没运行就报错了；这是语法错误 SyntaxError，不是运行时的 TypeError。"
+        },
+        {
+          "opt": 3,
+          "why": "定义都过不去，谈不上返回什么。"
+        }
+      ],
+      "concept": [
+        "默认参数"
+      ]
+    },
+    {
+      "id": "u4_l2_p6",
+      "type": "judge",
+      "stem": "运行下面的代码后，最后 print(x) 会输出 10。\n\n```python\nx = 100\n\ndef change():\n    x = 10\n\nchange()\nprint(x)\n```",
+      "answer": false,
+      "hint": "函数里的 x = 10 是新建的局部变量，碰不到外面的 x。",
+      "explain": "函数里的 x = 10 是新建的局部变量，和全局 x 无关。change() 不会改变外面的 x，所以最后打印 100。",
+      "concept": [
+        "作用域",
+        "全局变量",
+        "局部变量"
+      ]
+    },
+    {
+      "id": "u4_l2_p7",
+      "type": "debug",
+      "stem": "下面的程序想让 add 函数把计算结果交给调用方继续使用，但 add 里写成了 print。请修复它（把 print 改成 return），让程序只输出一行「结果是XX」。",
+      "code": "def add(a, b):\n    print(a + b)\n\nx = int(input())\ny = int(input())\nresult = add(x, y)\nprint('结果是' + str(result))",
+      "testcases": [
+        {
+          "input": "2\n3",
+          "expected": "结果是5"
+        },
+        {
+          "input": "10\n20",
+          "expected": "结果是30"
+        }
+      ],
+      "hint": "print 只是把结果亮在屏幕上；想存进变量继续用，必须用 return。",
+      "explain": "把 add 里的 print(a + b) 改成 return a + b，result 才能接住结果 5 / 30，程序只输出一行「结果是XX」。",
+      "concept": [
+        "返回值",
+        "return",
+        "调试"
+      ]
+    },
+    {
+      "id": "u4_l2_p8",
+      "type": "code",
+      "stem": "定义一个函数 make_juice(fruit, sugar=2)，返回「XX汁，加糖X份」这样的字符串。程序读入两行：第一行水果名，第二行糖量（输入 -1 表示使用默认糖量 2），调用 make_juice 并打印结果。\n\n期望输出：\n```\n橙子汁，加糖2份\n```",
+      "code": "def make_juice(fruit, sugar=2):\n    # 补全 return 语句\n    pass\n\nfruit = input()\ns = int(input())\nif s == -1:\n    print(make_juice(fruit))\nelse:\n    print(make_juice(fruit, sugar=s))",
+      "testcases": [
+        {
+          "input": "橙子\n-1",
+          "expected": "橙子汁，加糖2份"
+        },
+        {
+          "input": "西瓜\n5",
+          "expected": "西瓜汁，加糖5份"
+        }
+      ],
+      "hint": "返回的字符串由哪几部分拼接？糖数是数字，拼接时要不要先转成字符串？读入 -1 表示不指定糖数，怎么让它用默认参数？",
+      "explain": "第一次调用不传 sugar，用默认值 2；第二次用关键字参数 sugar=5 传入。两个用例分别运行，各自输出一行：'橙子汁，加糖2份' 和 '西瓜汁，加糖5份'。",
+      "concept": [
+        "默认参数",
+        "关键字参数"
+      ]
+    }
+  ]
+}
