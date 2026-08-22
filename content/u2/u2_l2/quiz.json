@@ -1,0 +1,239 @@
+{
+  "lesson": "u2_l2",
+  "title": "循环结构",
+  "questions": [
+    {
+      "id": "u2_l2_p1",
+      "type": "choice",
+      "stem": "`for i in range(3): print(i)` 会打印几个数？",
+      "options": [
+        "2 个",
+        "3 个",
+        "4 个",
+        "报错"
+      ],
+      "answer": 1,
+      "hint": "想想 range(3) 会生成哪几个数？从几开始、到几结束？数一数一共有几个。",
+      "explain": "range(3) 生成 0、1、2 共 3 个数，循环体执行 3 次。记住：range(n) 从 0 数到 n-1。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "漏数了：range(3) 生成 0、1、2 共 3 个数，不能只数前两个。"
+        },
+        {
+          "opt": 2,
+          "why": "以为包含 3：range(n) 是 0 到 n-1，不含 n。"
+        },
+        {
+          "opt": 3,
+          "why": "range(3) 是合法写法，不会报错。"
+        }
+      ],
+      "concept": [
+        "循环",
+        "range"
+      ]
+    },
+    {
+      "id": "u2_l2_p2",
+      "type": "choice",
+      "stem": "`range(1, 5)` 会生成哪些数？",
+      "options": [
+        "1, 2, 3, 4",
+        "1, 2, 3, 4, 5",
+        "0, 1, 2, 3, 4",
+        "0, 1, 2, 3, 4, 5"
+      ],
+      "answer": 0,
+      "hint": "range 是「含头不含尾」（左闭右开），结尾的 5 不包含。",
+      "explain": "range(起点, 终点) 包含开头的 1，不包含结尾的 5，所以是 1、2、3、4。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "以为包含结尾 5：range 左闭右开，不包含 5。"
+        },
+        {
+          "opt": 2,
+          "why": "那是 range(5) 的结果：range(1, 5) 从 1 开始，不是 0。"
+        },
+        {
+          "opt": 3,
+          "why": "头和尾都搞错了：range(1, 5) 是 1、2、3、4。"
+        }
+      ],
+      "concept": [
+        "循环",
+        "range"
+      ]
+    },
+    {
+      "id": "u2_l2_p3",
+      "type": "fill",
+      "stem": "下面代码输出什么？\n```python\ntotal = 0\nfor i in range(1, 6):\n    total += i\nprint(total)\n```",
+      "answer": "15",
+      "hint": "就是 1 加到 5。",
+      "explain": "total 依次加上 1、2、3、4、5：1+2+3+4+5 = 15。注意 range(1, 6) 不含 6。",
+      "traps": [
+        {
+          "wrong": "21",
+          "why": "把 6 也算进去了：range(1, 6) 不含 6，累加的是 1~5 = 15。"
+        },
+        {
+          "wrong": "5",
+          "why": "total 是累加和，不是最后一个 i 的值。"
+        }
+      ],
+      "concept": [
+        "循环",
+        "累加"
+      ]
+    },
+    {
+      "id": "u2_l2_p4",
+      "type": "choice",
+      "stem": "下面代码输出什么？\n```python\nfor i in range(1, 6):\n    if i == 3:\n        break\n    print(i)\n```",
+      "options": [
+        "1 2",
+        "1 2 3",
+        "1 2 3 4 5",
+        "1 2 4 5"
+      ],
+      "answer": 0,
+      "hint": "break 一执行，整个循环立刻结束。",
+      "explain": "i 为 3 时遇到 break，整个循环立刻结束，所以只打印了 1 和 2。break 是「提前退场」。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "break 在 print 之前，i == 3 时 3 根本没机会打印。"
+        },
+        {
+          "opt": 2,
+          "why": "break 会立刻终止整个循环，后面全不执行。"
+        },
+        {
+          "opt": 3,
+          "why": "那是 continue 的效果：break 是结束循环，不是跳过本轮。"
+        }
+      ],
+      "concept": [
+        "循环",
+        "break"
+      ]
+    },
+    {
+      "id": "u2_l2_p5",
+      "type": "choice",
+      "stem": "下面代码输出什么？\n```python\nfor i in range(1, 6):\n    if i == 3:\n        continue\n    print(i)\n```",
+      "options": [
+        "1 2 4 5",
+        "1 2 3 4 5",
+        "1 2",
+        "1 2 3"
+      ],
+      "answer": 0,
+      "hint": "continue 只跳过这一次，循环没结束。",
+      "explain": "i 为 3 时遇到 continue，跳过本次循环不打印 3，但循环继续，所以输出 1、2、4、5。continue 是「跳过这一轮」。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "i == 3 时跳过了打印，3 不会输出。"
+        },
+        {
+          "opt": 2,
+          "why": "那是 break 的效果：continue 只跳过本轮，循环继续跑到 5。"
+        },
+        {
+          "opt": 3,
+          "why": "continue 之后循环继续，4、5 照常打印。"
+        }
+      ],
+      "concept": [
+        "循环",
+        "continue"
+      ]
+    },
+    {
+      "id": "u2_l2_p6",
+      "type": "sort",
+      "stem": "把下面的代码行排成正确的顺序，让程序用 while 循环打印 1、2、3、4、5，最后打印「数完了」。（注意哪一行该缩进、哪一行不该缩进）",
+      "lines": [
+        "n = 1",
+        "while n <= 5:",
+        "    print(n)",
+        "    n += 1",
+        "print(\"数完了\")"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3,
+        4
+      ],
+      "hint": "先给 n 赋初值，再写 while 条件；循环体里先打印再让 n 加 1；「数完了」在循环外。",
+      "explain": "n = 1 初始化；while n <= 5: 是循环条件；循环体缩进两行：print(n) 打印、n += 1 让条件朝不成立变化；print(\"数完了\") 不缩进，循环结束后才执行。",
+      "concept": [
+        "循环",
+        "while"
+      ]
+    },
+    {
+      "id": "u2_l2_p7",
+      "type": "code",
+      "stem": "用 for 循环计算 1 加到 100 的和并打印。\n\n期望输出：\n```\n5050\n```",
+      "code": "total = 0\n# TODO: 用 for 循环把 1 到 100 累加进 total（range(1, 101) 含 1 不含 101）\nprint(total)",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "5050"
+        }
+      ],
+      "hint": "要从 1 累加到 100，想想 range 的「含头不含尾」：起点和终点该写几？打印 total 要放在循环外还是循环内？",
+      "explain": "循环把 1~100 全部累加到 total，结果是 5050。如果 print 写在循环内，会打印每一轮的中间值。",
+      "concept": [
+        "循环",
+        "累加"
+      ]
+    },
+    {
+      "id": "u2_l2_p8",
+      "type": "judge",
+      "stem": "下面的代码会陷入死循环（一直运行停不下来）：\n```python\nwhile True:\n    print(\"转圈中\")\n```",
+      "answer": true,
+      "hint": "while True 的条件永远成立，循环体里又没有任何退出的语句。",
+      "explain": "while True 的条件永远为真；循环体里没有 break 或其他让条件不成立的语句，所以会一直运行，这就是死循环。",
+      "concept": [
+        "循环",
+        "while",
+        "死循环"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u2_l2_quest",
+    "title": "剧情任务：数一数路灯",
+    "story": "走进岔路口森林，管理员爷爷拦住你：「孩子，帮我数数森林里一共有多少盏路灯吧！一共有 N 条岔路，第 1 条路上有 1 盏灯，第 2 条路上有 2 盏灯……第 N 条路上有 N 盏灯。数清楚，我才能点亮它们。」",
+    "stem": "读入岔路数量 n，用循环计算 1 + 2 + ... + n（所有岔路的路灯总数），并打印结果。",
+    "code": "n = int(input())\ntotal = 0\n# 用循环把 1 到 n 累加进 total\nprint(total)",
+    "testcases": [
+      {
+        "input": "5",
+        "expected": "15"
+      },
+      {
+        "input": "100",
+        "expected": "5050"
+      }
+    ],
+    "hint": "累加求和的套路：循环变量要从 1 走到 n，range 怎么写才能包含 n？每次循环把 i 累加到哪个变量？结果要在循环外打印。",
+    "explain": "用 for i in range(1, n + 1) 遍历 1~n，循环体里 total += i 累加，最后打印 total——这就是循环累加的标准写法。",
+    "concept": [
+      "循环",
+      "累加",
+      "range"
+    ]
+  },
+  "summary": {
+    "body": "路灯数完了，森林深处又传来规律的脚步声 🎉\n\n**这一课你学会了**：\n1. 循环 = 让代码重复执行：for 数着来，while 看着来\n2. range(n) 从 0 数到 n-1，含头不含尾；range(起, 止, 步长) 还能控制起点和步长\n3. while 条件成立就循环，循环体里一定要让条件朝「不成立」变化，否则死循环（Ctrl+C 救命）\n4. break 提前结束整个循环（退场）；continue 跳过本次继续循环（跳步）\n\n**下一站**：管理员爷爷交给你的任务越来越难了——这次要你列出 1 到 N 里所有能被 3 整除的数字！"
+  }
+}
