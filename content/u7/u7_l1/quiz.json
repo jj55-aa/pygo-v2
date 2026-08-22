@@ -1,0 +1,248 @@
+{
+  "lesson": "u7_l1",
+  "title": "文件读写",
+  "questions": [
+    {
+      "id": "u7_l1_p1",
+      "type": "choice",
+      "stem": "Python 中打开文件（建立「小本本」）用的内置函数是哪个？",
+      "options": [
+        "file()",
+        "open()",
+        "read()",
+        "write()"
+      ],
+      "answer": 1,
+      "hint": "想一想概念卡 1：读写文件的第一步是什么函数？",
+      "explain": "open() 是打开文件的内置函数，返回一个文件对象；read()/write() 是文件对象的方法，得先 open() 才能用。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "Python 3 里没有 file() 这个内置函数，打开文件用 open()。"
+        },
+        {
+          "opt": 2,
+          "why": "read() 是读出文件内容的方法，不是打开文件的函数——得先 open() 拿到文件对象才能 read()。"
+        },
+        {
+          "opt": 3,
+          "why": "write() 是写入内容的方法，同样要先 open() 打开文件。"
+        }
+      ],
+      "concept": [
+        "open",
+        "文件读写"
+      ]
+    },
+    {
+      "id": "u7_l1_p2",
+      "type": "choice",
+      "stem": "用 open('names.txt', 'w', encoding='utf-8') 打开一个已有人名的文件，会发生什么？",
+      "options": [
+        "在末尾追加人名，原有内容保留",
+        "清空原内容，从空文件重新写",
+        "只读打开，不能写入",
+        "程序直接报错"
+      ],
+      "answer": 1,
+      "hint": "w 是 write 还是 wipe？想想概念卡 3 的「换一本全新的本子」。",
+      "explain": "'w' 是覆盖写模式：打开时就把原文件清空，写入的内容从空文件开始。想保留旧内容要用 'a'（追加）模式。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "那是 'a'（append，追加）模式的行为，'w' 会先清空再写。"
+        },
+        {
+          "opt": 2,
+          "why": "'w' 是可写的模式，只读是 'r'。"
+        },
+        {
+          "opt": 3,
+          "why": "'w' 会正常打开（文件不存在时还会新建一个），不会报错——真正危险的是它悄悄清空了旧内容。"
+        }
+      ],
+      "concept": [
+        "写模式",
+        "w模式",
+        "open"
+      ]
+    },
+    {
+      "id": "u7_l1_p3",
+      "type": "judge",
+      "stem": "用 with open(...) as f: 打开文件后，缩进块结束时文件会自动关闭，不需要手动调用 close()。",
+      "answer": true,
+      "hint": "自动感应门：人一离开，门就自动关。",
+      "explain": "with 语句会在缩进块结束后自动关闭文件（就算块里出了错也会关），省心又安全，比手动 close() 靠谱。",
+      "concept": [
+        "with",
+        "自动关闭"
+      ]
+    },
+    {
+      "id": "u7_l1_p4",
+      "type": "fill",
+      "stem": "想把整个文件内容一次性读完、返回一个大字符串，应该调用文件对象的哪个方法？（填英文方法名）",
+      "answer": [
+        "read",
+        "read()",
+        "读取全部",
+        "读取所有",
+        "全部读取",
+        "读全部"
+      ],
+      "hint": "想想「一口气读完整个卷宗」的方法：是只读一行、按行读成列表，还是把全部内容一次读完？",
+      "explain": "read() 一次性读完整个文件，返回一个大字符串；readline() 只读一行；readlines() 按行返回列表。",
+      "traps": [
+        {
+          "wrong": "write",
+          "why": "write() 是写入内容的方法，读文件用 read()。"
+        },
+        {
+          "wrong": "open",
+          "why": "open() 是打开文件、返回文件对象的函数；读内容用的是文件对象的 read() 方法。"
+        }
+      ],
+      "concept": [
+        "read",
+        "读文件"
+      ]
+    },
+    {
+      "id": "u7_l1_p5",
+      "type": "fill",
+      "stem": "在 Windows 上读中文文件容易乱码。open() 打开文件时，应该加上哪个参数来指定 UTF-8 编码？（写完整的参数写法，如 xxx=\"yyy\"）",
+      "answer": [
+        "encoding=\"utf-8\"",
+        "encoding=\"utf8\"",
+        "encoding='utf-8'",
+        "encoding='utf8'",
+        "encoding=\"UTF-8\"",
+        "encoding='UTF-8'",
+        "encoding=\"UTF8\"",
+        "encoding='UTF8'"
+      ],
+      "hint": "读中文文件怕乱码，open() 打开时要加一个关于「编码」的参数——想想概念卡 4：这个参数叫什么？值一般填哪种编码？",
+      "explain": "open(路径, 模式, encoding=\"utf-8\") 指定以 UTF-8 编码读写，中文文件就安全了，不会乱码也不会报 UnicodeDecodeError。",
+      "traps": [
+        {
+          "wrong": "utf-16",
+          "why": "utf-16 也是一种编码，但中文文件咱们统一用 utf-8；标准写法是 encoding=\"utf-8\"。"
+        },
+        {
+          "wrong": "gbk",
+          "why": "GBK 是简体中文的老编码，跨系统容易冲突；统一用 utf-8 最稳，写法是 encoding=\"utf-8\"。"
+        }
+      ],
+      "concept": [
+        "encoding",
+        "utf-8",
+        "编码"
+      ]
+    },
+    {
+      "id": "u7_l1_p6",
+      "type": "debug",
+      "stem": "档案登记程序想把输入的名字写进内存「文件」，再读出来打印。但运行后什么都没打印——问题出在：写完内容后，「读指针」停在文件末尾，read() 从末尾开始读，自然读了个空。请修复代码，让程序能正确打印出写入的名字。",
+      "code": "import io\n\nf = io.StringIO()\nf.write(input())\nprint(f.read())",
+      "testcases": [
+        {
+          "input": "档案001",
+          "expected": "档案001"
+        },
+        {
+          "input": "张三",
+          "expected": "张三"
+        }
+      ],
+      "hint": "写完内容后，把「读指针」拨回开头再 read()。想想概念卡 2 提到的 seek(0)。",
+      "explain": "write() 会把指针移到内容末尾，read() 从指针处开始读，所以读了个空。在 read() 前加一句 f.seek(0) 把指针拨回开头即可（或者用 f.getvalue() 直接取全部内容）。",
+      "concept": [
+        "调试",
+        "StringIO",
+        "seek",
+        "读指针"
+      ]
+    },
+    {
+      "id": "u7_l1_p7",
+      "type": "code",
+      "stem": "档案馆名册「文件」里存着 3 个人名。用 readlines() 把内容按行读成列表，并打印总共有几条档案。\n\n期望输出：\n```\n共 3 条档案\n```\n（人名已写死在 StringIO 里，程序不依赖输入）",
+      "code": "import io\n\n# 档案馆的名册：每行一个人名（已\"存入\"内存文件）\narchive = io.StringIO(\"李白\\n杜甫\\n白居易\\n\")\n\n# TODO: 用 readlines() 读出所有行，打印：共 3 条档案",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "共 3 条档案"
+        },
+        {
+          "input": "任意输入",
+          "expected": "共 3 条档案"
+        }
+      ],
+      "hint": "readlines() 返回的列表里一行一个元素——怎么知道列表里有多少个元素？用哪个内置函数数个数？再把结果拼进「共 N 条档案」打印出来。",
+      "explain": "readlines() 把每行变成一个列表元素（这里共 3 个），len() 得到 3，打印「共 3 条档案」即可。",
+      "concept": [
+        "readlines",
+        "读文件",
+        "统计"
+      ]
+    },
+    {
+      "id": "u7_l1_p8",
+      "type": "code",
+      "stem": "练习「写档案」：读入两行文字，用 f.write() 写进内存「小本本」（每行末尾加换行 \\n），然后把「读指针」拨回开头，用 f.read() 读出全部内容并打印。\n\n用 with 语句管理「文件」——缩进块结束自动关闭，最省心！\n\n期望输出（输入 李白\\n杜甫）：\n```\n李白\n杜甫\n```",
+      "code": "import io\n\n# with 语句：缩进块一结束，「文件」自动关闭，不用手动 close()\nwith io.StringIO() as f:\n    # TODO: 读入两行文字，用 f.write() 写进去（每行末尾加 \\n）\n    # TODO: 把「读指针」拨回开头（f.seek(0)），再用 f.read() 读出全部并打印",
+      "testcases": [
+        {
+          "input": "李白\n杜甫",
+          "expected": "李白\n杜甫"
+        },
+        {
+          "input": "档案A\n档案B",
+          "expected": "档案A\n档案B"
+        }
+      ],
+      "hint": "想想三步分别怎么做：把输入写进「小本本」（换行符要自己加）→ 读完前把指针拨回开头（用哪个方法？）→ 从开头读出全部内容打印。",
+      "explain": "write() 把内容写进 StringIO（记得每行加 \\n 换行）；写完指针在末尾，seek(0) 拨回开头；read() 从开头读到结尾，把全部内容一次打印。with 结束后「文件」自动关闭。",
+      "concept": [
+        "write",
+        "StringIO",
+        "with",
+        "写文件"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u7_l1_quest",
+    "title": "剧情任务：档案管理员的第一份登记簿",
+    "story": "档案馆的卷宗堆积如山，你终于拿到了管理员工牌。馆长把一叠空白的登记簿拍在你面前：「今天有 3 位新档案要登记！把它们写进卷宗，再按顺序念给我听——编号 + 人名，一条都不能乱！」你掏出你的小本本（io.StringIO，浏览器里模拟文件的小本本），开工！",
+    "stem": "写一个「档案登记」程序：\n\n1. 读入 3 行文本（人名）\n2. 用 io.StringIO 模拟「档案文件」，把 3 个人名各占一行「存」进去（每行末尾加 \\n）\n3. 把「读指针」拨回开头（archive.seek(0)）\n4. 用 readlines() 按行读出来，逐条打印「编号. 人名」（编号从 1 开始，人名不要带换行）\n\n期望输出（输入 张三\\n李四\\n王五）：\n```\n1. 张三\n2. 李四\n3. 王五\n```",
+    "code": "import io\n\n# 你的「档案文件」（内存版，模拟真实文件）\narchive = io.StringIO()\n\n# 1. 读入 3 个人名，各占一行存进「档案文件」\nfor _ in range(3):\n    archive.write(input() + \"\\n\")\n\n# 2. 把「读指针」拨回开头，才能从头读出\narchive.seek(0)\n\n# 3. 按行读出来，逐条打印「编号. 人名」\n# TODO: 补全代码\n# 提示：readlines() 读出所有行；enumerate(lines, 1) 拿到从 1 开始的编号；line.strip() 去掉末尾换行",
+    "testcases": [
+      {
+        "input": "张三\n李四\n王五",
+        "expected": "1. 张三\n2. 李四\n3. 王五"
+      },
+      {
+        "input": "赵云\n关羽\n张飞",
+        "expected": "1. 赵云\n2. 关羽\n3. 张飞"
+      },
+      {
+        "input": "档案001\n档案002\n档案003",
+        "expected": "1. 档案001\n2. 档案002\n3. 档案003"
+      }
+    ],
+    "hint": "想想怎么同时拿到「编号」和「人名」：readlines() 读出所有行后，怎么在遍历时拿到从 1 开始的编号（提示：enumerate）？人名末尾的换行怎么去掉（提示：strip）？",
+    "explain": "readlines() 返回 ['张三\\n', '李四\\n', '王五\\n']；enumerate(lines, 1) 同时拿到编号 i 和每行 line；line.strip() 去掉末尾换行；print(f\"{i}. {line.strip()}\") 输出「1. 张三」这样的格式。三条档案登记完毕，馆长点点头：下一站，学 CSV 和 Excel，把档案变成真正的表格！",
+    "concept": [
+      "io.StringIO",
+      "write",
+      "seek",
+      "readlines",
+      "文件读写"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你正式成为档案馆的一号管理员 🎉\n\n**这一课你学会了**：\n1. 文件 = 程序的小本本：数据写进文件，程序关了、电脑重启都还在（本课练习用 io.StringIO 在内存里模拟）\n2. open(路径, 模式)：`r` 读 / `w` 覆盖写（会清空旧内容！）/ `a` 追加\n3. 读文件：read() 全读、readline() 读一行、readlines() 按行成列表；写文件：write()，换行符 `\\n` 要自己写\n4. with open(...) as f: 自动关闭最省心；读中文文件带上 encoding=\"utf-8\"\n\n**剧情推进**：第一册登记簿顺利完工！但馆长翻着册子直皱眉：「人名一行行记着，可档案还有编号、入职年份、部门……这种表格数据，纯文本可管不动。」他把一把新钥匙塞给你：下一站——CSV 与 Excel，把档案变成真正的表格！"
+  }
+}
