@@ -1,0 +1,228 @@
+{
+  "lesson": "u6_l2",
+  "title": "调试技巧",
+  "questions": [
+    {
+      "id": "u6_l2_p1",
+      "type": "choice",
+      "stem": "程序报错时，控制台会弹出一大段 Traceback。要快速定位错误根源，你应该先看哪一部分？",
+      "options": [
+        "最顶部的 Traceback (most recent call last) 这一行",
+        "最下面一行的错误类型和原因，比如 NameError: name 'x' is not defined",
+        "中间所有的 File \"...\", line N 提示",
+        "从第一行开始逐字读完整个 Traceback"
+      ],
+      "answer": 1,
+      "hint": "回忆读报错三步法：错误类型和原因藏在最后一行的冒号后面。",
+      "explain": "读报错三步法：① 先看最后一行的错误类型和原因；② 再往上找 File ... line N 得到出错行号；③ 看那行代码想为什么错。traceback 顶部只是调用过程，不是根源。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "那一行只是开头，真正的错误类型在最底下。想想探雷器：滴滴声的源头在脚下，不在头顶。"
+        },
+        {
+          "opt": 2,
+          "why": "File 行告诉你出错的文件和行号，但要先看最后一行知道是什么错误类型，再回头找行号。"
+        },
+        {
+          "opt": 3,
+          "why": "从第一行逐字读太慢，而且顶部是调用过程。从下往上读，先看最后一行最快。"
+        }
+      ],
+      "concept": [
+        "调试",
+        "traceback",
+        "报错"
+      ]
+    },
+    {
+      "id": "u6_l2_p2",
+      "type": "choice",
+      "stem": "下列哪种情况会触发 IndexError（下标越界）？",
+      "options": [
+        "用了一个还没赋值的变量名",
+        "用下标访问列表时，下标超出了范围",
+        "把字符串和数字直接相加",
+        "if 语句后面忘了写冒号"
+      ],
+      "answer": 1,
+      "hint": "回忆：列表有 n 个元素，合法下标是 0 ~ n-1，超过就报 IndexError。",
+      "explain": "IndexError 是下标越界：比如 lst = [1, 2, 3]，lst[3] 就越界了（合法下标只有 0、1、2）。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "那会报 NameError（名字未定义），不是 IndexError。"
+        },
+        {
+          "opt": 2,
+          "why": "那会报 TypeError（类型错误），不是 IndexError。"
+        },
+        {
+          "opt": 3,
+          "why": "那会报 SyntaxError（语法错误），不是 IndexError。"
+        }
+      ],
+      "concept": [
+        "IndexError",
+        "下标",
+        "报错"
+      ]
+    },
+    {
+      "id": "u6_l2_p3",
+      "type": "judge",
+      "stem": "执行 names = ['小明', '小红'] 后，再执行 print(names[2])，会报 IndexError（列表下标越界）。",
+      "answer": true,
+      "hint": "names 只有两个元素：下标 0 是'小明'，下标 1 是'小红'，没有下标 2。",
+      "explain": "长度是 2 的列表，合法下标只有 0 和 1。names[2] 越界 → IndexError: list index out of range。",
+      "concept": [
+        "IndexError",
+        "列表"
+      ]
+    },
+    {
+      "id": "u6_l2_p4",
+      "type": "fill",
+      "stem": "运行下面代码会报什么错？\n\ninfo = {'name': '小明'}\nprint(info['age'])\n\n横线处填错误类型（中文或英文都可以）",
+      "answer": [
+        "KeyError",
+        "键错误",
+        "键不存在",
+        "字典键不存在"
+      ],
+      "hint": "字典 dict 只认它里面存在的键：info 里只有 'name'，没有 'age'。",
+      "explain": "用不存在的键 info['age'] 取值 → KeyError: 'age'。取键前先用 in 判断，或用 d.get(键, 默认值)。",
+      "traps": [
+        {
+          "wrong": "IndexError",
+          "why": "IndexError 是列表/字符串下标越界；字典用的是'键'，键不存在报 KeyError。"
+        },
+        {
+          "wrong": "NameError",
+          "why": "NameError 是变量没定义；这里变量 info 定义得好好的，问题出在取值的'键'上。"
+        }
+      ],
+      "concept": [
+        "KeyError",
+        "字典"
+      ]
+    },
+    {
+      "id": "u6_l2_p5",
+      "type": "fill",
+      "stem": "用二分注释法排查 bug：把代码后半段注释掉后，程序不再报错。这说明 bug 藏在被____掉的那一半里。（填两个字）",
+      "answer": [
+        "注释",
+        "注释掉"
+      ],
+      "hint": "注释掉的代码不会执行——不报错，说明问题就出在被注释掉（不执行）的那部分里。",
+      "explain": "二分注释法：注释掉一半，程序不报错了 → bug 在被注释的那一半；还报错 → bug 在留下的那一半。每次把范围砍半，很快就能定位。",
+      "traps": [
+        {
+          "wrong": "留下",
+          "why": "想反了：程序不报错，说明被注释掉（不执行）的部分才是问题所在。"
+        },
+        {
+          "wrong": "运行",
+          "why": "注释掉一半再运行，是用来观察另一半有没有问题的手段。"
+        }
+      ],
+      "concept": [
+        "调试",
+        "二分注释法"
+      ]
+    },
+    {
+      "id": "u6_l2_p6",
+      "type": "debug",
+      "stem": "这段代码想打印两个数的和，但一运行就报 NameError。找出错误并修复，让程序输出正确的和。",
+      "code": "a = int(input())\nb = int(input())\ntotal = a + b\nprint(totle)",
+      "testcases": [
+        {
+          "input": "3\n5",
+          "expected": "8"
+        },
+        {
+          "input": "10\n20",
+          "expected": "30"
+        }
+      ],
+      "hint": "看第 4 行 print 的变量名，和上面算好的变量名完全一致吗？（Python 区分大小写，拼写必须一字不差）",
+      "explain": "第 3 行算好的是 total，第 4 行却打印 totle——拼写不一致，Python 找不到叫 totle 的变量 → NameError。改成 print(total)。",
+      "concept": [
+        "NameError",
+        "调试",
+        "变量"
+      ]
+    },
+    {
+      "id": "u6_l2_p7",
+      "type": "debug",
+      "stem": "这段代码想依次打印 0、1、4，但一运行就报 IndentationError。找出缩进问题并修复，让程序正常输出。",
+      "code": "for i in range(3):\nprint(i * i)",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "0\n1\n4"
+        }
+      ],
+      "hint": "for 冒号后面的代码块必须整体缩进（按 Tab 或 4 个空格）。",
+      "explain": "for 循环体必须缩进：给 print 那行加上缩进（Tab 键）。缩进错了，Python 就不知道这行代码属于谁。",
+      "concept": [
+        "IndentationError",
+        "缩进",
+        "调试"
+      ]
+    },
+    {
+      "id": "u6_l2_p8",
+      "type": "code",
+      "stem": "探雷工坊训练：教官报了三个成绩，让你写程序算平均分。用 input() 读入三个分数（每行一个），输出它们的平均分。\n\n写之前提醒自己：input() 读进来的是字符串，记得先 int() 转换（这也是调试好习惯）。",
+      "code": "a = int(input())\nb = int(input())\nc = int(input())\n# 计算平均分并打印",
+      "testcases": [
+        {
+          "input": "90\n85\n92",
+          "expected": "89.0"
+        },
+        {
+          "input": "60\n80\n100",
+          "expected": "80.0"
+        }
+      ],
+      "hint": "平均分怎么算：三个分数相加再除以几？读入的三个分数是什么类型，需不需要转换？结果用什么函数打印？",
+      "explain": "avg = (a + b + c) / 3; print(avg)。90、85、92 的平均分是 (90+85+92)/3 = 89.0。",
+      "concept": [
+        "调试",
+        "input",
+        "算术"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u6_l2_quest",
+    "title": "剧情任务：排掉探雷图上的两颗雷",
+    "story": "上一课，你给代码穿上了 try/except 防弹衣，教官记住了你。这一课，教官掏出一张泛黄的「探雷图」：「代码里埋了两颗雷——一颗 NameError、一颗 IndexError。用你刚学的读报错本事，把它们一颗颗排掉，让程序跑通并输出正确结果。」",
+    "stem": "修复探雷图代码中的两处错误：\n1. names 列表只有 3 个名字（下标 0、1、2），取出错的下标越界了，改成能取到'小刚'的下标\n2. avg（平均身高）在使用前没有定义，先算出它再打印\n\n输入三行数字（三个人的身高），程序要输出：小刚的身高 + 平均身高。",
+    "code": "names = ['小明', '小红', '小刚']\na = int(input())\nb = int(input())\nc = int(input())\nheights = [a, b, c]\n\nprint(names[3] + '的身高是' + str(heights[2]) + '厘米')\nprint('平均身高是' + str(avg))",
+    "testcases": [
+      {
+        "input": "150\n155\n160",
+        "expected": "小刚的身高是160厘米\n平均身高是155.0"
+      },
+      {
+        "input": "120\n130\n140",
+        "expected": "小刚的身高是140厘米\n平均身高是130.0"
+      }
+    ],
+    "hint": "别想一次修完：先跑一遍，看第一个报错是什么（下标越界还是名字没定义）？修好它再跑，第二个问题才会暴露出来。一次只修一个，改完立刻运行。",
+    "explain": "① names[3] → names[2]（列表只有下标 0、1、2，2 才是最后一个'小刚'）；② 在打印平均身高的那行之前，补上 avg = (heights[0] + heights[1] + heights[2]) / 3（或 avg = sum(heights) / len(heights)）。两颗雷排完，程序输出正确。",
+    "concept": [
+      "NameError",
+      "IndexError",
+      "调试"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「调试技巧」一课，从排雷工坊学成出师 🎉\n\n**这一课你学会了**：\n1. 读报错三步法：先看最后一行的错误类型和原因 → 再往上找 File ... line N 的出错行号 → 最后看出错的代码行\n2. 高频报错认得清：NameError 变量未定义、SyntaxError 语法错误、IndentationError 缩进错误、IndexError 下标越界、KeyError 键不存在、TypeError 类型不匹配、ValueError 值不合法\n3. print 调试法：在关键位置打印变量，看程序走到哪一步、数据变成什么样\n4. 二分注释法：注释掉一半代码缩小范围，每次砍半；先读报错再动手，一次只改一处\n\n**剧情推进**：你成功排掉了探雷图上的 NameError 和 IndexError 两颗雷。教官点点头：「学得不错。下一站，防御式编程——让代码从一开始就避开这些雷。」"
+  }
+}
