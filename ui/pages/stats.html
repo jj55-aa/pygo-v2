@@ -1,0 +1,193 @@
+<style>
+  /* ===================== 战绩页 stats.html ===================== */
+  .page.stats { max-width: 720px; margin: 0 auto; padding: 20px 20px 60px; }
+  .st-head { margin-bottom: 20px; }
+  .st-title { font-size: 20px; font-weight: 700; color: var(--text); }
+
+  .st-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card); padding: 20px; box-shadow: var(--shadow-card); margin-bottom: 16px; animation: cardIn .25s var(--ease) both; }
+  .st-card-title { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+
+  /* 等级称号卡 */
+  .level-hero { display: flex; align-items: center; gap: 16px; }
+  .level-badge { width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, #5E6AD2, #7170FF); color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; flex: none; box-shadow: 0 6px 16px rgba(94,106,210,.3); }
+  .level-badge .lv { font-size: 22px; font-weight: 800; line-height: 1; }
+  .level-badge .lbl { font-size: 10px; opacity: .9; margin-top: 3px; }
+  .level-info { flex: 1; min-width: 0; }
+  .level-title { font-size: 16px; font-weight: 700; color: var(--text); }
+  .level-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .level-bar-wrap { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .level-track { flex: 1; height: 8px; border-radius: 4px; background: #E9EBF0; overflow: hidden; }
+  .level-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #5E6AD2, #7170FF); transition: width .4s ease-out; }
+  .level-pct { font-size: 12px; color: var(--text-3); font-variant-numeric: tabular-nums; }
+
+  /* XP 大数字 */
+  .xp-hero { display: flex; align-items: baseline; gap: 6px; }
+  .xp-num { font-size: 34px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; }
+  .xp-unit { font-size: 14px; color: var(--text-3); }
+
+  /* 连胜日历 */
+  .cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
+  .cal .wd { font-size: 11px; color: var(--text-3); text-align: center; padding-bottom: 2px; }
+  .cal .day { aspect-ratio: 1; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 11px; }
+  .cal .day.on { background: var(--accent); color: #fff; }
+  .cal .day.today { box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--accent); }
+  .cal .day.off { background: #F1F2F6; color: var(--text-3); }
+  .cal .day.empty { background: transparent; }
+
+  /* 徽章墙 */
+  .badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 10px; }
+  .badge { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px; background: #FAFAFB; border: 1px solid var(--border); border-radius: var(--r-card); text-align: center; }
+  .badge .ic-wrap { width: 40px; height: 40px; border-radius: 50%; background: #F4F5FD; color: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .badge .nm { font-size: 12px; color: var(--text-2); font-weight: 600; }
+  .badge.empty { opacity: .4; }
+  .badge.empty .nm { color: var(--text-3); font-weight: 400; }
+
+  /* 联赛 */
+  .league-row { display: flex; align-items: center; gap: 14px; }
+  .league-icon { width: 52px; height: 52px; border-radius: 14px; background: linear-gradient(135deg, #F59E0B, #F97316); color: #fff; display: flex; align-items: center; justify-content: center; flex: none; }
+  .league-info { flex: 1; }
+  .league-tier { font-size: 16px; font-weight: 700; color: var(--text); }
+  .league-sub { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+  .league-xp { font-size: 14px; font-weight: 700; color: #F59E0B; white-space: nowrap; }
+</style>
+
+<div class="page stats" id="page-stats">
+  <div class="st-head"><h1 class="st-title">我的战绩</h1></div>
+
+  <div class="st-card">
+    <div class="st-card-title">🏆 等级与称号</div>
+    <div class="level-hero">
+      <div class="level-badge"><span class="lv" id="stLevel">1</span><span class="lbl">LEVEL</span></div>
+      <div class="level-info">
+        <div class="level-title" id="stTitle">代码萌芽</div>
+        <div class="level-sub">继续学习，解锁更高称号</div>
+        <div class="level-bar-wrap">
+          <div class="level-track"><div class="level-fill" id="stLevelFill" style="width:0%"></div></div>
+          <span class="level-pct" id="stLevelPct">0%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="st-card">
+    <div class="st-card-title">⚡ 累计经验值</div>
+    <div class="xp-hero"><span class="xp-num" id="stXp">0</span><span class="xp-unit">XP</span></div>
+  </div>
+
+  <div class="st-card">
+    <div class="st-card-title">🔥 连胜日历</div>
+    <div class="cal" id="stCal"></div>
+  </div>
+
+  <div class="st-card">
+    <div class="st-card-title">🎖 徽章墙</div>
+    <div class="badge-grid" id="stBadges"></div>
+  </div>
+
+  <div class="st-card">
+    <div class="st-card-title">🏅 联赛段位</div>
+    <div class="league-row">
+      <div class="league-icon" id="stLeagueIcon"></div>
+      <div class="league-info">
+        <div class="league-tier" id="stLeagueTier">青铜</div>
+        <div class="league-sub" id="stLeagueSub">本周排名 #1</div>
+      </div>
+      <div class="league-xp" id="stLeagueXp">0 XP</div>
+    </div>
+  </div>
+</div>
+
+<script src="ui/pages/_shared.js"></script>
+<script>
+(function () {
+  'use strict';
+  var App = window.App;
+  var UI = window.PyGoUI;
+  var state = App.state;
+
+  var api = UI.bindPage(onState);
+  var lastXp = null;
+
+  function onState(s) {
+    var st = s.stats || {};
+    renderLevel(st, s);
+    renderXp(s);
+    renderCalendar(st);
+    renderBadges(st);
+    renderLeague(st);
+  }
+
+  function renderLevel(st, s) {
+    document.getElementById('stLevel').textContent = st.level || 1;
+    document.getElementById('stTitle').textContent = st.title || '代码萌芽';
+    var pct = Math.max(0, Math.min(1, st.levelProgress || 0));
+    document.getElementById('stLevelFill').style.width = (pct * 100) + '%';
+    document.getElementById('stLevelPct').textContent = Math.round(pct * 100) + '%';
+  }
+
+  function renderXp(s) {
+    var el = document.getElementById('stXp');
+    var to = s.xp || 0;
+    if (lastXp == null) { lastXp = to; el.textContent = to; return; }
+    if (lastXp === to) { el.textContent = to; return; }
+    animateXp(el, lastXp, to);
+    lastXp = to;
+  }
+
+  function animateXp(el, from, to) {
+    var start = performance.now();
+    var dur = 400;
+    function step(now) {
+      var p = Math.min(1, (now - start) / dur);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(from + (to - from) * eased);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+
+  function renderCalendar(st) {
+    var data = st.streakCalendar || [];
+    var days = 30;
+    var arr = [];
+    for (var i = 0; i < days; i++) {
+      arr.push(i < data.length ? !!data[i] : false);
+    }
+    var wd = ['一', '二', '三', '四', '五', '六', '日'];
+    var html = wd.map(function (w) { return '<div class="wd">' + w + '</div>'; }).join('');
+    var streak = 0;
+    for (var j = arr.length - 1; j >= 0; j--) { if (arr[j]) streak++; else break; }
+    arr.forEach(function (on, idx) {
+      var isToday = idx === arr.length - 1;
+      if (on) html += '<div class="day on' + (isToday ? ' today' : '') + '"></div>';
+      else html += '<div class="day off' + (isToday ? ' today' : '') + '"></div>';
+    });
+    document.getElementById('stCal').innerHTML = html;
+  }
+
+  function renderBadges(st) {
+    var badges = st.badges || [];
+    var total = 6;
+    var html = '';
+    for (var i = 0; i < total; i++) {
+      if (i < badges.length) {
+        html += '<div class="badge"><div class="ic-wrap">' + UI.icon('trophy', 20) + '</div><div class="nm">' + UI.esc(badges[i]) + '</div></div>';
+      } else {
+        html += '<div class="badge empty"><div class="ic-wrap">' + UI.icon('lock', 18) + '</div><div class="nm">待解锁</div></div>';
+      }
+    }
+    document.getElementById('stBadges').innerHTML = html;
+  }
+
+  function renderLeague(st) {
+    var lg = st.league || {};
+    var tier = lg.tier || '青铜';
+    document.getElementById('stLeagueTier').textContent = tier + '段位';
+    document.getElementById('stLeagueSub').textContent = '本周排名 #' + (lg.rank || 1);
+    document.getElementById('stLeagueXp').textContent = (lg.weekXp || 0) + ' XP / 周';
+    document.getElementById('stLeagueIcon').innerHTML = UI.icon('shield', 26);
+  }
+
+  onState(state);
+})();
+</script>
