@@ -1,0 +1,23 @@
+{
+  "name": "pygo-v2",
+  "version": "0.1.0",
+  "description": "Python 闯关学习软件 V2（核心层）—— UI 层由外部 AI 产出，经 window.App 对接",
+  "type": "module",
+  "main": "electron/main.cjs",
+  "scripts": {
+    "dev": "python -m http.server 8000",
+    "start": "electron .",
+    "pack": "electron-builder --win",
+    "serve": "npx serve .",
+    "test": "node --test test/*.test.mjs",
+    "test:browser": "node test/cdp-run.mjs",
+    "test:walkthrough": "node test/cdp-walkthrough.mjs",
+    "test:features": "node test/cdp-newfeatures-probe.mjs",
+    "test:content": "node test/verify-content.mjs"
+  },
+  "devDependencies": {
+    "electron": "^43.4.1",
+    "electron-builder": "^26.15.3",
+    "electron-packager": "^17.1.2"
+  }
+}
