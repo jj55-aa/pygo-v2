@@ -1,0 +1,245 @@
+{
+  "lesson": "u11_l3",
+  "title": "反爬与应对",
+  "questions": [
+    {
+      "id": "u11_l3_p1",
+      "type": "choice",
+      "stem": "网站为什么要设置反爬机制（Anti-Crawler）？",
+      "options": [
+        "程序员闲着没事干，专门给爬虫添麻烦",
+        "保护自己的数据不被恶意抓取，也防止大量请求把服务器压垮",
+        "网站讨厌所有访问者，包括正常浏览器用户",
+        "为了淘汰 Python，让大家改用别的语言写爬虫"
+      ],
+      "answer": 1,
+      "hint": "想想宝库塔的守卫为什么要盘查——它怕什么？",
+      "explain": "反爬是网站的自卫：一怕数据被恶意搬走（保护数据），二怕海量请求把服务器挤垮（防攻击）。它不针对正常用户。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "反爬有明确的商业原因（保护数据、保服务器稳定），不是闲着没事。"
+        },
+        {
+          "opt": 2,
+          "why": "网站欢迎正常访问，反爬只针对可疑的自动化请求。"
+        },
+        {
+          "opt": 3,
+          "why": "反爬和语言无关，Python 只是写爬虫常用的语言而已。"
+        }
+      ],
+      "concept": [
+        "反爬",
+        "数据保护"
+      ]
+    },
+    {
+      "id": "u11_l3_p2",
+      "type": "choice",
+      "stem": "下列哪一项是网站常见的反爬手段？",
+      "options": [
+        "要求所有访客先输入手机号才能看网页",
+        "检查请求头里的 User-Agent，看请求是不是来自正常浏览器",
+        "给网页加上花哨的动画特效",
+        "把所有网页内容都换成图片格式"
+      ],
+      "answer": 1,
+      "hint": "守卫看你的「名片」——哪个请求头字段是名片？",
+      "explain": "UA 检测是经典反爬手段：服务器检查 User-Agent 里有没有浏览器的特征，裸奔的爬虫（如 Python-requests）会被识别。频率限制、cookie 校验、验证码也是常见手段。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "网站不会拦所有访客——那会把正常用户也赶走。UA 检测这类手段才是针对自动化爬虫的。"
+        },
+        {
+          "opt": 2,
+          "why": "动画是页面效果，跟反爬没有关系。"
+        },
+        {
+          "opt": 3,
+          "why": "网页仍是 HTML 文本，图片化不是反爬手段；而且这么做会伤害正常用户。"
+        }
+      ],
+      "concept": [
+        "反爬",
+        "User-Agent",
+        "UA检测"
+      ]
+    },
+    {
+      "id": "u11_l3_p3",
+      "type": "judge",
+      "stem": "同一个 IP 在短时间内疯狂请求，网站很可能判定它是爬虫并封掉这个 IP，所以爬虫抓取要限速、别太贪心。",
+      "answer": true,
+      "hint": "守卫会数你一分钟来几次——来得太勤会怎样？",
+      "explain": "频率限制是反爬三件套之一：短时间大量请求会被判定为机器人，触发封 IP。所以礼貌爬虫要限速（time.sleep），降低对服务器的压力。",
+      "concept": [
+        "反爬",
+        "频率限制",
+        "封IP"
+      ]
+    },
+    {
+      "id": "u11_l3_p4",
+      "type": "fill",
+      "stem": "爬虫要伪装成浏览器，需要在 headers（请求头）里设置一个字段，告诉服务器「我是浏览器用户」。这个字段的英文名是？（形如 User-XXX，也可填缩写 UA）",
+      "answer": [
+        "User-Agent",
+        "User Agent",
+        "useragent",
+        "UA",
+        "用户代理",
+        "用户代理字符串"
+      ],
+      "hint": "它是「用户代理」的英文——守卫看的名片就是这个字段。",
+      "explain": "User-Agent（用户代理，缩写 UA）是请求头里「我是谁」的字段，爬虫设置正常的浏览器 UA 来通过 UA 检测。注意字段名用连字符：\"User-Agent\"。",
+      "traps": [
+        {
+          "wrong": "user_agent",
+          "why": "headers 的字段名是带连字符的 \"User-Agent\"，不是下划线写法 user_agent——写错键名服务器根本查不到。"
+        },
+        {
+          "wrong": "Cookie",
+          "why": "Cookie 是登录凭证，不是声明身份的字段。伪装浏览器靠的是 User-Agent。"
+        }
+      ],
+      "concept": [
+        "User-Agent",
+        "headers",
+        "伪装UA"
+      ]
+    },
+    {
+      "id": "u11_l3_p5",
+      "type": "fill",
+      "stem": "服务器发给浏览器的一串 key=value 文本，记录登录状态，之后每次请求浏览器都会带上它，让服务器认人、免去重复登录。它叫什么？（填英文）",
+      "answer": [
+        "cookie",
+        "cookies",
+        "饼干",
+        "登录凭证",
+        "通行证"
+      ],
+      "hint": "它的英文单词也是一种小点心……守卫发给你的「通行证」就是它。",
+      "explain": "cookie 是服务器下发的一串 key=value 文本（如 session=abc123），相当于登录凭证/通行证：带上它，服务器就知道你是谁，不用重复登录。",
+      "traps": [
+        {
+          "wrong": "session",
+          "why": "session 是 cookie 里常见的一个字段名（会话标识），cookie 本身才是那串凭证文本。"
+        },
+        {
+          "wrong": "token",
+          "why": "token 是另一种令牌机制，本课学的登录凭证叫 cookie。"
+        }
+      ],
+      "concept": [
+        "cookie",
+        "登录态"
+      ]
+    },
+    {
+      "id": "u11_l3_p6",
+      "type": "sort",
+      "stem": "把「礼貌爬虫」的流程按正确顺序排好：先表明身份 → 看访客须知 → 控制频率 → 只抓该抓的 → 开始抓取。",
+      "lines": [
+        "只抓公开允许的数据，不碰不该碰的",
+        "设置真实 User-Agent，表明自己是谁",
+        "查询 robots.txt，看哪些路径允许抓",
+        "开始抓取并保存数据",
+        "限速：每抓一页休息一小会儿"
+      ],
+      "answer": [
+        1,
+        2,
+        4,
+        0,
+        3
+      ],
+      "hint": "第一步先递名片（UA），第二步看「访客须知」（robots.txt），然后限速，再动手抓。",
+      "explain": "先设置 User-Agent 表明身份 → 读 robots.txt 了解允许范围 → 限速（time.sleep）→ 只抓公开允许的数据 → 开始抓取保存。讲规矩的爬虫才能和网站长久相处。",
+      "concept": [
+        "礼貌爬虫",
+        "robots.txt",
+        "限速"
+      ]
+    },
+    {
+      "id": "u11_l3_p7",
+      "type": "code",
+      "stem": "爬虫发请求前，要把模拟的「请求头」文本整理清楚。下面的 input() 会读入 3 行请求头（第 1 行一定是 User-Agent 开头），请找到 `User-Agent:` 那一行，**打印冒号后面的值**（注意去掉前缀和多余空格）。\n\n输入示例：\n```\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nAccept: text/html\nCookie: session=abc123\n```\n期望输出：\n```\nMozilla/5.0 (Windows NT 10.0; Win64; x64)\n```",
+      "code": "# 读入 3 行请求头\nlines = [input(), input(), input()]\n# 在这里补全：遍历 lines，找到以 \"User-Agent:\" 开头的行，打印冒号后的值\n",
+      "testcases": [
+        {
+          "input": "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nAccept: text/html\nCookie: session=abc123",
+          "expected": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
+        },
+        {
+          "input": "User-Agent: PyGoBot/1.0\nAccept: application/json\nCookie: session=xyz789",
+          "expected": "PyGoBot/1.0"
+        }
+      ],
+      "hint": "想想：怎么判断一行是不是以 User-Agent: 开头（提示：startswith）？找到后怎么只取冒号后面的部分、去掉两端空白？",
+      "explain": "遍历 lines：if line.startswith(\"User-Agent:\"): print(line.split(\":\", 1)[1].strip())。split(\":\", 1) 只在第一个冒号处切一刀，值再 strip() 掉多余空格。",
+      "concept": [
+        "请求头",
+        "User-Agent",
+        "字符串解析"
+      ]
+    },
+    {
+      "id": "u11_l3_p8",
+      "type": "code",
+      "stem": "守卫发给你一行 cookie 文本（用 `;` 分隔多组 key=value）。请解析出其中 **`theme` 的值**并打印。\n\n输入示例：\n```\nsession=abc123; theme=dark; uid=1024\n```\n期望输出：\n```\ndark\n```\n提示：先按 `;` 拆分，每组再按 `=` 切出键和值，记得 `strip()` 掉空格。",
+      "code": "# 读入一行 cookie 文本\ncookie = input()\n# 在这里补全：按 \";\" 拆分，找到键为 theme 的键值对，打印它的值\n",
+      "testcases": [
+        {
+          "input": "session=abc123; theme=dark; uid=1024",
+          "expected": "dark"
+        },
+        {
+          "input": "uid=1; theme=light",
+          "expected": "light"
+        }
+      ],
+      "hint": "想想：怎么把 cookie 按 ; 拆成一组组？每组怎么再按 = 切出键和值（记得 strip）？怎么判断键是不是 theme？",
+      "explain": "cookie.split(\";\") 拆出每个键值对；part.strip() 去掉空格；split(\"=\", 1) 得到键和值；if key == \"theme\" 时打印 value。",
+      "concept": [
+        "cookie",
+        "字符串解析"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u11_l3_quest",
+    "title": "剧情任务：闯过峡谷守卫的访客登记",
+    "story": "你的网第一次伸向蜘蛛峡谷深处的「宝库塔」，却被守卫拦住了。守卫不是不讲理——它怕来者不善，把塔里的珍贵资料搬空，或者用海量请求把塔挤垮。守卫递来一张「访客登记」：想进塔，先证明你是正经游客——出示身份（User-Agent）和通行证（Cookie 里的 session）。你抄下浏览器的请求头，现在要用 Python 把它解析出来，让守卫看到你的「名片」和「凭证」。",
+    "stem": "读入 3 行「访客登记」文本（第 1 行是 User-Agent，第 2 行是 Accept，第 3 行是 Cookie）。请解析并**分两行打印**：\n\n1. 第 1 行：User-Agent 的值（去掉 `User-Agent: ` 前缀）\n2. 第 2 行：Cookie 中 `session=xxx` 的值\n\n输入示例：\n```\nUser-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nAccept: text/html\nCookie: session=spider2024; theme=dark\n```\n期望输出：\n```\nMozilla/5.0 (Windows NT 10.0; Win64; x64)\nspider2024\n```",
+    "code": "# 峡谷守卫的「访客登记」文本，共 3 行：User-Agent / Accept / Cookie\nlines = [input(), input(), input()]\n\n# 任务：\n# 1. 遍历 lines，找到以 \"User-Agent:\" 开头的行，取出冒号后的值\n# 2. 找到以 \"Cookie:\" 开头的行，按 \";\" 拆分出 session=xxx，取出 xxx\n# 3. 先打印 User-Agent 的值，再打印 session 的值（各占一行）\n",
+    "testcases": [
+      {
+        "input": "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nAccept: text/html\nCookie: session=spider2024; theme=dark",
+        "expected": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)\nspider2024"
+      },
+      {
+        "input": "User-Agent: PyGo-Spider/2.0\nAccept: application/json\nCookie: theme=light; session=pass123",
+        "expected": "PyGo-Spider/2.0\npass123"
+      },
+      {
+        "input": "User-Agent: Chrome/120.0\nAccept: */*\nCookie: session=guest99",
+        "expected": "Chrome/120.0\nguest99"
+      }
+    ],
+    "hint": "想想：怎么判断每行是什么字段（提示：startswith）？UA 行怎么取冒号后的值？Cookie 行怎么按 ; 和 = 拆出 session 的值？",
+    "explain": "遍历 3 行：User-Agent 行用 split(\":\", 1) 取出值；Cookie 行先 split(\":\", 1) 取出 cookie 文本，再按 \";\" 拆分、按 \"=\" 切键值，找到 session 就打印它的值。守卫核对完名片和通行证，朝你点了点头——「正经游客，请进！」",
+    "concept": [
+      "反爬",
+      "User-Agent",
+      "cookie",
+      "请求头"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通过了蜘蛛峡谷守卫的「访客登记」🎉\n\n**这一课你学会了**：\n1. 网站为什么反爬：保护数据不被恶意抓取，防止海量请求把服务器压垮\n2. 反爬三件套：UA 检测（你是谁）、频率限制（你是不是来得太勤）、cookie 校验（你有没有凭证），外加验证码\n3. 应对之道：在 headers 里伪装正常浏览器的 User-Agent、携带正确 cookie、限速（time.sleep）礼貌爬取\n4. 爬虫礼仪与边界：先读 robots.txt（访客须知）、只抓公开允许的数据、不碰隐私和付费内容——能爬到不等于该爬，越界可能违法\n\n**剧情推进**：守卫核对了你的名片和通行证，让开了路——但宝库塔里的「数据瀑布」信息量大得惊人，一页一页地抓太慢了。下一站：并发抓取，让多只小蜘蛛同时开工，把数据瀑布整个搬回来！"
+  }
+}
