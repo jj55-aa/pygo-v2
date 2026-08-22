@@ -1,0 +1,138 @@
+{
+  "lesson": "p3_l2",
+  "title": "统计与汇总",
+  "questions": [
+    {
+      "id": "p3_l2_p1",
+      "type": "choice",
+      "stem": "数据工坊收到一份工资表：salaries = [8000, 9000, 8500]。工头想知道员工的「平均工资」，下面哪个写法正确？",
+      "options": [
+        "sum(salaries) / len(salaries)",
+        "sum(salaries)",
+        "max(salaries) - min(salaries)",
+        "sorted(salaries)[0]"
+      ],
+      "answer": 0,
+      "hint": "想想统计三件套：平均 = 总和 ÷ 个数。",
+      "explain": "平均工资 = 总和 ÷ 人数：sum(salaries) / len(salaries) = 25500 / 3 = 8500.0。",
+      "traps": [
+        { "opt": 1, "why": "sum() 算的是总和（25500），不是平均——平均还要除以个数 len()。" },
+        { "opt": 2, "why": "max - min 是「最大值减最小值」（极差），不是平均工资。" },
+        { "opt": 3, "why": "sorted()[0] 取的是排序后的第一个元素（最小值 8000），不是平均。" }
+      ],
+      "concept": ["求和", "计数", "平均值", "sum", "len"]
+    },
+    {
+      "id": "p3_l2_p2",
+      "type": "choice",
+      "stem": "分组统计时，第一次遇到新部门「技术部」，账本 total 里还没有这个键。下面哪句能安全地把工资累加进去、不报 KeyError？",
+      "options": [
+        "total[dept] = total[dept] + wage",
+        "total[dept] = total.get(dept, 0) + wage",
+        "total[dept] += wage",
+        "total[dept] = wage"
+      ],
+      "answer": 1,
+      "hint": "键不存在时要给它一个初始值 0——想想账本的「保险丝」get。",
+      "explain": "total.get(dept, 0)：键存在返回当前合计，键不存在返回 0。第一次遇到新部门就从 0 开始加，不报 KeyError。",
+      "traps": [
+        { "opt": 0, "why": "键还不存在时 total[dept] 取不到值，直接报 KeyError。" },
+        { "opt": 2, "why": "+= 等价于第 1 个选项：第一次遇到新部门时同样会报 KeyError。" },
+        { "opt": 3, "why": "这是「覆盖」不是「累加」：同一部门后来的工资会把前面的顶掉，合计就错了。" }
+      ],
+      "concept": ["分组统计", "字典", "dict.get", "KeyError"]
+    },
+    {
+      "id": "p3_l2_p3",
+      "type": "judge",
+      "stem": "分组统计时，如果部门名有的行带空格（\"技术部 \"）、有的行不带（\"技术部\"），不 strip 直接当字典键，会把同一个部门统计成两堆，结果出错。",
+      "answer": true,
+      "hint": "\"技术部 \" 和 \"技术部\" 在字典里是同一个键吗？",
+      "explain": "字典的键讲究「精确匹配」：\"技术部 \" 和 \"技术部\" 是两个不同的键。分组键不 strip，同一个部门会被当成两个组，统计结果就错了。",
+      "concept": ["分组统计", "strip", "字典"]
+    },
+    {
+      "id": "p3_l2_p4",
+      "type": "fill",
+      "stem": "按部门分组累加时，第一次遇到新部门要从 0 开始加。字典的哪个方法能在「键不存在时返回默认值」？写法形如 total.xxx(dept, 0)。（填英文方法名）",
+      "answer": ["get", "get()", "get方法", "dict.get", "get取值", "setdefault", "setdefault()"],
+      "hint": "账本的「保险丝」：键存在返回它的值，键不存在返回默认值。",
+      "explain": "dict.get(键, 默认值)：键存在返回它的值，键不存在返回默认值——分组累加的标准初始化写法：total[dept] = total.get(dept, 0) + wage。",
+      "traps": [
+        { "wrong": "setdefault", "why": "setdefault 也能设默认值，但分组累加的标准写法是 get：total[dept] = total.get(dept, 0) + wage。" },
+        { "wrong": "items", "why": "items() 是遍历字典的「键值对」，不是取值时带默认值的方法。" }
+      ],
+      "concept": ["dict.get", "分组统计", "字典"]
+    },
+    {
+      "id": "p3_l2_p5",
+      "type": "fill",
+      "stem": "一组工资 [8000, 9000, 8500] 想算平均工资，公式是 sum(salaries) / ____。空缺的英文内置函数名是什么？",
+      "answer": ["len", "len()", "长度", "个数", "数量", "元素个数"],
+      "hint": "平均 = 总和 ÷ 个数。数一数列表里有多少个元素，用哪个内置函数？",
+      "explain": "len() 返回序列的长度（元素个数）：sum(salaries) / len(salaries) = 25500 / 3 = 8500.0。",
+      "traps": [
+        { "wrong": "count", "why": "count 不是统计元素个数的内置函数名；数个数用 len()。" },
+        { "wrong": "size", "why": "size 是 numpy / pandas 里的用法，Python 内置函数叫 len()。" }
+      ],
+      "concept": ["计数", "len", "平均值"]
+    },
+    {
+      "id": "p3_l2_p6",
+      "type": "debug",
+      "stem": "下面的程序想按部门统计工资合计，但一运行就报 KeyError：第一次遇到新部门时，账本里还没有这个键，代码却直接用它取值了。找出问题并修复，让它输出正确结果。",
+      "code": "n = int(input())\ntotal = {}\nfor i in range(n):\n    line = input().split(\",\")\n    dept = line[0].strip()\n    wage = int(line[1])\n    total[dept] = total[dept] + wage\nfor dept in sorted(total):\n    print(dept, total[dept])",
+      "testcases": [
+        { "input": "2\n技术部,8000\n市场部,9000", "expected": "市场部 9000\n技术部 8000" },
+        { "input": "3\n技术部,8000\n技术部,8500\n行政部,6000", "expected": "技术部 16500\n行政部 6000" }
+      ],
+      "hint": "报错 KeyError: '技术部'——第一次遇到新部门时字典里还没有这个键，直接取值就崩。字典的哪个方法能在键不存在时返回默认值？给它初始值 0 再累加。",
+      "explain": "total[dept] = total[dept] + wage 在键不存在时直接取值，会报 KeyError。改成 total[dept] = total.get(dept, 0) + wage：键不存在时从 0 开始加，就对了。",
+      "concept": ["调试", "dict.get", "分组统计", "KeyError"]
+    },
+    {
+      "id": "p3_l2_p7",
+      "type": "code",
+      "stem": "数据工坊的工资表来了！先读入记录条数 n，再读入 n 行「部门,工资」（英文逗号分隔），按部门分组统计工资合计，最后按部门名排序，打印「部门 合计」。\n\n期望输出示例：\n```\n市场部 9000\n技术部 16500\n行政部 6000\n```",
+      "code": "# 数据工坊：按部门汇总工资\nn = int(input())        # 记录条数\ntotal = {}              # 部门 → 工资合计\n\nfor i in range(n):\n    line = input().split(\",\")\n    dept = line[0].strip()\n    wage = int(line[1])\n    # TODO: 用 dict.get 累加，键不存在时从 0 开始\n    pass\n\n# 按部门名排序，打印「部门 合计」\nfor dept in sorted(total):\n    print(dept, total[dept])",
+      "testcases": [
+        { "input": "4\n技术部,8000\n市场部,9000\n技术部,8500\n行政部,6000", "expected": "市场部 9000\n技术部 16500\n行政部 6000" },
+        { "input": "5\n销售部,12000\n技术部,8000\n销售部,9000\n财务部,7000\n技术部,8500", "expected": "技术部 16500\n财务部 7000\n销售部 21000" }
+      ],
+      "hint": "分组累加的标准写法：键不存在时从 0 开始加——想想 dict 的哪个方法能带默认值？把累加这一行补进 TODO。",
+      "explain": "分组账本三步走：split 拆行 → dept.strip() 清理分组键 → total[dept] = total.get(dept, 0) + wage 累加。最后 sorted(total) 按部门名排序，打印「部门 合计」。",
+      "concept": ["分组统计", "求和", "dict.get", "sorted"]
+    },
+    {
+      "id": "p3_l2_p8",
+      "type": "code",
+      "stem": "这回工头要的是「平均工资」：先读入记录条数 n，再读入 n 行「部门,工资」，按部门分组统计「工资合计」和「人数」，算出平均工资（合计 ÷ 人数），按部门名排序，打印「部门 平均工资」。\n\n提示：平均值用 money[dept] / count[dept] 计算，结果可能是小数（如 8500.0）。",
+      "code": "# 数据工坊：按部门统计平均工资\nn = int(input())\nmoney = {}    # 部门 → 工资合计\ncount = {}    # 部门 → 人数\n\nfor i in range(n):\n    line = input().split(\",\")\n    dept = line[0].strip()\n    wage = int(line[1])\n    # TODO 1: money[dept] 累加工资（键不存在从 0 开始）\n    # TODO 2: count[dept] 累加人数（键不存在从 0 开始）\n    pass\n\n# 按部门名排序，打印「部门 平均工资」\nfor dept in sorted(money):\n    avg = money[dept] / count[dept]\n    print(dept, avg)",
+      "testcases": [
+        { "input": "4\n技术部,8000\n技术部,9000\n市场部,7000\n行政部,5000", "expected": "市场部 7000.0\n技术部 8500.0\n行政部 5000.0" },
+        { "input": "3\n研发部,10000\n研发部,12000\n运营部,8000", "expected": "研发部 11000.0\n运营部 8000.0" }
+      ],
+      "hint": "两个账本各累各的：money 累加工资、count 累加人数。键不存在时都要从 0 开始——用什么方法带默认值？",
+      "explain": "平均 = 合计 ÷ 人数：money 账本累加工资，count 账本每次 +1 累加人数，最后 avg = money[dept] / count[dept] 就是平均工资。",
+      "concept": ["分组统计", "平均值", "计数", "dict.get"]
+    }
+  ],
+  "quest": {
+    "id": "p3_l2_quest",
+    "title": "剧情任务：销售报表按品类汇总",
+    "story": "你来到数据工坊，主管搬来一摞销售报表：「这些单子乱得很，我要按『品类』看每个品类卖了多少钱，还要知道总共卖了多少。给你三分钟，交出一张汇总表！」你撸起袖子：读行数、建账本、分组累加、按金额降序排榜、最后算总账——统计与汇总，正式开工！",
+    "stem": "把销售报表按「品类」汇总：\n\n1. 先读入报表行数 n\n2. 再读入 n 行「品类,金额」（英文逗号分隔，金额是整数）\n3. 按品类分组求和，得到每个品类的金额合计\n4. 按金额「降序」打印「品类 金额」\n5. 最后单独打印一行：所有品类金额的总和\n\n期望输出示例：\n```\n饮料 2100\n日用品 2000\n零食 1800\n5900\n```",
+    "code": "# 数据工坊：把销售报表按「品类」汇总\nn = int(input())        # 报表行数\nsales = {}              # 品类 → 金额合计\n\nfor i in range(n):\n    line = input().split(\",\")   # 拆成 [品类, 金额]\n    cat = line[0].strip()        # 品类名（清理空格）\n    amount = int(line[1])        # 金额转数字\n    # TODO 1: 累加：sales[cat] = sales.get(cat, 0) + amount\n    pass\n\n# TODO 2: 按金额降序打印「品类 金额」\n# 提示：for cat, amt in sorted(sales.items(), key=lambda x: x[1], reverse=True):\n#           print(cat, amt)\n\n# TODO 3: 打印总金额（提示：sum(sales.values())）\n",
+    "testcases": [
+      { "input": "5\n零食,1000\n饮料,1500\n零食,800\n日用品,2000\n饮料,600", "expected": "饮料 2100\n日用品 2000\n零食 1800\n5900" },
+      { "input": "4\n电子,3000\n服饰,1200\n电子,1500\n食品,900", "expected": "电子 4500\n服饰 1200\n食品 900\n6600" },
+      { "input": "3\n水果,300\n水果,200\n文具,100", "expected": "水果 500\n文具 100\n600" }
+    ],
+    "hint": "三步：累加（键不存在从 0 开始）、按金额降序排榜（key 取每个品类的金额）、算总账（所有值的和用什么函数？）。",
+    "explain": "分组账本 sales 把每个品类的金额累加；sorted(sales.items(), key=lambda x: x[1], reverse=True) 按金额降序排列；sum(sales.values()) 是所有品类的总账。汇总表交工，主管点头：「这就是我要的报表！」",
+    "concept": ["分组统计", "求和", "排序", "dict.get", "sum"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「统计与汇总」一课 🎉\n\n**这一课你学会了**：\n1. 统计三件套：求和 sum()、计数 len()、平均 sum() / len()——统计前先把数据转成数字\n2. 分组统计：字典当「分组账本」，键是部门/品类，值是累加结果；键不存在时用 total.get(dept, 0) 从 0 开始\n3. 极值与排序：max() / min() 找最大最小，sorted() 排序（reverse=True 变降序）；字典默认按键排，按值排要 key=lambda x: x[1]\n4. pandas groupby：df.groupby(\"部门\")[\"工资\"].sum() 一键分组聚合，和字典模拟是同一个思想——先归堆，再统计\n\n**剧情推进**：数据工坊的报表汇总交工了，主管满意地点头。但他说：「拆分、拼接、统计你都练过了，是时候独立接一单了——下一站：独立挑战，一个人处理一整份销售报表！」"
+  }
+}
