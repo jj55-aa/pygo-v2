@@ -1,0 +1,154 @@
+{
+  "lesson": "w3_l5",
+  "title": "独立挑战",
+  "questions": [
+    {
+      "id": "w3_l5_p1",
+      "type": "choice",
+      "stem": "建造工地上，AI 开工搭的第一个东西是「项目骨架」。一个完整的项目骨架由哪**四大部分**组成？",
+      "options": [
+        "前端、后端、数据库、工具（Git/配置）",
+        "页面、按钮、图片、动画",
+        "需求、计划、文档、测试",
+        "函数、类、变量、循环"
+      ],
+      "answer": 0,
+      "hint": "想想工地四件套：门面（前端）、账房（后端）、仓库（数据库）、工具间（Git/配置）——这是 w3 一路学下来的四大件。",
+      "explain": "项目骨架四大件 = 前端（页面文件）+ 后端（业务处理）+ 数据库（表结构）+ 工具（Git/配置）。AI 开工先搭骨架，把四大件各归各的目录，项目才站得稳。",
+      "traps": [
+        { "opt": 1, "why": "页面、按钮、图片、动画都是「前端」里的具体东西——它们只是四大件中的第一件，不是四大部分。" },
+        { "opt": 2, "why": "需求、计划、文档、测试是 w2 立项阶段的东西——立项讲的是开工前的三件套，骨架讲的是开工后的目录结构。" },
+        { "opt": 3, "why": "函数、类、变量、循环是 Python 语法零件——骨架说的是「目录怎么分」，不是「代码怎么写」。" }
+      ],
+      "concept": ["项目骨架", "四大件", "开发认知"]
+    },
+    {
+      "id": "w3_l5_p2",
+      "type": "choice",
+      "stem": "项目清单里躺着四个文件：index.html、style.css、app.py、data.sql。按文件类型归类，属于**前端**的是哪两个？",
+      "options": [
+        "index.html 和 style.css（html/css 是页面文件）",
+        "app.py 和 data.sql（代码和数据都归后端）",
+        "index.html 和 app.py（带名字的都算前端）",
+        "data.sql（数据库文件放最前面就是前端）"
+      ],
+      "answer": 0,
+      "hint": "前端是「门面」：页面、样式、交互——想想 html/css/js 这三个扩展名归谁。",
+      "explain": "按扩展名归类：.html/.css/.js → 前端；.py → 后端；.sql → 数据库。index.html 和 style.css 是页面和样式，属前端；app.py 是后端逻辑；data.sql 是数据库表结构。",
+      "traps": [
+        { "opt": 1, "why": "app.py 和 data.sql 确实都是「后端那一侧」的，但题目问的是前端——后端和数据库不是前端。" },
+        { "opt": 2, "why": "「带名字」不是分类依据——归类看扩展名和说明关键词，不看文件名长短。" },
+        { "opt": 3, "why": "数据库文件是「仓库」不是「门面」，data.sql 归数据库，跟它在清单里的位置没关系。" }
+      ],
+      "concept": ["文件归类", "扩展名", "前端"]
+    },
+    {
+      "id": "w3_l5_p3",
+      "type": "judge",
+      "stem": "判断：项目骨架里文件越多，说明项目功能越完整；文件少的项目一定很简陋。",
+      "answer": false,
+      "hint": "想想骨架是「结构」还是「功能」——文件多能不能代表质量？",
+      "explain": "骨架是结构不是功能：一个 30 个文件的乱骨架（文件全堆在根目录、命名混乱）可能不如 8 个文件、四大件分明的清爽骨架。看项目好坏要看结构清不清楚（四大件齐不齐、归类对不对），不是数文件个数。",
+      "concept": ["项目骨架", "结构", "综合验收"]
+    },
+    {
+      "id": "w3_l5_p4",
+      "type": "fill",
+      "stem": "按关键词归类：一行文件说明里含「表」或「sql」，它应该归到四大件中的哪一类？（填中文类别名）",
+      "answer": ["数据库", "数据库类"],
+      "hint": "sql 是数据库的查询语言，「表」是数据库里存数据的地方——想想它俩共同指向哪一大件。",
+      "explain": "「sql / 表 / 数据」是数据库类关键词：schema.sql、users.sql、xx表 都归数据库（仓库）。和前端（html/css/js/页面）、后端（py/接口/处理）、工具（git/配置）是平级的四类。",
+      "traps": [
+        { "wrong": "后端", "why": "后端管业务处理（py/接口/处理），存数据的仓库是数据库——「表」和「sql」说的是数据存在哪，不是谁来处理。" },
+        { "wrong": "工具", "why": "工具类关键词是 git/配置（.gitignore、README.md），跟「表」「sql」没关系。" }
+      ],
+      "concept": ["文件归类", "数据库", "关键词"]
+    },
+    {
+      "id": "w3_l5_p5",
+      "type": "debug",
+      "stem": "下面的程序统计清单里**前端**文件的数量（说明里含 html/css/js/页面 任意一个关键词就算），但输出总是不对：不含前端关键词的文件也被数了进去。找出 bug 并修复，让程序正确输出「前端文件N个」。",
+      "code": "import sys\n\ntext = sys.stdin.read()\nfront_words = [\"html\", \"css\", \"js\", \"页面\"]\nfront = 0\nfor line in text.strip().split(\"\\n\"):\n    if not line:\n        continue\n    is_front = False\n    for w in front_words:\n        if w not in line:\n            is_front = True\n    if is_front:\n        front += 1\nprint(\"前端文件%d个\" % front)",
+      "testcases": [
+        { "input": "index.html,首页页面\napp.py,处理接口\nstyle.css,页面样式", "expected": "前端文件2个" },
+        { "input": "app.py,后端接口处理\nserver.py,接口服务", "expected": "前端文件0个" },
+        { "input": "app.py,接口处理\nindex.html,首页", "expected": "前端文件1个" }
+      ],
+      "hint": "文件里「出现了」前端关键词才算前端文件——看看 `if w not in line: is_front = True` 是不是把条件写反了。",
+      "explain": "bug 在 `if w not in line: is_front = True`：关键词「没出现」反而置 True，把所有不含前端关键词的文件（比如 app.py）都数成了前端。修复：改成 `if w in line: is_front = True`——说明里含 html/css/js/页面 任意一个才算前端文件。",
+      "concept": ["文件归类", "关键词统计", "调试"]
+    },
+    {
+      "id": "w3_l5_p6",
+      "type": "code",
+      "stem": "读入一份「项目文件清单」（多行，每行「文件名,说明」），统计**前端**文件数量：说明里含 html/css/js/页面 任意一个关键词就算一个。打印「前端文件N个」。\n\n期望输出（输入 index.html,首页 / style.css,样式 / login.js,登录 / app.py,处理接口）：\n```\n前端文件3个\n```",
+      "code": "import sys\n\n# 读入「项目文件清单」，每行一条「文件名,说明」\ntext = sys.stdin.read()\nfront_words = [\"html\", \"css\", \"js\", \"页面\"]\n\nfront = 0\nfor line in text.strip().split(\"\\n\"):\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 说明里含 html/css/js/页面 任意一个关键词 → front += 1（命中一个就 break，避免同一文件重复计数）\n    pass\n\nprint(\"前端文件%d个\" % front)",
+      "testcases": [
+        { "input": "index.html,首页\nstyle.css,样式\nlogin.js,登录\napp.py,处理接口", "expected": "前端文件3个" },
+        { "input": "server.py,接口服务\nmain.py,业务逻辑", "expected": "前端文件0个" },
+        { "input": "index.html,首页", "expected": "前端文件1个" }
+      ],
+      "hint": "怎么逐个检查前端关键词？命中一个就够——继续查还有意义吗？break 在这里起什么作用？",
+      "explain": "逐行检查：说明里含 html/css/js/页面 任意一个 → front += 1。注意一行里可能同时出现多个关键词，命中一个就 break，保证一行最多算一次。全没命中时 front 保持 0，输出「前端文件0个」——清单里一个页面都没有，说明骨架缺前端。",
+      "concept": ["文件归类", "前端", "关键词统计"]
+    },
+    {
+      "id": "w3_l5_p7",
+      "type": "code",
+      "stem": "读入清单，统计**后端**文件数量：说明里含 py/接口/处理 任意一个关键词就算。打印「后端文件N个」。\n\n期望输出（输入 app.py,订单业务 / api_service,接口服务 / index.html,首页）：\n```\n后端文件2个\n```",
+      "code": "import sys\n\n# 读入「项目文件清单」，每行一条「文件名,说明」\ntext = sys.stdin.read()\nback_words = [\"py\", \"接口\", \"处理\"]\n\nback = 0\nfor line in text.strip().split(\"\\n\"):\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 说明里含 py/接口/处理 任意一个关键词 → back += 1\n    pass\n\nprint(\"后端文件%d个\" % back)",
+      "testcases": [
+        { "input": "app.py,订单业务\napi_service,接口服务\nindex.html,首页", "expected": "后端文件2个" },
+        { "input": "index.html,页面\nstyle.css,样式", "expected": "后端文件0个" },
+        { "input": "main.py,主程序入口", "expected": "后端文件1个" }
+      ],
+      "hint": "和前端判断思路一样：后端关键词怎么逐个判断？「.py 文件」和「接口/处理」分别靠哪个词命中？",
+      "explain": "后端关键词 = py（扩展名）/ 接口 / 处理：`main.py` 含 py 算后端、`api_service,接口服务` 含 接口 算后端、`index.html,页面` 哪个都不含就不算。命中一个就 break，一行只算一次。",
+      "concept": ["文件归类", "后端", "关键词统计"]
+    },
+    {
+      "id": "w3_l5_p8",
+      "type": "code",
+      "stem": "读入清单，检查**工具**类文件：说明里含 git/配置 任意一个关键词就算。只要工具类文件数量 > 0，打印「工具齐全」；一个都没有，打印「缺工具文件」。\n\n期望输出（输入 README.md,项目配置 / .gitignore,git 忽略规则 / index.html,首页）：\n```\n工具齐全\n```",
+      "code": "import sys\n\n# 读入「项目文件清单」，每行一条「文件名,说明」\ntext = sys.stdin.read()\ntool_words = [\"git\", \"配置\"]\n\ntool = 0\nfor line in text.strip().split(\"\\n\"):\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 说明里含 git/配置 任意一个关键词 → tool += 1\n    pass\n\n# TODO: tool > 0 打印「工具齐全」，否则打印「缺工具文件」\npass",
+      "testcases": [
+        { "input": "README.md,项目配置\n.gitignore,git 忽略规则\nindex.html,首页", "expected": "工具齐全" },
+        { "input": "index.html,首页\napp.py,接口服务", "expected": "缺工具文件" }
+      ],
+      "hint": "工具类命中怎么计数？循环后怎么判断「有工具」还是「缺工具」——两种情况分别输出什么？",
+      "explain": "工具类关键词 = git/配置：README.md 含「配置」、.gitignore 含「git」→ 工具齐全；清单里只有页面和接口文件 → 工具数为 0，打印「缺工具文件」。工具（Git/配置）是四大件之一——缺了它，AI 改坏代码就没法回退。",
+      "concept": ["文件归类", "工具", "Git"]
+    }
+  ],
+  "quest": {
+    "id": "w3_l5_quest",
+    "title": "剧情任务：建造工地结业·独立挑战",
+    "story": "建造工地的最后一课，监工把一份「项目文件清单」拍在你面前——那是 AI 刚搭好的整个项目骨架，文件摊了一地：「index.html、style.css 是门面，app.py、api.py 是账房，schema.sql 是仓库，.gitignore、README.md 是工具间。可清单太乱，光靠眼睛数不过来。你的结业大考：把每行『文件名,说明』读进程序，按关键词把文件归到四类——前端（html/css/js/页面）、后端（py/接口/处理）、数据库（sql/表/数据）、工具（git/配置），统计出『前端N 后端N 数据库N 工具N』。认不出来的文件，别硬归类，打一行『未知』告诉监工；清单要是空的，就说句人话『没有数据』。记住你在 w3 学的归类思维——把乱摊子分门别类收拾清楚，正是看懂 AI 项目骨架的第一步。」监工背着手，目光落在工地门口挂着的结业证书上。",
+    "stem": "读入一份「项目文件清单」（多行，每行「文件名,说明」），把每行按关键词归类并统计：\n- 前端：说明里含 html / css / js / 页面 任意一个\n- 后端：说明里含 py / 接口 / 处理 任意一个\n- 数据库：说明里含 sql / 表 / 数据 任意一个\n- 工具：说明里含 git / 配置 任意一个\n- 四类关键词一个都没有 → 打印一行「未知」\n- 处理完全部行后，打印「前端N 后端N 数据库N 工具N」（N 是各类文件数）\n- 空输入（或只有空白）→ 打印「没有数据」，不再打印统计行\n\n关键词按 前端 → 后端 → 数据库 → 工具 的顺序判断，先命中哪个算哪类。",
+    "code": "import sys\n\n# 建造工地结业挑战：读入「项目文件清单」，每行一条「文件名,说明」\ntext = sys.stdin.read()\n\nif not text.strip():\n    print(\"没有数据\")\nelse:\n    front = 0\n    back = 0\n    db = 0\n    tool = 0\n    for line in text.strip().split(\"\\n\"):\n        line = line.strip()\n        if not line:\n            continue\n        # TODO: 按 前端(html/css/js/页面) → 后端(py/接口/处理) → 数据库(sql/表/数据) → 工具(git/配置) 的顺序判断\n        # 命中哪类就对应计数 +1；四类都不含 → 打印「未知」\n        pass\n    # TODO: 打印「前端N 后端N 数据库N 工具N」\n    pass",
+    "testcases": [
+      {
+        "input": "index.html,首页页面\napp.py,处理订单接口\nusers.sql,用户数据表\n.gitignore,git 忽略配置",
+        "expected": "前端1 后端1 数据库1 工具1"
+      },
+      {
+        "input": "login.js,登录页面\nserver.py,接口服务\norders.sql,订单表\nunknown.dat,临时文件",
+        "expected": "未知\n前端1 后端1 数据库1 工具0"
+      },
+      {
+        "input": "",
+        "expected": "没有数据"
+      },
+      {
+        "input": "admin.py,后台页面管理\n\napi.py,处理订单",
+        "expected": "前端1 后端1 数据库0 工具0"
+      }
+    ],
+    "hint": "空输入先兜底。逐行判断这一行属于哪一类——四组关键词按什么顺序检查？一行同时命中多类时算哪类？每类命中怎么计数？最后一行按什么格式输出四个数？",
+    "explain": "这就是「归类思维」的代码化：一行「文件名,说明」按 前端 → 后端 → 数据库 → 工具 的顺序查关键词，先命中哪个就归哪类（admin.py,后台页面管理 含 py 和 页面，先查前端命中 页面，归前端）。四类都不含的 unknown.dat 打印「未知」，不硬归类。最后把四类计数拼成「前端N 后端N 数据库N 工具N」输出。空输入用 if not text.strip() 兜底打印「没有数据」。整套下来，乱糟糟的项目文件清单被收拾成一张清晰的分类统计表——这正是看懂 AI 写出的项目骨架的第一步。",
+    "concept": ["文件归类", "归类思维", "关键词统计", "综合实战", "空输入兜底"]
+  },
+  "summary": {
+    "body": "恭喜！你通过了建造工地的独立挑战，正式结业 🎉\n\n**这一课你打通了「开发认知」的完整套路**：\n1. **项目骨架全景**：一个完整项目 = 前端（页面）+ 后端（业务处理）+ 数据库（存数据）+ 工具（Git/配置）。AI 开工第一件事就是搭骨架——四大件齐全，项目才站得稳\n2. **文件归类**：按扩展名（html/css/js → 前端、py → 后端、sql → 数据库）或关键词（接口/处理、表/数据、git/配置）给文件分类——见到陌生文件，先归类再细看；归类要定顺序，别硬归\n3. **从骨架看项目**：先看目录整体结构（四大件在不在），再深入入口文件和业务逻辑——目录是地图，逻辑是房间，先地图后房间\n4. **综合验收**：四大件齐不齐、归类对不对、定位快不快——三项都过，骨架健康，才敢让 AI 继续写功能\n\n**🛠️ 建造工地结业彩蛋！** 从 w3_l1 前端骨架、w3_l2 后端业务、w3_l3 数据库设计、w3_l4 Git 与协作，到这一课的独立挑战——**w3 完成：你能看懂 AI 写的项目骨架了！** 拿到任何 AI 生成的工程，先看目录、再分文件、最后读逻辑，心里永远有一张「四大件」地图。工地监工把结业证书递到你手里：「骨架你都会看了，下一步，把它送上发射台！」\n\n下一站：**发射台（w4）——部署上线**。骨架看得懂不算完，代码写好不算完——部署上线才是见真章。带着你的项目骨架，去发射台把它真正跑起来。"
+  }
+}
