@@ -1,0 +1,144 @@
+{
+  "lesson": "u10_l2",
+  "title": "Word 与 PDF",
+  "questions": [
+    {
+      "id": "u10_l2_p1",
+      "type": "choice",
+      "stem": "想用 Python 读写 Word（.docx）文档，应该安装并使用哪个库？",
+      "options": [
+        "python-docx（导入语句：from docx import Document）",
+        "openpyxl（导入语句：from openpyxl import Workbook）",
+        "requests（导入语句：import requests）",
+        "pdfplumber（导入语句：import pdfplumber）"
+      ],
+      "answer": 0,
+      "hint": "回忆概念卡 1：哪个库负责 .docx 文档？",
+      "explain": "python-docx 负责读写 Word 的 .docx 文件，导入语句是 from docx import Document（注意包名和导入名不一样）。",
+      "traps": [
+        { "opt": 1, "why": "openpyxl 是处理 Excel 表格（.xlsx）的库，不是 Word。" },
+        { "opt": 2, "why": "requests 是用来发网络请求的库，跟文档处理没关系。" },
+        { "opt": 3, "why": "pdfplumber 是处理 PDF 的库；Word 文档要用 python-docx。" }
+      ],
+      "concept": ["python-docx", "Word", "第三方库"]
+    },
+    {
+      "id": "u10_l2_p2",
+      "type": "choice",
+      "stem": "为什么「从 PDF 里提取文字」常常比读 Word 文档麻烦？",
+      "options": [
+        "PDF 是版式格式：文字是「印在页面位置上的字块」，提取出来可能乱序、被拆碎",
+        "PDF 文件体积通常比 Word 大很多，Python 读不动大文件",
+        "PDF 只能用看图软件打开，程序完全无法读取里面的内容",
+        "PDF 里面根本没有文字，全是高清图片，永远提取不到字"
+      ],
+      "answer": 0,
+      "hint": "PDF 像「打印好的纸」——它记录的是什么？",
+      "explain": "PDF 按版式（layout）存数据：记录每个字符印在哪个位置，而不是一段连续文本，所以提取可能乱序/拆碎；扫描版还要先 OCR。",
+      "traps": [
+        { "opt": 1, "why": "文件大小与能否读取无关，Python 读 PDF 毫无问题。" },
+        { "opt": 2, "why": "程序当然能读 PDF——pdfplumber、PyMuPDF 等库就是干这个的。" },
+        { "opt": 3, "why": "只有扫描版 PDF（内容是图片、没有文字层）才提不到字，普通 PDF 有文字层。" }
+      ],
+      "concept": ["PDF", "版式", "文本提取"]
+    },
+    {
+      "id": "u10_l2_p3",
+      "type": "judge",
+      "stem": "扫描版 PDF（内容其实是一张张图片）直接用 pdfplumber 提取文字，通常什么也提不到，需要先做 OCR 文字识别。",
+      "answer": true,
+      "hint": "扫描件里有没有「文字层」？",
+      "explain": "扫描版 PDF 是图片、没有文字层，get_text() 返回空字符串；要先 OCR（文字识别）把图片变成文字才能提取。",
+      "concept": ["PDF", "OCR", "文本提取"]
+    },
+    {
+      "id": "u10_l2_p4",
+      "type": "fill",
+      "stem": "字符串方法 str.count 能统计某词出现次数。「加班加班不加班」这个字符串里，「加班」出现了 ____ 次（填数字）。",
+      "answer": ["3", "三", "叁"],
+      "hint": "注意「不加班」这三个字里也藏着一个「加班」——数的时候别漏了它。",
+      "explain": "「加班加班不加班」= 加班 + 加班 + 不加班，共 3 个「加班」；text.count(\"加班\") 返回 3。",
+      "traps": [
+        { "wrong": "2", "why": "别忘了「不加班」这三个字里也含一个「加班」！" },
+        { "wrong": "1", "why": "两个「加班」连在一起是两处，不是一处。" }
+      ],
+      "concept": ["str.count", "字符串", "文本统计"]
+    },
+    {
+      "id": "u10_l2_p5",
+      "type": "fill",
+      "stem": "PDF 记录的是每个字符「印在纸上的位置」，而不是连续文本——这种格式叫 ____（layout）格式。",
+      "answer": ["版式", "版式格式", "排版格式", "排版", "版面", "layout"],
+      "hint": "「印好就不变、跨设备显示一致」——这个词在概念卡 3 里出现过。",
+      "explain": "PDF 是版式（layout）格式：文字按位置存放，所以提取可能乱序；这也是它「打开容易、修改难」的原因。",
+      "traps": [
+        { "wrong": "文本", "why": "PDF 恰恰不是按连续文本存的，而是按位置（版式）存的。" },
+        { "wrong": "图片", "why": "普通 PDF 有文字层不是图片，扫描版才近似图片；格式术语是「版式」。" }
+      ],
+      "concept": ["PDF", "版式"]
+    },
+    {
+      "id": "u10_l2_p6",
+      "type": "sort",
+      "stem": "把下面的代码行排成正确的顺序，构成「从 PDF 提取文字并统计关键词」的完整流程。（这是概念排序：真机才能跑 PyMuPDF，判题环境只排顺序）",
+      "lines": [
+        "print(text.count(\"加班\"))",
+        "doc = fitz.open(\"排班表.pdf\")",
+        "text = \"\"",
+        "text += page.get_text()",
+        "for page in doc:"
+      ],
+      "answer": [2, 1, 4, 3, 0],
+      "equivalentGroups": [[0, 1]],
+      "hint": "先准备一个空字符串装文字，再打开 PDF（这两行谁先谁后都行）；注意哪一行要缩进在 for 里面。",
+      "explain": "text = \"\" 初始化 → fitz.open 打开 PDF → for page in doc 遍历每一页 → 循环体内 text += page.get_text() 累加本页文字（要缩进）→ 最后 print(text.count(\"加班\")) 统计关键词出现次数。",
+      "concept": ["PDF", "PyMuPDF", "文本提取"]
+    },
+    {
+      "id": "u10_l2_p7",
+      "type": "code",
+      "stem": "车间把「排班表.pdf」提取成了纯文本（可能有多行），现在要统计「加班」这个关键词出现了几次。\n\n补全代码：用 sys.stdin.read() 一次读入全部文本，统计 text 中 keyword 的出现次数并打印。\n\n示例输入：\n```\n今晚加班，明天加班，后天不加班。\n加班补贴按时发放。\n```\n示例输出：\n```\n4\n```",
+      "code": "import sys\n\ntext = sys.stdin.read()   # 一次读入所有行：模拟从 PDF 提取出的纯文本\nkeyword = \"加班\"\n# 补全：统计 text 中 keyword 出现次数并打印",
+      "testcases": [
+        { "input": "今晚加班，明天加班，后天不加班。\n加班补贴按时发放。", "expected": "4" },
+        { "input": "今日按时下班。", "expected": "0" },
+        { "input": "加班\n加班\n不加班", "expected": "3" }
+      ],
+      "hint": "想想字符串的哪个方法能统计某个词出现的次数（提示：方法名和 count 有关）？注意「不加班」里也含一个「加班」。",
+      "explain": "sys.stdin.read() 一次读完所有行；text.count(keyword) 统计「加班」出现次数并打印。注意「不加班」里也含一个「加班」。",
+      "concept": ["str.count", "sys.stdin", "文本统计"]
+    },
+    {
+      "id": "u10_l2_p8",
+      "type": "code",
+      "stem": "批量生成通知：第一行读入人数 n，接下来 n 行每行一个员工姓名。对每个姓名打印一行通知：`<姓名>，请到 2 号会议室参加周会！`（中文标点照抄）。\n\n示例输入：\n```\n2\n张三\n李四\n```\n示例输出：\n```\n张三，请到 2 号会议室参加周会！\n李四，请到 2 号会议室参加周会！\n```",
+      "code": "n = int(input())\nfor i in range(n):\n    name = input()\n    # 补全：打印 name 的通知",
+      "testcases": [
+        { "input": "2\n张三\n李四", "expected": "张三，请到 2 号会议室参加周会！\n李四，请到 2 号会议室参加周会！" },
+        { "input": "1\n王五", "expected": "王五，请到 2 号会议室参加周会！" },
+        { "input": "3\n小明\n小红\n小刚", "expected": "小明，请到 2 号会议室参加周会！\n小红，请到 2 号会议室参加周会！\n小刚，请到 2 号会议室参加周会！" }
+      ],
+      "hint": "想想怎么把读到的姓名和固定模板拼成一行通知（提示：字符串拼接或 f-string）？中文标点照抄题目里的格式。",
+      "explain": "先 int(input()) 读人数 n，for 循环读 n 个姓名，每轮用字符串拼接打印一行通知——这就是「批量生成通知」的字符串模拟版；真机上换成 python-docx 就是批量生成 Word 文档。",
+      "concept": ["循环", "字符串拼接", "批量生成"]
+    }
+  ],
+  "quest": {
+    "id": "u10_l2_quest",
+    "title": "剧情任务：数一数加班通知要发几份",
+    "story": "你走进「自动化车间」，车间主任递来一份文件：「这是『排班表.pdf』，可咱们车间电脑只有浏览器版 Python，装不了 pdfplumber！我已经把 PDF 提取成纯文本了。你帮我数数里面出现了多少次『加班』——出现几次，我就得批量生成几份加班通知，一张都不能少！」",
+    "stem": "用 sys.stdin.read() 一次读入「排班表.pdf」提取出的纯文本（多行）。统计关键词「加班」出现的次数 n，然后：\n\n1. 打印 n（出现次数）\n2. 打印 `加班通知共 N 份`（N 就是 n）\n\n示例输入：\n```\n周一加班，周二加班。\n周四加班补贴已发放。\n周五不加班。\n```\n示例输出：\n```\n4\n加班通知共 4 份\n```",
+    "code": "import sys\n\ntext = sys.stdin.read()   # 排班表.pdf 提取出的纯文本（多行）\n\n# 补全：统计 text 中「加班」出现次数，存进变量 n\nn = 0\n\n# 补全：先打印 n，再打印「加班通知共 N 份」",
+    "testcases": [
+      { "input": "周一加班，周二加班。\n周四加班补贴已发放。\n周五不加班。", "expected": "4\n加班通知共 4 份" },
+      { "input": "今日无加班安排。\n全员按时下班。", "expected": "1\n加班通知共 1 份" },
+      { "input": "加班加点赶进度，加班费翻倍。\n连续加班三天。\n不加班就加薪？", "expected": "4\n加班通知共 4 份" }
+    ],
+    "hint": "想想怎么统计「加班」出现的次数（提示：str.count）？然后分两行打印次数和「加班通知共 N 份」。",
+    "explain": "text.count(\"加班\") 统计出现次数存入 n；print(n) 打印次数，print(f\"加班通知共 {n} 份\") 打印通知份数。主任照着这个数去批量生成 Word 加班通知——办公自动化，就是把重复劳动交给代码！",
+    "concept": ["str.count", "sys.stdin", "办公自动化", "批量生成"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「Word 与 PDF」一课 🎉\n\n**这一课你学会了**：\n1. Word（.docx）用 python-docx 处理：新建 `Document()` → 加标题/段落 → `save()`；读正文用 `doc.paragraphs` 逐段取 `p.text`\n2. PDF 是「版式格式」：文字按位置存放、可能乱序，用 pdfplumber / PyMuPDF（fitz）等库提取；扫描版要先 OCR\n3. 办公自动化两大场景：批量生成 Word 通知（模板 + 名单 + 循环）、合并 PDF（多份拼成一本）\n4. 判题环境没有这些库——练习用字符串/input() 模拟文本处理（str.count 统计关键词、循环拼接生成通知行），真实库的用法先记牢概念\n\n**剧情推进**：加班通知的份数数清楚了，车间主任大手一挥——批量通知生成完毕！但主任又指着墙角一摞产品照片说：「这些图要统一加水印、改尺寸，光靠 Word/PDF 可搞不定。」下一站：图像处理，让 Python 变身修图小能手！"
+  }
+}
