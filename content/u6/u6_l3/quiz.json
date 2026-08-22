@@ -1,0 +1,234 @@
+{
+  "lesson": "u6_l3",
+  "title": "防御式编程",
+  "quest": {
+    "id": "u6_l3_quest",
+    "title": "剧情任务：终极考核——安全除法器",
+    "story": "排雷工坊的最后一课，教官把一台「一碰就崩」的计算器拍在桌上：「这就是没穿防弹衣的代码——输入一捣乱，程序当场死给你看。终极考核来了：写一个安全除法器，读入两个数做除法。输入不是数字，要提示『请输入数字』；除数为 0，要提示『不能除以 0』；都合法，才输出结果。记住，用 try/except 分层处理。」教官背着手站在你身后——工坊的结业证书，就在这道题里了。",
+    "stem": "读入两行：第一行是被除数，第二行是除数。用 try/except 分层处理：\n- 输入不是数字 → 打印「请输入数字」\n- 除数为 0 → 打印「不能除以 0」\n- 都合法 → 打印除法结果",
+    "code": "try:\n    a = float(input())\n    b = float(input())\n    # 在这里完成除法并打印结果\n    pass\nexcept ZeroDivisionError:\n    # 除数为 0 时打印「不能除以 0」\n    pass\nexcept ValueError:\n    # 输入不是数字时打印「请输入数字」\n    pass",
+    "testcases": [
+      {
+        "input": "10\n2",
+        "expected": "5.0"
+      },
+      {
+        "input": "7\n2",
+        "expected": "3.5"
+      },
+      {
+        "input": "10\n0",
+        "expected": "不能除以 0"
+      },
+      {
+        "input": "abc\n2",
+        "expected": "请输入数字"
+      }
+    ],
+    "hint": "读入的两行分别是什么？哪一步可能抛异常（转数字、除法）？除数为 0 和输入不是数字分别是什么异常？各自对应的 except 里要打印什么？",
+    "explain": "分层处理 = 把「会出错的操作」（转数字、除法）放进 try，每种错误一个 except 各管各的：except ValueError 接住「输入不是数字」，except ZeroDivisionError 接住「除数为 0」，都合法才走到 print(a / b) 输出结果。",
+    "concept": [
+      "防御式编程",
+      "try/except",
+      "优雅降级"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通过了排雷工坊的终极考核 🎉\n\n**这一课你学会了「防御式编程」**：\n1. **防御式编程** = 写代码时先假设输入会捣乱：提前校验或用 try/except 兜底，让程序不崩溃\n2. **输入校验**：`int(input())` 可能 ValueError——先校验（isdigit）或用 try 包住，再使用数据\n3. **优雅降级**：try/except 出错时给友好提示，**写具体异常类型**（except ValueError），别用裸 except 吞错\n4. **assert 断言**：开发期检查前置条件，条件不成立立刻抛 AssertionError 暴露 bug\n5. 把**会出错的操作**（转数字、除法）和**业务逻辑**分开：try 只包可能出错的那几行\n\n**🏭 排雷工坊结业！** 从 u6_l1 读懂异常、u6_l2 学会调试，到这一课的防御式编程——你已经能写出「崩不了」的代码了。工坊颁发结业证书，教官难得地点了点头：「下一站，档案馆。」\n\n下一站：**档案馆（u7）——文件与数据**。程序一关，内存里的数据全没了；把数据存进文件再读出来，才是真正的存档。"
+  },
+  "questions": [
+    {
+      "id": "u6_l3_p1",
+      "type": "choice",
+      "stem": "防御式编程的核心思想是什么？",
+      "options": [
+        "写代码时完全相信用户的输入，用户说什么就是什么",
+        "写代码时先假设输入会捣乱，提前校验或用 try/except 兜底，让程序不崩溃",
+        "把所有代码都塞进一个 try 块里，出错时也不提示",
+        "代码能跑就行，报错是用户自己的问题"
+      ],
+      "answer": 1,
+      "hint": "「防御」二字的意思：先假设会出事，提前做好准备。",
+      "explain": "防御式编程 = 假设输入会捣乱（输错、缺失、格式不对），提前校验或用 try/except 兜底，让程序在坏输入面前不崩溃、给友好提示。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "完全信任输入正是防御式编程要避免的：用户一定会输错，只是时间问题。"
+        },
+        {
+          "opt": 2,
+          "why": "无脑包 try 还不给提示，等于把错误吞掉，bug 反而更难找。"
+        },
+        {
+          "opt": 3,
+          "why": "「代码能跑就行」不是防御，是埋雷。防御是主动假设会出错并做好准备。"
+        }
+      ],
+      "concept": [
+        "防御式编程",
+        "思想"
+      ]
+    },
+    {
+      "id": "u6_l3_p2",
+      "type": "judge",
+      "stem": "防御式编程认为：只要代码在自己电脑上测试通过了，就可以完全信任用户的输入。",
+      "answer": false,
+      "hint": "用户可不会像你一样规规矩矩地输入——想想 int(input()) 遇到「abc」会怎样。",
+      "explain": "恰恰相反：防御式编程要求「假设输入会捣乱」——用户可能输错、可能漏输、可能输中文。测试只能证明「你测试过的情况」没崩，不能证明所有情况。",
+      "concept": [
+        "防御式编程",
+        "输入校验"
+      ]
+    },
+    {
+      "id": "u6_l3_p3",
+      "type": "fill",
+      "stem": "执行 int(\"abc\") 会抛出什么异常？（填异常类型名，英文）",
+      "answer": [
+        "ValueError",
+        "值错误"
+      ],
+      "hint": "abc 长得不像数字，int() 转不了。这种「值本身不对」的异常叫什么？",
+      "explain": "int(\"abc\") 转不了非数字字符串，抛出 ValueError（值错误）。这也是为什么 int(input()) 前要先校验，或把转换包进 try/except。",
+      "traps": [
+        {
+          "wrong": "TypeError",
+          "why": "TypeError 是类型不匹配（如字符串 + 数字）。abc 是字符串、int() 也收字符串，错在「值」不是数字——是 ValueError。"
+        },
+        {
+          "wrong": "NameError",
+          "why": "NameError 是名字未定义。这里是值转换失败，抛的是 ValueError。"
+        }
+      ],
+      "concept": [
+        "ValueError",
+        "输入校验"
+      ]
+    },
+    {
+      "id": "u6_l3_p4",
+      "type": "judge",
+      "stem": "写 except:（不带异常类型）会捕获所有异常，把真正的 bug 也悄悄吞掉，所以应该尽量写具体的异常类型，比如 except ValueError。",
+      "answer": true,
+      "hint": "想想裸 except 会抓住什么——不只是用户输错，还有你自己代码里的 bug。",
+      "explain": "裸 except: 捕获一切异常（包括代码 bug），出错时静默吞掉，排错时一脸懵。防御式编程要求写具体异常类型（except ValueError / ZeroDivisionError），只兜该兜的错。",
+      "concept": [
+        "except",
+        "异常类型"
+      ]
+    },
+    {
+      "id": "u6_l3_p5",
+      "type": "code",
+      "stem": "用户输入可能不是数字。写代码：读入一行，先用 isdigit() 校验它是不是纯数字——是，就转成 int 并打印它的平方；不是，就打印「请输入数字」。\n\n期望输出（输入 5）：\n```\n25\n```",
+      "code": "s = input()\n# 先校验 s 是不是纯数字（s.isdigit()），是就打印它的平方，不是就打印「请输入数字」\n",
+      "testcases": [
+        {
+          "input": "5",
+          "expected": "25"
+        },
+        {
+          "input": "12",
+          "expected": "144"
+        },
+        {
+          "input": "abc",
+          "expected": "请输入数字"
+        }
+      ],
+      "hint": "怎么判断一个字符串全是数字（哪个方法）？校验通过后做什么、失败后做什么？分别用哪个分支？",
+      "explain": "s = input() 拿到的永远是字符串：先 s.isdigit() 校验（True 才放行），通过后 n = int(s) 再打印 n * n；不通过打印「请输入数字」。（注意 isdigit() 不认负数，输入可能有负数时用 try/except 更稳。）",
+      "concept": [
+        "输入校验",
+        "isdigit"
+      ]
+    },
+    {
+      "id": "u6_l3_p6",
+      "type": "choice",
+      "stem": "用户可能输入非数字，下面哪种「优雅降级」写法最符合防御式编程？",
+      "options": [
+        "try + except ValueError，出错时打印「请输入数字」",
+        "try + 裸 except:，出错时 pass 什么都不做",
+        "不处理，直接 int(input()) 让程序崩溃报错",
+        "try + except ValueError，但 except 里什么都不写"
+      ],
+      "answer": 0,
+      "hint": "降级 = 出错时给一个「还能继续用」的友好方案，而不是崩溃，也不是沉默。",
+      "explain": "优雅降级：try 尝试 + 具体异常类型（ValueError）捕获 + 给出友好提示。裸 except 吞错、except 里空白、不 try 直接崩，都不算优雅。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "裸 except: 会把 bug 也吞掉，pass 让用户一脸懵——不是优雅，是埋雷。"
+        },
+        {
+          "opt": 2,
+          "why": "不处理就直接崩溃：程序死掉，用户看到一堆红字。防御式编程要避免这个。"
+        },
+        {
+          "opt": 3,
+          "why": "异常类型是具体了，但 except 里什么都不做，错误还是被吞了——要给出提示。"
+        }
+      ],
+      "concept": [
+        "优雅降级",
+        "except"
+      ]
+    },
+    {
+      "id": "u6_l3_p7",
+      "type": "debug",
+      "stem": "下面的程序想把输入的数字翻倍，但输入不是数字时它什么都不做——错误被「裸 except: pass」悄悄吞掉了。把它改成防御式写法：用具体的 except ValueError 捕获，输入不是数字时打印「请输入数字」。",
+      "code": "try:\n    n = int(input())\n    print(n * 2)\nexcept:\n    pass",
+      "testcases": [
+        {
+          "input": "5",
+          "expected": "10"
+        },
+        {
+          "input": "abc",
+          "expected": "请输入数字"
+        }
+      ],
+      "hint": "现在错误被「裸 except: pass」吞掉了，什么都没做。想想应该捕获哪种具体异常？捕获后要做什么？",
+      "explain": "裸 except: 把 ValueError 一起吞掉，程序静默无输出。改成 except ValueError: 只兜「转数字失败」这一种错，并打印友好提示——合法输入照常翻倍，非法输入有人话提示。",
+      "concept": [
+        "except",
+        "调试",
+        "优雅降级"
+      ]
+    },
+    {
+      "id": "u6_l3_p8",
+      "type": "code",
+      "stem": "用 assert 检查前置条件：读入一个分数，断言它在 0~100 之间（含边界）。断言通过打印「分数合法」；断言失败（AssertionError）时打印「分数必须在 0~100 之间」。\n\n期望输出（输入 85）：\n```\n分数合法\n```",
+      "code": "score = int(input())\ntry:\n    # 补全：用 assert 检查 0 <= score <= 100，提示信息写「分数必须在 0~100 之间」\n    # 断言通过后打印「分数合法」\n    pass\nexcept AssertionError:\n    # 补全：断言失败时打印「分数必须在 0~100 之间」\n    pass",
+      "testcases": [
+        {
+          "input": "85",
+          "expected": "分数合法"
+        },
+        {
+          "input": "0",
+          "expected": "分数合法"
+        },
+        {
+          "input": "-5",
+          "expected": "分数必须在 0~100 之间"
+        },
+        {
+          "input": "101",
+          "expected": "分数必须在 0~100 之间"
+        }
+      ],
+      "hint": "assert 的用法：条件为假时会抛什么异常？断言失败后，要用什么语句接住它并打印提示？",
+      "explain": "assert 0 <= score <= 100, \"分数必须在 0~100 之间\" 检查前置条件，不成立立刻抛 AssertionError；except AssertionError 捕获后打印提示，程序不崩。注意：assert 是开发期防线（正式运行可能被 -O 关掉），面向用户的友好提示最终还要靠 try/except 或校验兜底。",
+      "concept": [
+        "assert",
+        "前置条件",
+        "AssertionError"
+      ]
+    }
+  ]
+}
