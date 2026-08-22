@@ -1,0 +1,261 @@
+{
+  "lesson": "u11_l2",
+  "title": "解析 HTML",
+  "questions": [
+    {
+      "id": "u11_l2_p1",
+      "type": "choice",
+      "stem": "在 HTML 代码 `<p>蜘蛛峡谷情报</p>` 中，`<p>` 和 `</p>` 分别被称为什么？",
+      "options": [
+        "开始标签 和 结束标签",
+        "属性 和 属性值",
+        "链接 和 正文",
+        "标签 和 注释"
+      ],
+      "answer": 0,
+      "hint": "想想成对标签的两半：开头那个，和带斜杠的那个。",
+      "explain": "`<p>` 是开始标签，`</p>` 是结束标签——结束标签比开始标签多一个斜杠 `/`，要提取的数据就夹在两者中间。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "`href=\"...\"` 这种才是「属性 = 属性值」；`<p>` 和 `</p>` 是同一个标签的开头和结尾。"
+        },
+        {
+          "opt": 2,
+          "why": "链接是 `<a>` 标签的功能，`<p>` 是段落标签；`<p>` 与 `</p>` 是成对标签的两半。"
+        },
+        {
+          "opt": 3,
+          "why": "注释另有写法（`<!-- -->`）；`<p>` 是段落标签，不是注释。"
+        }
+      ],
+      "concept": [
+        "HTML",
+        "标签",
+        "开始标签",
+        "结束标签"
+      ]
+    },
+    {
+      "id": "u11_l2_p2",
+      "type": "choice",
+      "stem": "爬虫用 requests 拿到服务器返回的 HTML 字符串后，下一步（第二步）要做什么？",
+      "options": [
+        "直接保存下来，不用再处理",
+        "解析 HTML，从中提取需要的数据",
+        "用浏览器打开看看效果",
+        "把 HTML 翻译成 Python 代码"
+      ],
+      "answer": 1,
+      "hint": "第一步是「请求拿 HTML」，第二步是「从 HTML 里挖数据」。",
+      "explain": "爬虫两步走：第一步 requests 请求拿到 HTML 字符串；第二步解析这份 HTML，把链接、标题、正文等需要的数据提取出来。原始 HTML 混满标签，不解析就拿不到想要的数据。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "原始 HTML 里混着密密麻麻的标签，直接保存下来也只是一堆字符串，拿不到想要的数据。"
+        },
+        {
+          "opt": 2,
+          "why": "浏览器渲染是给人看的；爬虫拿到的是字符串，得用代码解析。"
+        },
+        {
+          "opt": 3,
+          "why": "不需要翻译成 Python 代码——HTML 是数据，我们用 re / bs4 等工具从里面提取。"
+        }
+      ],
+      "concept": [
+        "爬虫",
+        "解析HTML",
+        "提取数据"
+      ]
+    },
+    {
+      "id": "u11_l2_p3",
+      "type": "judge",
+      "stem": "HTML 中 `<p>`、`<div>`、`<a>` 这类标签都成对出现：开始标签 `<p>` 与结束标签 `</p>`，结束标签比开始标签多一个斜杠 `/`，要提取的数据就夹在两者中间。",
+      "answer": true,
+      "hint": "回想概念卡 1：标签的骨架结构长什么样？",
+      "explain": "对！成对标签是 HTML 的基本骨架：`<p>峡谷日报</p>` = 开始标签 + 内容 + 结束标签；属性（href/class）写在开始标签里。",
+      "concept": [
+        "HTML",
+        "标签结构",
+        "结束标签"
+      ]
+    },
+    {
+      "id": "u11_l2_p4",
+      "type": "fill",
+      "stem": "HTML 中负责「点击后跳转到另一个网址」的标签是 `<____>`，目标地址写在它的 `href` 属性里。（填标签名）",
+      "answer": [
+        "a",
+        "超链接",
+        "链接",
+        "超链接标签"
+      ],
+      "hint": "这种标签负责「点击后跳转到另一个网址」，中文叫「超链接」——想想它的 HTML 标签名是哪个字母？",
+      "explain": "`<a href=\"网址\">文字</a>` 就是超链接标签：点击文字会跳转到 href 指定的地址。",
+      "traps": [
+        {
+          "wrong": "href",
+          "why": "href 是属性（属性名），不是标签；标签是 `<a>`。"
+        },
+        {
+          "wrong": "div",
+          "why": "div 是块容器，负责圈出一块区域，不能跳转。"
+        },
+        {
+          "wrong": "p",
+          "why": "p 是段落标签，不能跳转；跳转靠 `<a>`。"
+        }
+      ],
+      "concept": [
+        "a标签",
+        "href",
+        "超链接"
+      ]
+    },
+    {
+      "id": "u11_l2_p5",
+      "type": "fill",
+      "stem": "用正则从 HTML 中提取**所有** `<a href=\"...\">` 的链接地址，应使用 re.____()（返回包含所有链接的列表）。",
+      "answer": [
+        "findall",
+        "查找全部",
+        "查找所有",
+        "提取全部"
+      ],
+      "hint": "方法名里有 all，意思是「找出全部匹配」。",
+      "explain": "re.findall(模式, 文本) 返回所有匹配的列表：re.findall(r'<a href=\"(.*?)\">', html) 就得到所有链接地址。",
+      "traps": [
+        {
+          "wrong": "search",
+          "why": "search 只找第一个匹配就停，不是「所有」。"
+        },
+        {
+          "wrong": "sub",
+          "why": "sub 是替换，不是查找。"
+        }
+      ],
+      "concept": [
+        "re.findall",
+        "正则",
+        "提取链接"
+      ]
+    },
+    {
+      "id": "u11_l2_p6",
+      "type": "debug",
+      "stem": "下面的程序想提取一行 HTML 里**所有** `<a href=\"...\">` 链接，但一遇到相邻的两个链接就出错——它把中间的内容整个吞掉了。观察输出，把正则改成**非贪婪**匹配（给括号里的 `*` 加个 `?`）修复它。",
+      "code": "import re\nhtml = input()\nlinks = re.findall(r'<a href=\"(.*)\">', html)\nfor link in links:\n    print(link)",
+      "testcases": [
+        {
+          "input": "<a href=\"/news/1\">第一条</a><a href=\"/news/2\">第二条</a>",
+          "expected": "/news/1\n/news/2"
+        },
+        {
+          "input": "<a href=\"/news/3\">第三条</a>",
+          "expected": "/news/3"
+        },
+        {
+          "input": "<p>峡谷静悄悄，没有链接</p>",
+          "expected": ""
+        }
+      ],
+      "hint": "贪婪的 `(.*)` 会尽量多吃，从第一个 href 一直吃到最后一个引号；改成 `(.*?)` 就只吃最短的一段。",
+      "explain": "`(.*)` 贪婪匹配会从第一个 `href=\"` 一路吃到**最后一个** `\">`，把中间两个链接连同一堆标签全吞成一个。改成非贪婪 `(.*?)` 后，每遇到一个 `\">` 就停，两个链接被分别提取出来：`/news/1`、`/news/2`。",
+      "concept": [
+        "re.findall",
+        "非贪婪",
+        "贪婪匹配",
+        "调试"
+      ]
+    },
+    {
+      "id": "u11_l2_p7",
+      "type": "code",
+      "stem": "读入一个 HTML 页面（可能多行），提取其中**所有**链接地址（`<a href=\"...\">` 中 href 的值），**每个链接单独打印一行**。\n\n期望输出（输入含两个链接的 HTML）：\n```\n/news/1\n/news/2\n```",
+      "code": "import re\nimport sys\n\n# 多行 HTML 用 sys.stdin.read() 一次读入\nhtml = sys.stdin.read()\n\n# TODO: 用 re.findall 提取所有 <a href=\"...\"> 中的链接地址，存到 links\nlinks = None\n\n# TODO: 用 for 循环把每个链接单独打印一行\npass",
+      "testcases": [
+        {
+          "input": "<div class=\"news\">\n  <a href=\"/news/1\">峡谷情报一</a>\n  <a href=\"/news/2\">峡谷情报二</a>\n</div>",
+          "expected": "/news/1\n/news/2"
+        },
+        {
+          "input": "<p>峡谷静悄悄，页面里没有链接</p>",
+          "expected": ""
+        },
+        {
+          "input": "<a href=\"https://example.com/guide\">峡谷指南</a>\n<a href=\"/report\">峡谷报告</a>",
+          "expected": "https://example.com/guide\n/report"
+        }
+      ],
+      "hint": "想想提取链接的模式怎么写：<a href=\"...\"> 里哪部分是链接地址？怎么用分组 () 把它抠出来？怎么让每个链接只吃到自己的引号就停（提示：非贪婪）？",
+      "explain": "sys.stdin.read() 一次读入多行 HTML；re.findall(r'<a href=\"(.*?)\">', html) 把所有 href 值装进列表；for 循环逐个打印。没有链接时 findall 返回空列表，什么都不打印。",
+      "concept": [
+        "re.findall",
+        "sys.stdin.read",
+        "提取链接",
+        "多行输入"
+      ]
+    },
+    {
+      "id": "u11_l2_p8",
+      "type": "code",
+      "stem": "读入一个 HTML 页面（可能多行），统计其中一共有**多少个** `<a href=\"...\">` 链接，打印数量。\n\n期望输出（输入含 3 个链接的 HTML）：\n```\n3\n```",
+      "code": "import re\nimport sys\n\n# 多行 HTML 用 sys.stdin.read() 一次读入\nhtml = sys.stdin.read()\n\n# TODO: 1) 用 re.findall 提取所有 <a href=\"...\"> 链接，存到 links\nlinks = None\n\n# TODO: 2) 用 len() 统计链接个数并打印\npass",
+      "testcases": [
+        {
+          "input": "<a href=\"/a\">A</a><a href=\"/b\">B</a><a href=\"/c\">C</a>",
+          "expected": "3"
+        },
+        {
+          "input": "<p>没有链接的页面</p>",
+          "expected": "0"
+        },
+        {
+          "input": "<a href=\"/spider/1\">一</a>\n<a href=\"/spider/2\">二</a>",
+          "expected": "2"
+        }
+      ],
+      "hint": "想想：re.findall 返回什么类型？个数怎么数（哪个内置函数）？没有链接时返回什么、个数是多少？",
+      "explain": "re.findall(r'<a href=\"(.*?)\">', html) 得到所有链接的列表，len() 统计个数。第一个用例 3 个链接输出 3；无链接时 findall 返回空列表，输出 0。",
+      "concept": [
+        "re.findall",
+        "len",
+        "统计"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u11_l2_quest",
+    "title": "剧情任务：顺藤摸瓜织出峡谷地图",
+    "story": "蜘蛛峡谷的情报网每天截获大量网页。这天，情报官把一份网页源码（HTML 字符串）拍在你面前：「这些页面角落里的 <a href=\"...\"> 链接，藏着通往更深峡谷的路！把它们全部提取出来，我们就能顺着链接织出完整的峡谷地图。」你点点头，掏出正则，对着源码轻轻一扫……",
+    "stem": "程序会读入一个 HTML 页面（多行字符串）。请完成：\n\n1. 用 `re.findall` 提取其中**所有**链接地址（`<a href=\"...\">` 中 href 的值）\n2. 把每个链接**单独打印一行**\n3. 页面里没有链接时，什么都不打印",
+    "code": "import re\nimport sys\n\n# 峡谷情报网截获的网页源码（多行 HTML）\nhtml = sys.stdin.read()\n\n# 1) 用 re.findall 提取所有 <a href=\"...\"> 中的链接地址\n# links = re.findall(???)\n\n# 2) 把每个链接单独打印一行\n# for link in links:\n#     print(link)",
+    "testcases": [
+      {
+        "input": "<html>\n<body>\n<h1>蜘蛛峡谷情报网</h1>\n<div class=\"channel\">\n  <a href=\"/intel/1\">蛛网秘闻</a>\n  <a href=\"/intel/2\">峡谷动向</a>\n  <a href=\"/intel/3\">织网技巧</a>\n</div>\n</body>\n</html>",
+        "expected": "/intel/1\n/intel/2\n/intel/3"
+      },
+      {
+        "input": "<html>\n<body>\n<p>今夜峡谷无新情报。</p>\n</body>\n</html>",
+        "expected": ""
+      },
+      {
+        "input": "<div><a href=\"https://spider.example.com\">峡谷主页</a></div>\n<a href=\"/map\">峡谷地图</a>",
+        "expected": "https://spider.example.com\n/map"
+      }
+    ],
+    "hint": "想想两步：怎么用 re.findall 把链接地址都提取出来（模式里要用分组和非贪婪）？怎么用 for 循环逐行打印？",
+    "explain": "sys.stdin.read() 读入整页 HTML；re.findall(r'<a href=\"(.*?)\">', html) 用非贪婪分组提取每个 href 值；for 循环逐行打印。无链接时 findall 返回空列表，循环不执行，自然什么都不打印。三个链接的路标被逐一抄录，情报官按图索骥，峡谷地图一点点织了出来。",
+    "concept": [
+      "re.findall",
+      "提取链接",
+      "非贪婪",
+      "爬虫解析"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你学会了「解析 HTML」一课 🎉\n\n**这一课你学会了**：\n1. HTML 是网页的骨架：标签成对出现（`<p>…</p>`），数据夹在中间；`<html>` 套 `<body>` 套 `<div>` 层层嵌套\n2. 常用标签与属性：`p` 段落 / `a` 超链接 / `div` 容器 / `h1` 标题；`href`（跳转地址）、`class`（分类）、`id`（唯一标识）都写在开始标签里\n3. bs4（BeautifulSoup）是解析 HTML 的第三方库：`find_all(\"a\")`、`a.text`、`a.get(\"href\")`、`class_` 带下划线——真实环境要先 `pip install bs4`\n4. 本课判题环境用正则提取链接：`re.findall(r'<a href=\"(.*?)\">', html)`，`(.*?)` 非贪婪防止一口气吞掉多个链接\n\n**剧情推进**：链接全部提取完毕，峡谷地图已经织出一角！但情报官压低声音提醒你：有些网站不喜欢被爬——它们会检查访客身份、故意刁难爬虫。下一站：**反爬与应对**，学会伪装成普通访客，把被拦下的请求救回来！"
+  }
+}
