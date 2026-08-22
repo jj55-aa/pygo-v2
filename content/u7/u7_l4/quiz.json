@@ -1,0 +1,242 @@
+{
+  "lesson": "u7_l4",
+  "title": "综合实战",
+  "quest": {
+    "id": "u7_l4_quest",
+    "title": "剧情任务：档案馆终极整理（单元结业）",
+    "story": "档案馆的最后一课，老馆长把一摞散乱的档案拍在你桌上：「这些卷宗在搬迁时全被弄乱了——每行一条『姓名,分数』，有人的、有丢的、还有格式全坏的。这是整个档案馆的终极考验：把每一行读进来、拆开、统计出总人数和总分。要是档案是空的，你要说句人话『没有档案数据』；要是哪行格式坏了（缺逗号、分数不是数字），你也不能崩，要提示『档案格式错误』。记住你在工坊学的防御式编程——读完、拆完、算完、写出来，这摞卷宗就归你管了。」老馆长背着手，目光落在门外的结业证书上。",
+    "stem": "档案馆送来一批散乱档案：每行一条「姓名,分数」（用 io.StringIO 模拟文件，内容已整体读入变量 data）。请完成：\n- 逐行解析：用 split(\",\") 拆出姓名和分数，分数转数字后累加，人数 +1\n- 一条数据都没有 → 打印「没有档案数据」\n- 有数据 → 打印「共N人，总分X」（N 是人数，X 是总分）\n- 遇到格式错（缺逗号 / 分数不是数字）→ 打印「档案格式错误，请检查数据」，打印后程序立即结束，不再处理剩余行（异常兜底，程序不能崩）",
+    "code": "import io\nimport sys\n\n# 档案馆送来一批散乱档案：每行一条「姓名,分数」，先整体读入再用 StringIO 模拟文件\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ncount = 0\ntotal = 0\ntry:\n    for line in data:\n        line = line.strip()\n        if not line:          # 空行直接跳过\n            continue\n        # TODO: 用 split(\",\") 拆出姓名和分数；分数转数字后累加，人数 +1\n        pass\n    # TODO: 一条数据都没有 → 打印「没有档案数据」；否则打印「共N人，总分X」\n    pass\nexcept (ValueError, IndexError):\n    # TODO: 格式错（缺逗号 / 分数不是数字）→ 打印「档案格式错误，请检查数据」\n    pass",
+    "testcases": [
+      {
+        "input": "小明,90\n小红,85\n小刚,70",
+        "expected": "共3人，总分245"
+      },
+      {
+        "input": "小明,90\n小红,85",
+        "expected": "共2人，总分175"
+      },
+      {
+        "input": "",
+        "expected": "没有档案数据"
+      },
+      {
+        "input": "小明,90\n坏档案\n小红,85",
+        "expected": "档案格式错误，请检查数据"
+      }
+    ],
+    "hint": "想想循环里要做哪几件事：拆字段、转数字、累加、计数？循环外怎么判断「一条数据都没有」（看看 count 的值）？格式坏的由 except 接住——缺逗号和分数不是数字分别会抛什么异常？",
+    "explain": "这就是完整的四步套路：读（sys.stdin.read() + StringIO 模拟文件）→ 拆（split(\",\")）→ 算（int 转数字、count/total 累加）→ 写（print 输出）。空数据靠 count == 0 兜底提示「没有档案数据」；格式错靠 try/except (ValueError, IndexError) 兜底：缺逗号拆不出第 2 个字段抛 IndexError，分数不是数字 int() 抛 ValueError——两种都接住，程序不崩还给人话提示。",
+    "concept": [
+      "四步套路",
+      "split",
+      "统计",
+      "异常兜底",
+      "综合实战"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通过了档案馆的终极整理大考 🎉\n\n**这一课你打通了「文件与数据」的完整套路**：\n1. **四步套路**：读 → 拆 → 算 → 写。先读文件，再按行拆字段，然后统计计算，最后把结果输出或写盘——处理任何文件数据都是这条流水线\n2. **按行解析**：`split(\",\")` 把一行「姓名,分数」拆成列表，`strip()` 去掉换行符，字段转数字用 `int()` / `float()`\n3. **统计与筛选**：计数（`count += 1`）、求和（`total += x`）、筛选（if 条件）——计数器先归零、放循环外面\n4. **异常兜底**：`FileNotFoundError`（只读打开不存在的文件）、`ValueError`、`IndexError`——用具体异常类型 + try/except 接住，给用户友好提示，程序不崩\n\n**📄 档案馆结业彩蛋！** 从 u7_l1 文件读写、u7_l2 CSV、u7_l3 JSON 序列化，到这一课的综合实战——你手里的数据现在**能存、能读、能算了**：散乱的档案进来，规整的结果出去，还崩不了。档案馆为你颁发「数据整理师」结业证书，馆长点了点头：「下一站，百宝箱——那里有现成的工具，随取随用。」\n\n下一站：**百宝箱（u8）——常用库**。标准库里藏着 time、random、math 等一堆现成工具，用 `import` 拿出来就能用。"
+  },
+  "questions": [
+    {
+      "id": "u7_l4_p1",
+      "type": "choice",
+      "stem": "档案馆处理一批文件数据的标准「四步套路」是什么？",
+      "options": [
+        "读 → 拆 → 算 → 写（先读文件，再拆字段，然后统计，最后写结果）",
+        "写 → 算 → 读 → 拆（先写文件，再统计，然后读数据，最后拆字段）",
+        "算 → 写 → 读 → 拆（先统计，再写文件，然后读数据，最后拆字段）",
+        "拆 → 读 → 算 → 写（先拆字段，再读文件，然后统计，最后写结果）"
+      ],
+      "answer": 0,
+      "hint": "想想流水线的顺序：数据得先「到手」（读），才能加工（拆、算），最后才谈得上「归档」（写）。",
+      "explain": "四步套路：读（把文件数据拿到内存）→ 拆（split 拆字段）→ 算（统计/筛选）→ 写（print 输出或 f.write 落盘）。数据都没读到，后面的拆、算、写都是空中楼阁。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "没读过数据就统计、没拆过字段就写——数据从哪来？读是第一步，写是最后一步，顺序不能反。"
+        },
+        {
+          "opt": 2,
+          "why": "统计要建立在读到的数据上，结果都没算出来，写什么呢？先读后算再写。"
+        },
+        {
+          "opt": 3,
+          "why": "拆的前提是先读到那一行数据：先读后拆，把第一步和第二步的顺序搞反了。"
+        }
+      ],
+      "concept": [
+        "四步套路",
+        "读拆算写"
+      ]
+    },
+    {
+      "id": "u7_l4_p2",
+      "type": "choice",
+      "stem": "一行档案 line = \"小明,90\"，执行 line.split(\",\") 的结果是什么？",
+      "options": [
+        "['小明', '90']——一个列表，两个字符串元素",
+        "['小明,90']——一个列表，一个元素",
+        "[小明, 90]——两个变量",
+        "报错：字符串里不能有逗号"
+      ],
+      "answer": 0,
+      "hint": "split 是按分隔符「切开」：逗号不是拆不掉，它正是那个分隔符。",
+      "explain": "split(\",\") 把字符串按逗号切成列表：['小明', '90']。两个元素都是字符串（'小明' 和 '90'），要算数还得 int('90')。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "split(\",\") 是按逗号切开的：逗号正是分隔符，会把字符串切成两个元素，而不是原样保留。"
+        },
+        {
+          "opt": 2,
+          "why": "split 返回的是列表，里面的元素是字符串字面量必须带引号；而且它是一个表达式的结果，不是两个变量。"
+        },
+        {
+          "opt": 3,
+          "why": "split 就是专门用来拆分隔符的，逗号是它最拿手的活——不仅不报错，还把它切得干干净净。"
+        }
+      ],
+      "concept": [
+        "split",
+        "按行解析"
+      ]
+    },
+    {
+      "id": "u7_l4_p3",
+      "type": "judge",
+      "stem": "用 open(\"note.txt\", \"w\") 打开一个不存在的文件，会抛出 FileNotFoundError。",
+      "answer": false,
+      "hint": "想想 w（写）模式的作用——它是「没有就新建」。哪种模式才会因为文件不存在而报错？",
+      "explain": "w（覆盖写）模式打开不存在的文件会**自动新建**，不抛 FileNotFoundError；只有 r（只读）模式打开不存在的文件才抛 FileNotFoundError。另外 w 会清空旧文件，用之前要想清楚。",
+      "concept": [
+        "FileNotFoundError",
+        "文件模式"
+      ]
+    },
+    {
+      "id": "u7_l4_p4",
+      "type": "fill",
+      "stem": "只读打开一个不存在的文件（open(\"没有.txt\", \"r\")）会抛出什么异常？（填异常名，英文或中文都可以）",
+      "answer": [
+        "FileNotFoundError",
+        "文件不存在错误",
+        "文件不存在",
+        "文件没找到"
+      ],
+      "hint": "打开文件时「文件不存在」对应的异常，英文名是 File 开头。",
+      "explain": "open(\"没有.txt\", \"r\") 打开不存在的文件抛 FileNotFoundError（文件不存在错误）。防御式编程：用 except FileNotFoundError 接住它，给用户友好提示。",
+      "traps": [
+        {
+          "wrong": "TypeError",
+          "why": "TypeError 是类型不匹配（如字符串 + 数字）。这里是文件路径找不到，抛的是 FileNotFoundError。"
+        },
+        {
+          "wrong": "ValueError",
+          "why": "ValueError 是值本身不对（如 int(\"abc\")）。打开不存在的文件抛的是 FileNotFoundError。"
+        }
+      ],
+      "concept": [
+        "FileNotFoundError",
+        "异常兜底"
+      ]
+    },
+    {
+      "id": "u7_l4_p5",
+      "type": "debug",
+      "stem": "下面的程序统计档案里的总人数和总分，但输出「共 0 人」——人数统计漏了。找出 bug 并修复，让程序正确输出「共 2 人，总分 175」。",
+      "code": "import io\n\ndata = io.StringIO(\"小明,90\\n小红,85\\n\")\ncount = 0\ntotal = 0\nfor line in data:\n    parts = line.split(\",\")\n    total += int(parts[1])\nprint(\"共\", count, \"人，总分\", total)",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "共 2 人，总分 175"
+        }
+      ],
+      "hint": "每处理一行档案，人数就应该 +1——循环里是不是漏了计数那一步？想想该写什么语句。",
+      "explain": "循环里统计了 total 却忘了 count += 1，count 一直停在初值 0。修复：在循环里加上 count += 1（每读一条档案，人数加一）。",
+      "concept": [
+        "计数",
+        "调试",
+        "统计"
+      ]
+    },
+    {
+      "id": "u7_l4_p6",
+      "type": "code",
+      "stem": "档案馆送来成绩档案：每行一条「姓名,分数」。写程序：逐行解析，统计**及格**（分数 >= 60）的人数，打印「及格N人」。\n\n期望输出（输入 小明,90 / 小红,55 / 小刚,70）：\n```\n及格 2 人\n```",
+      "code": "import io\nimport sys\n\n# 档案馆送来成绩档案：每行一条「姓名,分数」\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ncount = 0\nfor line in data:\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 用 split(\",\") 拆出分数并转数字，分数 >= 60 就 count += 1\n    pass\n\nprint(\"及格\", count, \"人\")",
+      "testcases": [
+        {
+          "input": "小明,90\n小红,55\n小刚,70",
+          "expected": "及格 2 人"
+        },
+        {
+          "input": "小明,59\n小红,60\n小刚,100",
+          "expected": "及格 2 人"
+        },
+        {
+          "input": "小明,30\n小红,20",
+          "expected": "及格 0 人"
+        }
+      ],
+      "hint": "想想每一步：一行怎么拆出姓名和分数？分数是字符串还是数字？判断及格用哪个比较符号（注意 60 分算不算及格）？满足条件才计数。",
+      "explain": "循环里：拆字段 → 分数转数字 → if score >= 60 才 count += 1。注意边界：59 分不及格、60 分及格（>= 60 含边界）；全不及格时 count 保持 0，输出「及格 0 人」。",
+      "concept": [
+        "筛选",
+        "计数",
+        "split"
+      ]
+    },
+    {
+      "id": "u7_l4_p7",
+      "type": "code",
+      "stem": "档案里偶尔混进格式坏的：缺逗号、或分数不是数字。写程序：逐行解析「姓名,分数」，能解析就累加统计；**格式错的用 try/except 兜底**，打印「格式错误」后跳过，继续处理后面的行。最后打印「共N人，总分X」。\n\n期望输出（输入 小明,90 / 坏档案 / 小红,85）：\n```\n格式错误\n共2人，总分175\n```",
+      "code": "import io\nimport sys\n\n# 档案里可能混进格式坏的：缺逗号、或分数不是数字\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ncount = 0\ntotal = 0\nfor line in data:\n    line = line.strip()\n    if not line:\n        continue\n    try:\n        # TODO: 用 split(\",\") 拆出姓名和分数，分数转数字后累加，人数 +1\n        pass\n    except (ValueError, IndexError):\n        # TODO: 打印「格式错误」\n        pass\n\nprint(\"共%d人，总分%d\" % (count, total))",
+      "testcases": [
+        {
+          "input": "小明,90\n小红,85",
+          "expected": "共2人，总分175"
+        },
+        {
+          "input": "小明,90\n坏档案\n小红,85",
+          "expected": "格式错误\n共2人，总分175"
+        },
+        {
+          "input": "小明,abc\n小红,85",
+          "expected": "格式错误\n共1人，总分85"
+        }
+      ],
+      "hint": "想想 try 里做哪几件事：拆字段、转数字、累加计数？except (ValueError, IndexError) 里打印什么？缺逗号会抛哪种异常、分数不是数字又会抛哪种？",
+      "explain": "缺逗号时 split 结果没有第 2 个元素，parts[1] 抛 IndexError；分数不是数字时 int() 抛 ValueError。except (ValueError, IndexError) 同时接住这两种，打印「格式错误」并跳过——好行照常统计，坏行不拖垮整个程序。",
+      "concept": [
+        "异常兜底",
+        "try/except",
+        "统计"
+      ]
+    },
+    {
+      "id": "u7_l4_p8",
+      "type": "code",
+      "stem": "把散乱的档案整理成标准 CSV：输入每行是「姓名 分数」（空格分隔），把它们以「姓名,分数」的格式**写进新档案**（io.StringIO 模拟新文件，用 out.write()），最后把新档案内容整体打印出来。\n\n期望输出（输入 小明 90 / 小红 85）：\n```\n小明,90\n小红,85\n```",
+      "code": "import io\nimport sys\n\nout = io.StringIO()              # 模拟一个空的「新档案」文件\ntext = sys.stdin.read()\nfor line in text.split(\"\\n\"):\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 输入每行是「姓名 分数」（空格分隔），把它整理成「姓名,分数」写入 out\n    # 提示：out.write(\"小明,90\\n\")\n    pass\n\nprint(out.getvalue(), end=\"\")",
+      "testcases": [
+        {
+          "input": "小明 90\n小红 85\n小刚 70",
+          "expected": "小明,90\n小红,85\n小刚,70"
+        },
+        {
+          "input": "张三 100",
+          "expected": "张三,100"
+        }
+      ],
+      "hint": "想想怎么把一行按空白拆成姓名和分数（split 不传参就按空白拆）？再按「姓名,分数」的格式拼好，用 out.write() 写进去——换行符要自己加。",
+      "explain": "这就是四步套路里的「写」：split() 按空白拆出姓名和分数 → 拼成「姓名,分数」→ out.write() 写进新档案（StringIO 模拟文件；注意 write 不会自动换行，换行是代码里自己拼的 \n）→ 最后 getvalue() 把整个档案内容读出来打印。",
+      "concept": [
+        "写文件",
+        "StringIO",
+        "四步套路"
+      ]
+    }
+  ]
+}
