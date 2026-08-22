@@ -1,0 +1,231 @@
+{
+  "lesson": "u4_l1",
+  "title": "函数与模块",
+  "quest": {
+    "id": "u4_l1_quest",
+    "title": "剧情任务：把盖章工序封装成函数",
+    "story": "你走进「函数工坊」，老师傅正在把每一道工序打包成工具。他递给你一把刻刀：「先学最基础的——把『给零件盖章』这道工序封装成一个函数。以后每次盖章，喊一声函数名就行，不用再重复写代码！」",
+    "stem": "定义一个函数 stamp(name)，接收零件名，返回 name + \"已盖章\"（例如 stamp(\"齿轮\") 返回 齿轮已盖章）。程序读入一个零件名，调用 stamp 并打印结果。",
+    "code": "def stamp(name):\n    # 补全 return 语句\n    pass\n\npart = input()\nprint(stamp(part))",
+    "testcases": [
+      {
+        "input": "齿轮",
+        "expected": "齿轮已盖章"
+      },
+      {
+        "input": "螺丝",
+        "expected": "螺丝已盖章"
+      }
+    ],
+    "hint": "函数要把结果「递」给调用方，用什么关键字？返回的内容由参数 name 和固定文字拼接而成，想想字符串拼接用什么运算符？",
+    "explain": "stamp('齿轮') 返回「齿轮已盖章」，print 打印结果。把重复工序封装成函数后，每次盖章只需调用一次。",
+    "concept": [
+      "函数",
+      "返回值",
+      "封装"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「函数与模块」一课 🎉\n\n**这一课你学会了**：\n1. 函数 = 打包好的代码块（预制菜），解决重复代码的问题\n2. 定义：`def 函数名(参数):` + 缩进的函数体；**不调用不执行**\n3. 调用：`函数名(实参)`，实参按位置对号入座，个数必须一致\n4. `return` 把结果递出来，能存进变量继续用；没有 return 就返回 `None`；print 和 return 别搞混\n5. 模块：`import math` → `math.sqrt(9)`；`from math import sqrt` 直接导入；`as` 起别名\n\n**给工坊的新学徒点个赞**：你已经能把重复劳动封装成函数了，老师傅都看在眼里！"
+  },
+  "questions": [
+    {
+      "id": "u4_l1_p1",
+      "type": "choice",
+      "stem": "在 Python 中，用什么关键字【定义】函数？",
+      "options": [
+        "function",
+        "define",
+        "def",
+        "func"
+      ],
+      "answer": 2,
+      "hint": "注意不是英文单词 function。",
+      "explain": "定义函数用 def 关键字，格式是 def 函数名(参数):，后面跟缩进的函数体。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "function 是 JavaScript 的关键字；Python 定义函数用 def。"
+        },
+        {
+          "opt": 1,
+          "why": "Python 里没有 define 这个关键字；定义函数用 def。"
+        },
+        {
+          "opt": 3,
+          "why": "func 不是关键字；def 才是定义函数的关键字。"
+        }
+      ],
+      "concept": [
+        "函数",
+        "定义"
+      ]
+    },
+    {
+      "id": "u4_l1_p2",
+      "type": "judge",
+      "stem": "只写函数名、不加圆括号，就能执行函数里的代码。",
+      "answer": false,
+      "hint": "想想 print 是怎么调用的：是不是一定要带括号？",
+      "explain": "调用函数必须写 函数名()。只写函数名不加括号，Python 只是「提到」这个函数，不会执行它。",
+      "concept": [
+        "函数",
+        "调用"
+      ]
+    },
+    {
+      "id": "u4_l1_p3",
+      "type": "choice",
+      "stem": "下列哪个是【正确的】函数定义？",
+      "options": [
+        "def add(a, b):\n    return a + b",
+        "def add(a, b) return a + b",
+        "def add(a, b):\nreturn a + b",
+        "def add(a, b);\n    return a + b"
+      ],
+      "answer": 0,
+      "hint": "检查三个细节：冒号、缩进、分号。",
+      "explain": "def 行末尾要写英文冒号，函数体要缩进。选项 A 完全正确；B 缺冒号；C 的函数体没缩进；D 用分号代替冒号，都是错的。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "def 行末尾少了英文冒号 :，会报 SyntaxError。"
+        },
+        {
+          "opt": 2,
+          "why": "函数体必须缩进，return a + b 没缩进会报 IndentationError。"
+        },
+        {
+          "opt": 3,
+          "why": "def 后面要用冒号 :，不能用分号 ;。"
+        }
+      ],
+      "concept": [
+        "函数",
+        "定义"
+      ]
+    },
+    {
+      "id": "u4_l1_p4",
+      "type": "fill",
+      "stem": "如果一个函数里【没有】 return 语句，那么调用它时返回的值是？",
+      "answer": "None",
+      "hint": "大写开头，Python 里表示「什么都没有」的特殊值。",
+      "explain": "没有 return 的函数默认返回 None，表示「什么都没有」。",
+      "traps": [
+        {
+          "wrong": "0",
+          "why": "函数没有 return 不会默认返回 0，而是返回 None。"
+        },
+        {
+          "wrong": "无",
+          "why": "Python 里这个特殊值就是 None，大写 N 开头；不是中文「无」。"
+        }
+      ],
+      "concept": [
+        "函数",
+        "返回值"
+      ]
+    },
+    {
+      "id": "u4_l1_p5",
+      "type": "choice",
+      "stem": "定义了一个函数 def add(a, b):，调用时却写成 add(1, 2, 3)，会发生什么？",
+      "options": [
+        "正常运行，输出 3",
+        "正常运行，忽略多余的参数",
+        "报 TypeError：参数个数不匹配",
+        "报 NameError：找不到函数"
+      ],
+      "answer": 2,
+      "hint": "参数要按位置「对号入座」，多一个少一个都不行。",
+      "explain": "实参个数必须和形参个数一致。传多了会报 TypeError: add() takes 2 positional arguments but 3 were given。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "参数个数不匹配不会正常运行；定义 2 个形参却传 3 个实参会报错。"
+        },
+        {
+          "opt": 1,
+          "why": "Python 不会默默忽略多余参数；实参形参必须一一对应。"
+        },
+        {
+          "opt": 3,
+          "why": "函数是能找到的；报错原因是参数个数不对，不是找不到函数。"
+        }
+      ],
+      "concept": [
+        "函数",
+        "参数"
+      ]
+    },
+    {
+      "id": "u4_l1_p6",
+      "type": "sort",
+      "stem": "把下面的代码行按正确顺序排好：先定义 add 函数，再调用它打印 7 和 30。",
+      "lines": [
+        "def add(a, b):",
+        "    return a + b",
+        "print(add(3, 4))",
+        "print(add(10, 20))"
+      ],
+      "answer": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "hint": "必须先 def 定义，才能调用；函数体要缩进。",
+      "explain": "先 def add(a, b): 定义函数（函数体 return 要缩进），再 print(add(3, 4)) 调用，依次输出 7 和 30。",
+      "concept": [
+        "函数",
+        "定义",
+        "调用"
+      ]
+    },
+    {
+      "id": "u4_l1_p7",
+      "type": "debug",
+      "stem": "下面的程序想问候输入的名字，但有一处语法错误：def 行漏了冒号。找到并修复它。",
+      "code": "def greet(name)\n    print('你好，' + name + '！')\n\nname = input()\ngreet(name)",
+      "testcases": [
+        {
+          "input": "小明",
+          "expected": "你好，小明！"
+        },
+        {
+          "input": "小红",
+          "expected": "你好，小红！"
+        }
+      ],
+      "hint": "def 函数名(参数) 的末尾必须有英文冒号 :。",
+      "explain": "def greet(name): 末尾补上英文冒号即可。定义函数的冒号和 if/for 的冒号一样，一个都不能少。",
+      "concept": [
+        "函数",
+        "调试"
+      ]
+    },
+    {
+      "id": "u4_l1_p8",
+      "type": "code",
+      "stem": "定义一个函数 greet(name)，接收一个名字，返回「你好，XX！」这样的字符串。程序会读入一个名字，调用 greet 并打印结果。\n\n期望输出：\n```\n你好，小明！\n```",
+      "code": "def greet(name):\n    # 补全 return 语句\n    pass\n\nn = input()\nprint(greet(n))",
+      "testcases": [
+        {
+          "input": "小明",
+          "expected": "你好，小明！"
+        },
+        {
+          "input": "小红",
+          "expected": "你好，小红！"
+        }
+      ],
+      "hint": "函数怎么把结果交还给调用方（哪个关键字）？返回的字符串由固定文字和参数 name 拼接，拼接用什么运算符？",
+      "explain": "greet('小明') 返回字符串「你好，小明！」，print 把它打印出来。记住：要产出数据必须用 return，不能用 print。",
+      "concept": [
+        "函数",
+        "返回值"
+      ]
+    }
+  ]
+}
