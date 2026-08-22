@@ -1,0 +1,163 @@
+{
+  "lesson": "u1_l4",
+  "title": "报错初识",
+  "quest": {
+    "id": "u1_l4_quest",
+    "title": "剧情任务：修好自动售卖机",
+    "story": "新手村的自动售卖机突然坏了——屏幕一片红！村长说之前有个冒险者写了一段「找零机」代码，但有个变量名写错了，机器一算账就报 NameError。你作为新手村新晋的排雷小能手，把它修好吧。",
+    "stem": "下面的「找零机」代码在运行时报 NameError：机器先算出找零存进变量 change，但打印时把变量名写错了。找出拼错的变量名并修复，让程序通过测试。",
+    "code": "price = 3\nmoney = int(input())\nchange = money - price\nprint(chaenge)",
+    "testcases": [
+      {
+        "input": "10",
+        "expected": "7"
+      },
+      {
+        "input": "5",
+        "expected": "2"
+      }
+    ],
+    "hint": "找找哪一行打印的变量名和上面存结果的变量名不一致（Python 大小写和拼写都要一字不差）。",
+    "explain": "算出找零后存进的是 change，但打印写成了 chaenge——Python 找不到叫 chaenge 的变量，报 NameError。把 print(chaenge) 改成 print(change) 即可。",
+    "concept": [
+      "调试",
+      "NameError",
+      "报错"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「报错初识」一课 🎉\n\n**这一课你学会了**：\n1. 报错不可怕：报错信息 = 错误类型 + 出错行号 + 原因\n2. SyntaxError：括号/引号没配对、忘了冒号、中文标点\n3. NameError：变量没定义/拼写错/字符串忘加引号\n4. TypeError / ZeroDivisionError / IndexError 的认识\n\n**新手村四课全部通关**！你已经从只会打印，成长到能读懂报错、修好代码的冒险者了。下一站走进岔路口森林，让程序学会看情况办事！"
+  },
+  "questions": [
+    {
+      "id": "u1_l4_p1",
+      "type": "judge",
+      "stem": "程序报错是坏事，说明这段代码没救了，应该直接重写。",
+      "answer": false,
+      "hint": "报错是 Python 在给你定位线索，大部分报错改一两行就好。",
+      "explain": "报错信息会告诉你错误类型、出错行号和原因——这是帮你定位问题的线索，不是终点。",
+      "concept": [
+        "报错"
+      ]
+    },
+    {
+      "id": "u1_l4_p2",
+      "type": "choice",
+      "stem": "print（你好）用了中文括号，运行会怎样？",
+      "options": [
+        "正常运行",
+        "报 SyntaxError 语法错误",
+        "输出错误内容",
+        "中文括号自动变成英文括号"
+      ],
+      "answer": 1,
+      "hint": "Python 只认英文半角标点。",
+      "explain": "中文括号（ ）不是 Python 的符号，会被当成语法错误（SyntaxError）。判题引擎还会专门提示你：检测到中文标点。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "中文括号 Python 不认，会直接报错。"
+        },
+        {
+          "opt": 2,
+          "why": "语法都错了，代码根本跑不起来，不会输出。"
+        },
+        {
+          "opt": 3,
+          "why": "Python 不会自动替换标点，必须手写英文括号。"
+        }
+      ],
+      "concept": [
+        "SyntaxError"
+      ]
+    },
+    {
+      "id": "u1_l4_p3",
+      "type": "fill",
+      "stem": "运行报错信息的最后一行会告诉你错误类型，比如 NameError: name 'age' is not defined。这种「名字未定义」的错误类型是？（填英文）",
+      "answer": "NameError",
+      "hint": "name is not defined = 名字没定义。",
+      "explain": "NameError 表示用了一个不存在的变量或函数名，检查拼写或是否先赋值。",
+      "traps": [
+        {
+          "wrong": "SyntaxError",
+          "why": "SyntaxError 是语法错误。名字未定义是 NameError。"
+        },
+        {
+          "wrong": "名字未定义",
+          "why": "要填英文类型名 NameError。"
+        }
+      ],
+      "concept": [
+        "NameError"
+      ]
+    },
+    {
+      "id": "u1_l4_p4",
+      "type": "debug",
+      "stem": "下面的代码想打印年龄，但运行会报 NameError。找出问题并修复（提示：变量要先赋值才能用）。",
+      "code": "print(age)\nage = 18",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "18"
+        }
+      ],
+      "hint": "想想变量的使用规则：变量必须先赋值才能使用。看看 print(age) 用到的 age 是什么时候才被赋值的？这两行的顺序该怎么调整？",
+      "explain": "先赋值再用：age = 18 在前，print(age) 在后，就不会报 NameError。",
+      "concept": [
+        "NameError",
+        "调试"
+      ]
+    },
+    {
+      "id": "u1_l4_p5",
+      "type": "choice",
+      "stem": "print('1' + 1) 会报什么错误？",
+      "options": [
+        "NameError",
+        "TypeError",
+        "ZeroDivisionError",
+        "正常运行"
+      ],
+      "answer": 1,
+      "hint": "字符串和数字不能直接相加。",
+      "explain": "字符串 + 数字是类型不匹配，报 TypeError。要转成同类型：int('1') + 1 或 '1' + str(1)。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "NameError 是名字未定义，这里是类型不匹配。"
+        },
+        {
+          "opt": 2,
+          "why": "ZeroDivisionError 是除以 0，跟这行没关系。"
+        },
+        {
+          "opt": 3,
+          "why": "字符串和数字相加 Python 不允许，会报 TypeError。"
+        }
+      ],
+      "concept": [
+        "TypeError"
+      ]
+    },
+    {
+      "id": "u1_l4_p6",
+      "type": "debug",
+      "stem": "小卖部老板想把 10 个苹果平均分给 3 个人，但代码一运行就报错。修复它：用整除 // 代替普通除法 /，并把除数 0 改成 3。",
+      "code": "print(10 / 0)",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "3"
+        }
+      ],
+      "hint": "这行代码有两个问题：① 除数是几？想想除数能不能是 0；② 老板要把 10 个苹果分给几个人？把除数改对后，再想想这里该用普通除法还是整除。",
+      "explain": "10 / 0 是除以 0 报 ZeroDivisionError。改成 10 // 3（整除）= 3。",
+      "concept": [
+        "ZeroDivisionError",
+        "调试"
+      ]
+    }
+  ]
+}
