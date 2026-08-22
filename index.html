@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyGo V2 · Python 闯关学习</title>
+  <style>
+    :root {
+      --bg: #F7F8F8; --card: #FFFFFF; --accent: #5E6AD2; --text: #1E1F24;
+      --muted: #8A8F98; --ok: #10B981; --warn: #F59E0B; --bad: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    .topbar { display: flex; align-items: center; gap: 12px; padding: 12px 24px; background: var(--card); border-bottom: 1px solid #E6E6E6; position: sticky; top: 0; z-index: 100; }
+    .logo { font-weight: 700; font-size: 18px; color: var(--accent); }
+    .tag { font-size: 12px; color: var(--muted); }
+    .py-status { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--muted); }
+    .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--warn); }
+    .dot.ready { background: var(--ok); }
+    .dot.error { background: var(--bad); }
+    #app { max-width: 860px; margin: 0 auto; padding: 20px 24px 48px; min-height: calc(100vh - 52px); }
+    /* 占位（无 UI 页面时） */
+    .placeholder { background: var(--card); border-radius: 12px; padding: 32px; box-shadow: 0 1px 2px rgba(0,0,0,.04); margin-top: 24px; }
+    .placeholder h1 { font-size: 20px; margin-bottom: 10px; }
+    .placeholder p { color: var(--muted); line-height: 1.7; font-size: 14px; margin-bottom: 8px; }
+    .btn { display: inline-block; margin-top: 14px; padding: 10px 18px; border-radius: 6px; background: var(--accent); color: #fff; text-decoration: none; font-size: 14px; }
+    .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--accent); margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <span class="logo">🐍 PyGo V2</span>
+    <span class="tag">闯关式 Python 学习</span>
+    <span class="py-status"><span class="dot" id="pyDot"></span><span id="pyText">判题引擎加载中…</span></span>
+  </div>
+  <div id="app"></div>
+
+  <!-- 核心层脚本（顺序：数据 → 判题 → 内容 → 复习 → 游戏化 → 授权 → 接口） -->
+  <script src="core/db.js"></script>
+  <script src="core/judge.js"></script>
+  <script src="core/content.js"></script>
+  <script src="core/review.js"></script>
+  <script src="core/gamify.js"></script>
+  <script src="core/license-pub.js"></script>
+  <script src="core/license.js"></script>
+  <script src="core/app.js"></script>
+
+  <script>
+    // ============================================================
+    // 页面注入器：按 state.screen 加载 ui/pages/<screen>.html 片段
+    // 片段 = <style> + <div class="page">…</div> + <script>（见 ui/UI任务包.md §8）
+    // 每次切页都会重新加载并执行页面脚本（页面要完整重渲染）
+    // ============================================================
+    (function () {
+      'use strict';
+      var app = document.getElementById('app');
+      var loaded = {};          // screen -> { html, scripts }
+      var currentScreen = null;
+      var pending = null;
+
+      var SCREENS = ['map', 'lesson', 'review', 'stats', 'settings'];
+
+      function placeholder(screen) {
+        var map = {
+          map: '学习路径页',
+          lesson: '课程页',
+          review: '复习中心',
+          stats: '战绩页',
+          settings: '设置页'
+        };
+        return '<div class="placeholder">' +
+          '<h1>' + (map[screen] || screen) + '：UI 页面产出中</h1>' +
+          '<p>核心层已就绪（判题引擎 / 内容引擎 / 进度），本页由 UI 端 AI 产出，交付后会自动注入到这里。</p>' +
+          '<a class="btn" href="test/judge-test.html">判题引擎自测</a>' +
+          '<a class="btn ghost" href="test/content-test.html">内容引擎自测</a>' +
+          '</div>';
+      }
+
+      async function loadPage(screen) {
+        var url = 'ui/pages/' + screen + '.html';
+        var text;
+        try {
+          var r = await fetch(url);
+          if (!r.ok) { app.innerHTML = placeholder(screen); return; }
+          text = await r.text();
+        } catch (e) { app.innerHTML = placeholder(screen); return; }
+
+        // 拆出 <script>，其余内容注入 DOM
+        var scripts = [];
+        text = text.replace(/<script([^>]*)>([\s\S]*?)<\/script>/gi, function (m, attrs, body) {
+          scripts.push({ attrs: attrs, body: body });
+          return '';
+        });
+        app.innerHTML = text;
+
+        // 依次执行页面脚本（等待上一个完成，避免竞态）
+        for (var i = 0; i < scripts.length; i++) {
+          await execScript(scripts[i]);
+        }
+      }
+
+      function execScript(s) {
+        return new Promise(function (resolve) {
+          var m = s.attrs.match(/src\s*=\s*["']([^"']+)["']/i);
+          var el = document.createElement('script');
+          if (m) {
+            el.src = m[1];
+            el.onload = function () { resolve(); };
+            el.onerror = function () { console.error('[App] 页面脚本加载失败', m[1]); resolve(); };
+          } else {
+            el.textContent = s.body;
+          }
+          document.body.appendChild(el);
+          if (!m) {
+            // 内联脚本同步执行完毕
+            resolve();
+          }
+        });
+      }
+
+      function render() {
+        if (!window.App || !window.App.state) return;
+        var screen = window.App.state.screen || 'map';
+        if (screen === currentScreen) return;
+        currentScreen = screen;
+        loadPage(screen).catch(function (e) { console.error('[App] 页面加载失败', screen, e); });
+      }
+
+      // 顶栏 Pyodide 状态
+      function renderPy(s) {
+        var dot = document.getElementById('pyDot');
+        var txt = document.getElementById('pyText');
+        if (!dot || !txt) return;
+        s = s || {};
+        if (s.ready) { dot.className = 'dot ready'; txt.textContent = s.detail || 'Python 已就绪'; }
+        else if (s.status === 'error') { dot.className = 'dot error'; txt.textContent = '判题引擎加载失败'; }
+        else { dot.className = 'dot'; txt.textContent = s.detail || '判题引擎加载中…'; }
+      }
+
+      // 等 App 就绪后启动
+      var t = setInterval(function () {
+        if (window.App && window.App.state && window.App.subscribe) {
+          clearInterval(t);
+          render();
+          window.App.subscribe(function (state) {
+            renderPy(state.pyodide);
+            render();
+          });
+        }
+      }, 200);
+    })();
+  </script>
+</body>
+</html>
