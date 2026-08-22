@@ -1,0 +1,261 @@
+{
+  "lesson": "u5_l2",
+  "title": "面向对象进阶",
+  "questions": [
+    {
+      "id": "u5_l2_p1",
+      "type": "choice",
+      "stem": "让 FireDragon 类继承 MagicalCreature 类，正确写法是？",
+      "options": [
+        "class FireDragon(MagicalCreature):",
+        "class FireDragon : MagicalCreature",
+        "FireDragon extends MagicalCreature",
+        "class FireDragon inherits MagicalCreature"
+      ],
+      "answer": 0,
+      "hint": "父类写在子类名后面的圆括号里。",
+      "explain": "Python 的继承语法是 class 子类(父类):，父类写在括号里。extends 是 Java 的写法，Python 不用。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "class FireDragon : MagicalCreature 不是合法语法；父类要写在圆括号里。"
+        },
+        {
+          "opt": 2,
+          "why": "extends 是 Java 的写法；Python 继承用圆括号 class 子类(父类):。"
+        },
+        {
+          "opt": 3,
+          "why": "inherits 不是 Python 关键字；继承语法是 class 子类(父类):。"
+        }
+      ],
+      "concept": [
+        "继承"
+      ]
+    },
+    {
+      "id": "u5_l2_p2",
+      "type": "fill",
+      "stem": "子类重写了 __init__ 时，用___().__init__(...) 调用父类的初始化方法，把公共属性交给父类处理。（填英文单词）",
+      "answer": "super",
+      "hint": "英文单词，意思是「上级、超级」。",
+      "explain": "super() 返回父类的对象，super().__init__(name, age) 就是调用父类的初始化方法。忘了调用，父类属性就没初始化。",
+      "traps": [
+        {
+          "wrong": "parent",
+          "why": "Python 没有 parent()；父类初始化用 super().__init__()。"
+        },
+        {
+          "wrong": "base",
+          "why": "base 不是内置函数；super() 返回父类对象再调 __init__。"
+        }
+      ],
+      "concept": [
+        "继承",
+        "super"
+      ]
+    },
+    {
+      "id": "u5_l2_p3",
+      "type": "choice",
+      "stem": "运行下面的代码，输出结果是？\n\n```python\nclass Animal:\n    def speak(self):\n        return '……'\n\nclass Dog(Animal):\n    def speak(self):\n        return '汪汪'\n\nprint(Dog().speak())\n```",
+      "options": [
+        "……",
+        "汪汪",
+        "报错",
+        "None"
+      ],
+      "answer": 1,
+      "hint": "子类和父类有同名方法时，听谁的？",
+      "explain": "Dog 重写了 speak 方法，调用时执行的是子类的版本，返回'汪汪'。这就是方法重写（override）。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "子类重写后执行的是子类版本，返回'汪汪'，不是父类的'……'。"
+        },
+        {
+          "opt": 2,
+          "why": "方法重写是标准用法，代码完全合法，不会报错。"
+        },
+        {
+          "opt": 3,
+          "why": "speak 有 return 语句，返回的是字符串'汪汪'，不是 None。"
+        }
+      ],
+      "concept": [
+        "方法重写",
+        "继承"
+      ]
+    },
+    {
+      "id": "u5_l2_p4",
+      "type": "choice",
+      "stem": "类里用 self.__money 定义了私有属性，在类的外面直接访问 acc.__money 会？",
+      "options": [
+        "正常返回余额",
+        "返回 None",
+        "报 AttributeError（没有这个属性）",
+        "返回 0"
+      ],
+      "answer": 2,
+      "hint": "私有属性就是「藏起来」的属性。",
+      "explain": "__money 是私有属性，类的外面不能直接访问，会报 AttributeError。想安全地读/改，要走类里定义的公开方法（如 show、save）或受控的读取口。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "私有属性外部不可见；__money 被改名藏起来，直接访问会报 AttributeError。"
+        },
+        {
+          "opt": 1,
+          "why": "访问不存在的属性会抛异常，不会返回 None。"
+        },
+        {
+          "opt": 3,
+          "why": "外部碰不到私有属性，要走类里定义的公开方法。"
+        }
+      ],
+      "concept": [
+        "封装",
+        "私有属性"
+      ]
+    },
+    {
+      "id": "u5_l2_p5",
+      "type": "choice",
+      "stem": "关于多态，下列说法【正确】的是？",
+      "options": [
+        "调用相同的方法名，不同的对象做出不同的事",
+        "同一个对象只能有一种行为",
+        "多态就是继承",
+        "多态会让程序变慢"
+      ],
+      "answer": 0,
+      "hint": "同一个动作，不同的人做出来不一样。",
+      "explain": "多态：调用同一个方法名，不同对象执行各自重写后的版本。比如同样的 speak()，狗汪汪、猫喵喵。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "多态正是不同对象对同一方法名做出不同表现。"
+        },
+        {
+          "opt": 2,
+          "why": "多态不等于继承：继承是复用代码的手段，多态是调用时的行为表现。"
+        },
+        {
+          "opt": 3,
+          "why": "多态与运行速度无关，它是程序设计特性。"
+        }
+      ],
+      "concept": [
+        "多态"
+      ]
+    },
+    {
+      "id": "u5_l2_p6",
+      "type": "choice",
+      "stem": "封装的主要目的是？",
+      "options": [
+        "让代码变得更短",
+        "隐藏实现细节、保护数据，只暴露安全的操作接口",
+        "让类不能被子类继承",
+        "让一个类只能创建一个对象"
+      ],
+      "answer": 1,
+      "hint": "想想银行柜台：钱在保险柜里，存取都走窗口。",
+      "explain": "封装把内部数据（如存款、魔法威力）藏起来，外面只能通过公开方法（存钱、取钱）操作，方法里还能加校验规则，数据更安全。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "封装的目的不是让代码变短，而是隐藏细节、保护数据。"
+        },
+        {
+          "opt": 2,
+          "why": "封装和继承是独立的两个概念，封装不禁继承。"
+        },
+        {
+          "opt": 3,
+          "why": "限制对象个数是单例模式的思路；封装是隐藏实现、暴露接口。"
+        }
+      ],
+      "concept": [
+        "封装"
+      ]
+    },
+    {
+      "id": "u5_l2_p7",
+      "type": "debug",
+      "stem": "程序想创建一只会叫的狗，但运行时报 AttributeError: 'Dog' object has no attribute 'name'。原因是 Dog 重写了 __init__，却没有初始化父类的属性。找到问题并修复它。",
+      "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return f'{self.name}在叫'\n\nclass Dog(Animal):\n    def __init__(self, name):\n        # ❌ 少了一行：父类的属性没有初始化\n        pass\n\nname = input()\nd = Dog(name)\nprint(d.speak())",
+      "testcases": [
+        {
+          "input": "旺财",
+          "expected": "旺财在叫"
+        },
+        {
+          "input": "来福",
+          "expected": "来福在叫"
+        }
+      ],
+      "hint": "子类重写了 __init__ 后，父类的初始化代码还会自动执行吗？如果不自动执行，怎么主动调用父类的初始化方法？要传哪些参数？",
+      "explain": "在 Dog 的 __init__ 里补上 super().__init__(name)，把 name 交给父类初始化，self.name 就存在了。这是继承里最常见的坑：重写 __init__ 必须记得调 super().__init__(...)。",
+      "concept": [
+        "调试",
+        "继承",
+        "super"
+      ]
+    },
+    {
+      "id": "u5_l2_p8",
+      "type": "code",
+      "stem": "补全代码：Animal 父类（__init__ 存 name，speak 返回 '……'）；Dog 和 Cat 继承 Animal 并重写 speak，分别返回 '汪汪' 和 '喵喵'。程序会读入狗的名字，然后对两只动物调用 zoo 函数打印。\n\n期望输出：\n```\n旺财说汪汪\n咪咪说喵喵\n```",
+      "code": "class Animal:\n    def __init__(self, name):\n        self.name = name\n\n    def speak(self):\n        return '……'\n\nclass Dog(Animal):\n    # 补全：重写 speak，返回 '汪汪'\n    pass\n\nclass Cat(Animal):\n    # 补全：重写 speak，返回 '喵喵'\n    pass\n\ndef zoo(animal):\n    print(f'{animal.name}说{animal.speak()}')\n\nname = input()\nzoo(Dog(name))\nzoo(Cat('咪咪'))",
+      "testcases": [
+        {
+          "input": "旺财",
+          "expected": "旺财说汪汪\n咪咪说喵喵"
+        },
+        {
+          "input": "来福",
+          "expected": "来福说汪汪\n咪咪说喵喵"
+        }
+      ],
+      "hint": "子类怎么声明自己继承父类（父类写在哪）？重写 speak 方法时返回什么类型？zoo 函数调用对象的方法时，只关心对象有什么能力？",
+      "explain": "Dog 和 Cat 继承 Animal（自动拥有 self.name），各自重写 speak 返回'汪汪'/'喵喵'。zoo 对两个不同的对象调用同一个 speak() 得到不同输出——这就是多态：写代码时不用知道对象具体是谁。",
+      "concept": [
+        "继承",
+        "方法重写",
+        "多态"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u5_l2_quest",
+    "title": "剧情任务：补全魔法生物家族谱",
+    "story": "档案员奥术爷爷翻出一本泛黄的《魔法生物家族谱》：「小火龙、冰晶兽……它们可不是孤零零的——都出自同一个『魔法生物』家族！家族公共的本事写在一张图纸上，孩子们各自继承，再添上自己的绝活。另外记住：每只生物的『魔法威力』是机密，锁在保险柜里，只能通过家族提供的受控入口读取，不能直接碰。」你接过羽毛笔，开始为家族谱补全代码。",
+    "stem": "补全代码：FireDragon 和 IceBeast 都继承 MagicalCreature（用 super().__init__(name, power) 把公共属性交给父类，魔法威力 __power 是私有属性，通过 get_power() 受控读取）；各自重写 attack 方法。程序读入小火龙的名字和元素，打印两只生物的攻击。",
+    "code": "class MagicalCreature:\n    def __init__(self, name, power):\n        self.name = name\n        self.__power = power          # 私有属性：魔法威力（封装）\n\n    def get_power(self):              # 受控读取口\n        return self.__power\n\n    def attack(self):\n        return f'{self.name}施放普通攻击，威力 {self.get_power()}'\n\nclass FireDragon(MagicalCreature):\n    # 补全 __init__：接收 name, power, element；\n    # 用 super().__init__(name, power) 把公共属性交给父类，再保存 self.element\n    def __init__(self, name, power, element):\n        pass\n\n    # 补全 attack：返回 f'{self.name}喷出{self.element}火焰，威力 {self.get_power()}'\n    def attack(self):\n        pass\n\nclass IceBeast(MagicalCreature):\n    # 补全 __init__：接收 name, power, element；同上\n    def __init__(self, name, power, element):\n        pass\n\n    # 补全 attack：返回 f'{self.name}释放{self.element}冰霜，威力 {self.get_power()}'\n    def attack(self):\n        pass\n\nname = input()\nelement = input()\nprint(FireDragon(name, 80, element).attack())\nprint(IceBeast('冰晶兽', 60, '深蓝').attack())",
+    "testcases": [
+      {
+        "input": "小火龙\n赤红",
+        "expected": "小火龙喷出赤红火焰，威力 80\n冰晶兽释放深蓝冰霜，威力 60"
+      },
+      {
+        "input": "烈焰龙\n金黄",
+        "expected": "烈焰龙喷出金黄火焰，威力 80\n冰晶兽释放深蓝冰霜，威力 60"
+      }
+    ],
+    "hint": "子类初始化时怎么调用父类的 __init__（想想哪个关键字）？子类自己的属性再自己存。attack 里要拿到威力值，通过哪个方法读取？",
+    "explain": "FireDragon('小火龙', 80, '赤红') 创建时，super().__init__(name, power) 把名字和威力交给父类初始化（威力存进私有属性 __power），子类只负责保存 element；attack 重写后通过受控入口 get_power() 读取威力。两只生物调用同一个 attack() 却喷出不同咒语——继承复用代码、封装保护数据、多态方便扩展，全在这一题里。",
+    "concept": [
+      "继承",
+      "super",
+      "封装",
+      "私有属性",
+      "方法重写",
+      "多态"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「面向对象进阶」一课 🎉\n\n**这一课你学会了**：\n1. 继承：`class 子类(父类):`，子类自动拥有父类的属性和方法；重写 `__init__` 时记得 `super().__init__(...)`\n2. 方法重写：子类定义与父类同名的方法，覆盖父类版本\n3. 封装：`__xxx` 是私有属性，类外不能直接访问；用公开方法（如 `get_power()`）提供受控入口\n4. 多态：调用同一个方法名，不同对象做出不同的事；加新类不用改旧代码\n5. 三大支柱各司其职：**继承复用代码、封装保护数据、多态方便扩展**\n\n**给魔法学院的新学徒点个赞**：你的魔法生物家族谱已经完工——小火龙和冰晶兽都归队了！下一课，把它们放进真正的魔法对决里试试身手吧！"
+  }
+}
