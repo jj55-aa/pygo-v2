@@ -1,0 +1,144 @@
+{
+  "lesson": "p4_l1",
+  "title": "窗口与控件",
+  "questions": [
+    {
+      "id": "p4_l1_p1",
+      "type": "choice",
+      "stem": "你想做一个「带界面的小工具」：用户能看到窗口、点按钮、在输入框里打字，而不是在黑乎乎的终端里敲命令。用 Python 做这种图形界面，最省事的方式是用哪个库？",
+      "options": [
+        "tkinter——Python 自带的图形界面库，随 Python 一起安装",
+        "math——数学计算库",
+        "random——随机数库",
+        "csv——读写表格文件用的库"
+      ],
+      "answer": 0,
+      "hint": "想想概念卡 1：哪个库是 Python 自带的 GUI 库？",
+      "explain": "Tkinter 是 Python 自带的 GUI 库（Tk 图形工具包的 Python 接口），随 Python 一起安装：import tkinter as tk 就能开窗口、放控件。math / random / csv 都不是做界面的。",
+      "traps": [
+        { "opt": 1, "why": "math 是算数学的库（开方、三角函数），做不出窗口和按钮。" },
+        { "opt": 2, "why": "random 是产生随机数的库，跟图形界面无关。" },
+        { "opt": 3, "why": "csv 是处理表格文件的库，管不到界面。" }
+      ],
+      "concept": ["tkinter", "GUI"]
+    },
+    {
+      "id": "p4_l1_p2",
+      "type": "choice",
+      "stem": "一个 Tkinter 程序写好了窗口和控件，最后调用 root.mainloop()。mainloop() 到底做了什么？",
+      "options": [
+        "创建主窗口并设置标题",
+        "让窗口保持显示、等待用户操作（点击按钮等），直到用户关闭窗口才结束",
+        "把窗口里的控件按顺序排列好",
+        "立刻关闭窗口，程序直接结束"
+      ],
+      "answer": 1,
+      "hint": "想想概念卡 2 的比喻：mainloop() 是「开门营业」还是「租店面」？",
+      "explain": "mainloop() 进入事件循环：窗口保持显示、时刻准备响应用户操作，直到用户关窗才结束——它像「开门营业」，会一直阻塞在这里。创建窗口是 Tk()，排列控件是 pack()/grid()。",
+      "traps": [
+        { "opt": 0, "why": "创建窗口是 Tk()，设置标题是 root.title()；mainloop() 负责「保持显示」。" },
+        { "opt": 2, "why": "排列控件是 pack()/grid() 布局方法干的活，不是 mainloop()。" },
+        { "opt": 3, "why": "正好相反：mainloop() 是让窗口一直开着，不是关闭程序。" }
+      ],
+      "concept": ["mainloop", "事件循环", "窗口"]
+    },
+    {
+      "id": "p4_l1_p3",
+      "type": "judge",
+      "stem": "这个网页练习环境（Pyodide）里运行 import tkinter，就能弹出一个真实的窗口。",
+      "answer": false,
+      "hint": "Pyodide 里有没有 tkinter？弹出真窗口需要真实的桌面环境。",
+      "explain": "判题环境（Pyodide）没有 tkinter，也弹不出真实窗口——所以本课把 tkinter 概念讲清楚，code/quest 题用 input/print 验证「按钮背后的逻辑」。在你自己电脑的 Python 里才能真开窗口。",
+      "concept": ["tkinter", "判题环境"]
+    },
+    {
+      "id": "p4_l1_p4",
+      "type": "fill",
+      "stem": "窗口和控件都准备好了，调用哪个方法能让窗口一直保持显示、直到用户关闭？（填英文方法名，形如 xxx()）",
+      "answer": ["mainloop", "mainloop()", "主循环", "事件循环"],
+      "hint": "概念卡 2 里「开门营业」是哪个方法？",
+      "explain": "root.mainloop() 让窗口进入事件循环、保持显示，直到用户关闭窗口程序才结束——它是窗口三件套的最后一步。",
+      "traps": [
+        { "wrong": "pack", "why": "pack() 是布局方法，负责让控件显示出来；让窗口「一直开着」的是 mainloop()。" },
+        { "wrong": "title", "why": "title() 是设置窗口标题的方法；保持窗口显示靠 mainloop()。" }
+      ],
+      "concept": ["mainloop", "窗口"]
+    },
+    {
+      "id": "p4_l1_p5",
+      "type": "fill",
+      "stem": "Tkinter 里控件创建后要布局才显示。pack 是按顺序纵向堆叠；另一种像 Excel 表格一样按「行、列」摆控件的布局方法叫什么？（填英文方法名，形如 xxx()）",
+      "answer": ["grid", "grid()", "网格", "网格布局"],
+      "hint": "像 Excel 表格那样按行列排，这个方法的名字和「格子/表格」有关。",
+      "explain": "grid() 是网格布局：控件按 row（行）、column（列）摆放，像 Excel 表格；pack() 则是一个接一个纵向堆叠。两种都行，一屏里选一种用到底。",
+      "traps": [
+        { "wrong": "pack", "why": "pack 是纵向堆叠的布局；像 Excel 按行列摆的是 grid()。" },
+        { "wrong": "place", "why": "place 可以精确指定坐标，但「像 Excel 表格按行列摆」的标准答案是 grid()。" }
+      ],
+      "concept": ["布局", "grid", "pack"]
+    },
+    {
+      "id": "p4_l1_p6",
+      "type": "sort",
+      "stem": "把一个最小的 Tkinter 窗口程序按正确顺序排好：导入库 → 创建主窗口 → 创建标签控件 → 布局控件 → 让窗口保持显示。",
+      "lines": [
+        "root.mainloop()  # 让窗口保持显示",
+        "label = tk.Label(root, text=\"你好，桌面工坊！\")  # 创建标签控件",
+        "import tkinter as tk  # 导入 Tkinter",
+        "label.pack()  # 布局：控件才会显示",
+        "root = tk.Tk()  # 创建主窗口"
+      ],
+      "answer": [2, 4, 1, 3, 0],
+      "hint": "顺序：先 import，再 Tk() 建窗口，再创建控件，再 pack() 布局，最后 mainloop()。",
+      "explain": "Tkinter 程序骨架：import tkinter as tk → root = tk.Tk() 创建主窗口 → tk.Label(root, ...) 创建控件（第一个参数是父窗口 root）→ label.pack() 布局让控件显示 → root.mainloop() 保持显示。",
+      "concept": ["tkinter", "mainloop", "控件", "布局"]
+    },
+    {
+      "id": "p4_l1_p7",
+      "type": "code",
+      "stem": "桌面工坊的第一个小工具：界面上有输入框和「计算平方」按钮。按钮背后要做的逻辑是：读入一个数字，打印它的平方。\n\n判题环境没有窗口，我们用 input/print 模拟「点按钮就计算」：\n- 读入一个整数 n\n- 打印 n 的平方（输入 5 → 打印 25）",
+      "code": "n = int(input())\n\n# TODO：计算 n 的平方并打印",
+      "testcases": [
+        { "input": "5", "expected": "25" },
+        { "input": "0", "expected": "0" },
+        { "input": "12", "expected": "144" }
+      ],
+      "hint": "平方就是「自己乘自己」——乘法怎么写？也可以想想有没有幂运算写法。算出结果后打印。",
+      "explain": "按钮背后的逻辑就是这段计算：读入数字 → 算平方 → 输出。n * n 就是平方——这就是「点按钮就计算」的引擎部分。",
+      "concept": ["按钮", "逻辑", "平方"]
+    },
+    {
+      "id": "p4_l1_p8",
+      "type": "code",
+      "stem": "工坊师傅说：按钮背后的逻辑要封装成函数，界面才干净——这就是「外壳与引擎」的分工。\n\n1. 定义函数 square(n)：返回 n 的平方\n2. 读入一个整数 n\n3. 调用 square(n)，打印 `n 的平方是： X`（输入 5 → 打印 `5 的平方是： 25`）",
+      "code": "def square(n):\n    # TODO：返回 n 的平方\n    pass\n\nn = int(input())\n# TODO：调用 square(n)，打印「n 的平方是： X」",
+      "testcases": [
+        { "input": "5", "expected": "5 的平方是： 25" },
+        { "input": "0", "expected": "0 的平方是： 0" },
+        { "input": "-3", "expected": "-3 的平方是： 9" }
+      ],
+      "hint": "函数里用 return 返回平方结果；主程序调用 square(n)，把结果拼进「n 的平方是： X」再打印——拼接用 f-string 或字符串拼接都行。",
+      "explain": "引擎（square 函数）不依赖窗口，单独就能测；外壳（界面）只负责把输入交给引擎、把结果展示出来——这就是界面与逻辑分离。",
+      "concept": ["函数", "界面与逻辑分离", "平方"]
+    }
+  ],
+  "quest": {
+    "id": "p4_l1_quest",
+    "title": "剧情任务：计算器引擎",
+    "story": "你在「桌面工坊」接到了第一份订单：给客户做一个计算器小工具。工坊师傅展开图纸——两个输入框、一个运算符选择器、一个「计算」按钮。他翻到图纸背面：「界面的外壳是下一站的事，今天先把引擎做好！把『点计算按钮背后要做的逻辑』写成代码：读进两个数和运算符，算出结果。算盘先打起来——外壳再漂亮，也离不开引擎。」",
+    "stem": "实现计算器按钮背后的逻辑：\n\n读入三行输入：第一行整数 a、第二行运算符 op（+ - * / 之一）、第三行整数 b。\n\n- 打印 `a op b = 结果`，例如输入 `10`、`+`、`5` → 打印 `10 + 5 = 15`\n- 除法用真除法 `/`：`9 / 2` → `4.5`\n- 当 op 是 `/` 且 b == 0 时，打印 `除数不能为 0！`（友好提示，不让程序崩溃）",
+    "code": "# 桌面工坊 · 第一个小工具：计算器（按钮背后的逻辑）\na = int(input())   # 第一个数字\nop = input()       # 运算符：+ - * /\nb = int(input())   # 第二个数字\n\nif op == \"+\":\n    print(f\"{a} + {b} = {a + b}\")\n# TODO 1：处理减法 - 和乘法 *\n# TODO 2：处理除法 /；注意 b == 0 时打印「除数不能为 0！」",
+    "testcases": [
+      { "input": "10\n+\n5", "expected": "10 + 5 = 15" },
+      { "input": "6\n*\n7", "expected": "6 * 7 = 42" },
+      { "input": "9\n/\n2", "expected": "9 / 2 = 4.5" },
+      { "input": "9\n/\n0", "expected": "除数不能为 0！" }
+    ],
+    "hint": "加减乘是同一类：算出结果、按「a op b = 结果」的格式打印。除法要小心：除数是不是 0？先判断什么、再判断什么？",
+    "explain": "按钮背后的逻辑 = 分支判断：+ - * 直接算；/ 先看除数是否为 0——为 0 打印友好提示，不为 0 正常算。计算器引擎完成！下一课给引擎装上「外壳」：真正的按钮、输入框和事件交互。",
+    "concept": ["计算器", "分支", "按钮", "逻辑"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「窗口与控件」一课，也走进了「桌面工坊」的大门 🎉\n\n**这一课你学会了**：\n1. GUI = 图形用户界面：窗口、按钮、输入框，告别黑乎乎的终端；Tkinter 是 Python 自带的 GUI 库，随 Python 一起安装，不用 pip 装\n2. 窗口三件套：`Tk()` 创建主窗口 → 创建控件（Label/Button/Entry）→ `mainloop()` 让窗口保持显示（它会「阻塞」，直到用户关窗）；控件要 `pack()`/`grid()` 布局才显示\n3. 常用控件：Label 显示文字、Button 点按触发（`command` 传函数名，不加括号）、Entry 收输入（用 `.get()` 取内容）\n4. 界面与逻辑分离：按钮背后是函数——界面是「外壳」，逻辑是「引擎」；判题环境没有 tkinter，练习就用 input/print 模拟「按钮背后的逻辑」\n\n**剧情推进**：计算器引擎做好了——读入两个数、按运算符算出结果，除数为 0 还会友好提示，逻辑已经能跑！但工坊师傅敲了敲窗框：「光有引擎还不够，它还没装上方向盘呢——用户怎么『点』按钮、窗口怎么『响应』？下一站：事件与交互，让外壳真正转起来！」"
+  }
+}
