@@ -1,0 +1,247 @@
+{
+  "lesson": "p2_l3",
+  "title": "独立挑战",
+  "questions": [
+    {
+      "id": "p2_l3_p1",
+      "type": "choice",
+      "stem": "影评峡谷的爬虫项目，要把「多段电影 HTML」变成「评分榜单」，完整流程的正确顺序是？",
+      "options": [
+        "读入分段 → 提取 → 清洗 → 统计 → 排序输出（先拿到全部 HTML 并按空行分段，再提取片名评分、转数字清洗，然后统计，最后排序展示）",
+        "统计 → 排序 → 提取 → 读入 → 清洗（还没读数据就先算结果？没有数据，统计就是无米之炊）",
+        "提取 → 读入 → 排序 → 清洗 → 统计（HTML 都没读进来，拿什么提取？第一步就错了）",
+        "清洗 → 提取 → 统计 → 读入 → 排序（清洗的前提是先提取出字段，顺序完全反了）"
+      ],
+      "answer": 0,
+      "hint": "想想数据流：数据得先「到手」（读入），才能加工（提取、清洗），加工完才谈得上统计和排序展示。",
+      "explain": "完整流程：读入分段（拿到多段 HTML、按空行分段）→ 提取（re.findall 取片名和评分）→ 清洗（评分转 float）→ 统计（算平均分等）→ 排序输出（降序 + 前 3 名）。顺序就是数据流动的顺序，反了就是「无米之炊」。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "统计要建立在读到的数据上：数据还没读进来就统计，结果必然是空的——读入永远在最前。"
+        },
+        {
+          "opt": 2,
+          "why": "提取的前提是 HTML 已经读入内存：没读入就提取，拿什么提取？第一步必须是读入分段。"
+        },
+        {
+          "opt": 3,
+          "why": "清洗是对「提取出来的字段」做处理（如评分转 float）：字段都还没提取出来，谈何清洗？"
+        }
+      ],
+      "concept": [
+        "项目全景",
+        "完整流程",
+        "爬虫"
+      ]
+    },
+    {
+      "id": "p2_l3_p2",
+      "type": "choice",
+      "stem": "html 片段里有两个 <title> 标签，执行 re.findall(r'<title>(.*?)</title>', html) 会返回什么？",
+      "options": [
+        "['肖申克的救赎', '霸王别姬']——一个列表，装着所有匹配到的片名",
+        "'肖申克的救赎'——只返回第一个匹配到的片名",
+        "['<title>肖申克的救赎</title>']——把标签本身也算进结果",
+        "报错：一个 HTML 里不能有两个同名标签"
+      ],
+      "answer": 0,
+      "hint": "findall 的名字里有 all——它返回「所有」匹配，还是只挑第一个？返回的是列表还是单个字符串？",
+      "explain": "re.findall 返回**所有**匹配项组成的列表，且只取括号 () 捕获的内容，不含标签本身。两个 title → ['肖申克的救赎', '霸王别姬']。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "findall 的 all 就是「全部」——它会找出所有匹配项，而不是只挑第一个。"
+        },
+        {
+          "opt": 2,
+          "why": "正则里括号 () 捕获的是标签里的内容，标签本身 <title> </title> 不会进结果。"
+        },
+        {
+          "opt": 3,
+          "why": "重复标签完全合法，findall 正是为「可能有多个匹配」设计的，不会报错。"
+        }
+      ],
+      "concept": [
+        "re.findall",
+        "提取",
+        "正则"
+      ]
+    },
+    {
+      "id": "p2_l3_p3",
+      "type": "judge",
+      "stem": "movies = [[\"肖申克的救赎\", 9.7], [\"霸王别姬\", 9.6]]，直接执行 sorted(movies, reverse=True) 就能按评分从高到低排序。",
+      "answer": false,
+      "hint": "不写 key 的话，sorted 拿什么当排序依据？两个 [片名, 评分] 列表比大小，先比的是谁？",
+      "explain": "不写 key 时 sorted 按整个元素比较——movies 的元素是 [片名, 评分] 列表，比较时先比片名（字符串），不是比评分。必须写 key=lambda m: m[1] 指定按评分排，再加 reverse=True 才降序。",
+      "concept": [
+        "排序",
+        "sorted",
+        "key"
+      ]
+    },
+    {
+      "id": "p2_l3_p4",
+      "type": "fill",
+      "stem": "re 模块里，返回「所有匹配项组成的列表」的方法是 re.______（填方法名，英文或中文都可以）。",
+      "answer": [
+        "findall",
+        "查找全部",
+        "找出全部",
+        "找到全部"
+      ],
+      "hint": "方法名里带 all——找出所有匹配。",
+      "explain": "re.findall(正则, 文本) 返回所有匹配项组成的列表；只想取第一个匹配用 re.search / re.match。",
+      "traps": [
+        {
+          "wrong": "search",
+          "why": "search 只返回第一个匹配到的对象（Match 对象），不是所有匹配的列表。"
+        },
+        {
+          "wrong": "match",
+          "why": "match 从文本开头匹配，也只返回第一个匹配对象，不返回列表。"
+        }
+      ],
+      "concept": [
+        "re.findall",
+        "提取"
+      ]
+    },
+    {
+      "id": "p2_l3_p5",
+      "type": "debug",
+      "stem": "影评峡谷要找出评分最高的电影，但程序把 10.0 分的片排到了最后——评分被存成了**字符串**，排序按的是字典序而不是数值。修复代码，让它输出评分最高的电影「片名 评分」。\n\n期望输出（输入 肖申克 9.7 / 泰坦尼克号 10.0 / 霸王别姬 9.6）：\n```\n泰坦尼克号 10.0\n```",
+      "code": "import io\nimport re\nimport sys\n\n# 找出评分最高的电影（这段代码有 bug：10.0 分的片排不到第一）\ntext = sys.stdin.read()\nsegments = text.strip().split(\"\\n\\n\")\n\nmovies = []\nfor seg in segments:\n    seg = seg.strip()\n    if not seg:\n        continue\n    title = re.findall(r'<title>(.*?)</title>', seg)\n    score = re.findall(r'<rating>(.*?)</rating>', seg)\n    if title and score:\n        movies.append([title[0], score[0]])   # TODO: 修复 bug——评分存成了字符串，排序按字典序\n\ntop = sorted(movies, key=lambda m: m[1], reverse=True)[0]\nprint(top[0], top[1])",
+      "testcases": [
+        {
+          "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>泰坦尼克号</title>\n<rating>10.0</rating>\n\n<title>霸王别姬</title>\n<rating>9.6</rating>",
+          "expected": "泰坦尼克号 10.0"
+        },
+        {
+          "input": "<title>千与千寻</title>\n<rating>9.4</rating>\n\n<title>泰坦尼克号</title>\n<rating>10.0</rating>",
+          "expected": "泰坦尼克号 10.0"
+        }
+      ],
+      "hint": "字符串 \"9.7\" 和 \"10.0\" 比较时先比第一位字符 '9' 和 '1'——'9' 更大，所以 9.7 反而排前面。怎么把字符串评分变成数字？",
+      "explain": "字符串比较是逐字符比：'9' > '1'，所以 \"9.7\" > \"10.0\"，10.0 反而垫底。修复：存进 movies 时把评分转 float——movies.append([title[0], float(score[0])])——排序就按数值了，10.0 最大。",
+      "concept": [
+        "调试",
+        "排序",
+        "类型转换"
+      ]
+    },
+    {
+      "id": "p2_l3_p6",
+      "type": "code",
+      "stem": "多段电影 HTML 已读入（每段含片名和评分，段间用空行分隔）。用 re.findall 提取每段的片名和评分，评分转 float，**按出现顺序**每行打印「片名 评分」。\n\n期望输出（输入 肖申克 9.7 / 霸王别姬 9.6）：\n```\n肖申克的救赎 9.7\n霸王别姬 9.6\n```",
+      "code": "import io\nimport re\nimport sys\n\n# 多段电影 HTML：每段含片名和评分，段间用空行分隔\ntext = sys.stdin.read()\nsegments = text.strip().split(\"\\n\\n\")\n\nfor seg in segments:\n    seg = seg.strip()\n    if not seg:      # 空段跳过\n        continue\n    # TODO: 用 re.findall 提取片名和评分\n    #   提示：title = re.findall(r'<title>(.*?)</title>', seg)\n    #         score = re.findall(r'<rating>(.*?)</rating>', seg)\n    # TODO: 评分转 float，打印「片名 评分」\n    pass",
+      "testcases": [
+        {
+          "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>霸王别姬</title>\n<rating>9.6</rating>",
+          "expected": "肖申克的救赎 9.7\n霸王别姬 9.6"
+        },
+        {
+          "input": "<title>千与千寻</title>\n<rating>9.4</rating>",
+          "expected": "千与千寻 9.4"
+        }
+      ],
+      "hint": "findall 返回列表，字段正好 1 个时怎么取出来？评分转成数字再打印；想让中间自动带空格，print 传多个参数还是拼字符串？",
+      "explain": "findall 返回列表，字段正好 1 个时取 [0]；评分字符串要 float() 转数字（这就是「清洗」）；print(片名, 评分) 输出「片名 评分」。",
+      "concept": [
+        "提取",
+        "re.findall",
+        "清洗"
+      ]
+    },
+    {
+      "id": "p2_l3_p7",
+      "type": "code",
+      "stem": "多段电影 HTML 已读入。提取每段片名和评分（评分转 float），收集进 movies（每条 [片名, 评分]），然后**按评分从高到低**打印**前 3 名**，每行「片名 评分」。\n\n期望输出（输入 5 部电影，评分 9.7 / 9.6 / 9.5 / 9.4 / 9.3）：\n```\n肖申克的救赎 9.7\n霸王别姬 9.6\n阿甘正传 9.5\n```",
+      "code": "import io\nimport re\nimport sys\n\n# 多段电影 HTML：每段含片名和评分，段间用空行分隔\ntext = sys.stdin.read()\nsegments = text.strip().split(\"\\n\\n\")\n\nmovies = []          # 每条电影存成 [片名, 评分(float)]\nfor seg in segments:\n    seg = seg.strip()\n    if not seg:\n        continue\n    # TODO: 用 re.findall 提取片名和评分，评分转 float，追加进 movies\n    pass\n\n# TODO: 按评分从高到低排序，打印前 3 名，每行「片名 评分」\n#   提示：top = sorted(movies, key=lambda m: m[1], reverse=True)，切片 top[:3]\npass",
+      "testcases": [
+        {
+          "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>霸王别姬</title>\n<rating>9.6</rating>\n\n<title>阿甘正传</title>\n<rating>9.5</rating>\n\n<title>这个杀手不太冷</title>\n<rating>9.4</rating>\n\n<title>泰坦尼克号</title>\n<rating>9.3</rating>",
+          "expected": "肖申克的救赎 9.7\n霸王别姬 9.6\n阿甘正传 9.5"
+        },
+        {
+          "input": "<title>千与千寻</title>\n<rating>9.4</rating>\n\n<title>肖申克的救赎</title>\n<rating>9.7</rating>",
+          "expected": "肖申克的救赎 9.7\n千与千寻 9.4"
+        }
+      ],
+      "hint": "排序要有两个关键点：按评分（每条的第 2 个元素）排——key 怎么写？从高到低要加什么？取前 3 名用哪种切片写法？",
+      "explain": "sorted(movies, key=lambda m: m[1], reverse=True) 按评分（第 2 个元素）降序生成新列表；切片 top[:3] 取前 3 名，只有 2 条就打印 2 条，不越界报错。",
+      "concept": [
+        "排序",
+        "sorted",
+        "切片"
+      ]
+    },
+    {
+      "id": "p2_l3_p8",
+      "type": "code",
+      "stem": "多段电影 HTML 已读入。提取每段评分（转 float）收集进 scores，计算**全部电影**的平均分，打印「平均分 X.X」（保留 1 位小数）。\n\n期望输出（输入 9.7 / 9.6 / 9.5）：\n```\n平均分 9.6\n```",
+      "code": "import io\nimport re\nimport sys\n\n# 多段电影 HTML：每段含片名和评分，段间用空行分隔\ntext = sys.stdin.read()\nsegments = text.strip().split(\"\\n\\n\")\n\nscores = []\nfor seg in segments:\n    seg = seg.strip()\n    if not seg:\n        continue\n    # TODO: 用 re.findall 提取评分，转 float，追加进 scores\n    #   提示：score = re.findall(r'<rating>(.*?)</rating>', seg)\n    pass\n\n# TODO: 计算平均分并打印「平均分 X.X」（保留 1 位小数）\n#   提示：avg = sum(scores) / len(scores)；print(\"平均分 %.1f\" % avg)\npass",
+      "testcases": [
+        {
+          "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>霸王别姬</title>\n<rating>9.6</rating>\n\n<title>阿甘正传</title>\n<rating>9.5</rating>",
+          "expected": "平均分 9.6"
+        },
+        {
+          "input": "<title>千与千寻</title>\n<rating>9.0</rating>",
+          "expected": "平均分 9.0"
+        },
+        {
+          "input": "<title>肖申克的救赎</title>\n<rating>9.5</rating>\n\n<title>霸王别姬</title>\n<rating>8.5</rating>",
+          "expected": "平均分 9.0"
+        }
+      ],
+      "hint": "平均分 = 总和 ÷ 个数：求和用 sum、数个数用 len。用浮点除法（/）才能保留小数；保留 1 位小数用什么格式化？",
+      "explain": "先把每条评分 float 收集进 scores，平均分 = 分数和 ÷ 数量（sum/len，用 / 浮点除法）；print(\"平均分 %.1f\" % avg) 保留 1 位小数输出。",
+      "concept": [
+        "统计",
+        "平均分",
+        "格式化"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "p2_l3_quest",
+    "title": "剧情任务：影评峡谷结业——独立挑战",
+    "story": "影评峡谷的结业考验来了。豆瓣电影榜的榜单被打散成好多段 HTML——每一段是一个网页，藏着一部电影的片名和评分，段与段之间用空行隔开。你要像真正的爬虫工程师那样：把多段网页全部读进来、逐段提取片名和评分、清洗成数字、按评分排出前三名、再算出全部电影的平均分。这一课没有现成代码抄，提取、排序、统计、异常兜底全要自己写——遇到格式坏的段要提示「格式错误」继续干，一条数据都没有要说出「没有数据」。这是你在影评峡谷的结业考验，也是你独立完成的第一个完整爬虫项目。峡谷尽头的结业证书上，正印着你的名字。",
+    "stem": "影评峡谷结业挑战：读入多段电影 HTML（每段含片名 <title>…</title> 和评分 <rating>…</rating>，段间用空行分隔）。完成：\n- 逐段提取：用 re.findall 提取片名和评分，评分转 float\n- 按评分**从高到低**打印**前 3 名**，每行「片名 评分」\n- 打印全部电影的平均分「平均分 X.X」（保留 1 位小数）\n- 格式错的段（缺片名 / 缺评分 / 评分不是数字）→ 打印「格式错误」，跳过继续\n- 一条有效电影都没有 → 打印「没有数据」",
+    "code": "import io\nimport re\nimport sys\n\n# 影评峡谷结业挑战：多段电影 HTML（每段含片名和评分，段间用空行分隔）\ntext = sys.stdin.read()\nsegments = text.strip().split(\"\\n\\n\")   # 按空行把「多网页」分成多段\n\nmovies = []          # 每条电影存成 [片名, 评分(float)]\nfor seg in segments:\n    seg = seg.strip()\n    if not seg:      # 空段跳过\n        continue\n    # TODO: 用 re.findall 提取片名和评分\n    #   提示：title = re.findall(r'<title>(.*?)</title>', seg)\n    #         score = re.findall(r'<rating>(.*?)</rating>', seg)\n    # TODO: 片名和评分都正好提取到 1 个 → 评分转 float，把 [片名, 评分] 追加进 movies\n    # TODO: 缺字段或评分不是数字 → 打印「格式错误」，继续下一段（程序不能崩）\n    pass\n\n# TODO: 一条电影都没有 → 打印「没有数据」\n# TODO: 按评分从高到低排序，打印前 3 名，每行「片名 评分」\n# TODO: 打印全部电影的平均分「平均分 X.X」（保留 1 位小数）",
+    "testcases": [
+      {
+        "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>霸王别姬</title>\n<rating>9.6</rating>\n\n<title>阿甘正传</title>\n<rating>9.5</rating>\n\n<title>这个杀手不太冷</title>\n<rating>9.4</rating>\n\n<title>泰坦尼克号</title>\n<rating>9.3</rating>",
+        "expected": "肖申克的救赎 9.7\n霸王别姬 9.6\n阿甘正传 9.5\n平均分 9.5"
+      },
+      {
+        "input": "<title>肖申克的救赎</title>\n<rating>9.7</rating>\n\n<title>霸王别姬</title>\n\n<rating>8.5</rating>\n\n<title>千与千寻</title>\n<rating>9.3</rating>\n\n<title>阿甘正传</title>\n<rating>abc</rating>",
+        "expected": "格式错误\n格式错误\n格式错误\n肖申克的救赎 9.7\n千与千寻 9.3\n平均分 9.5"
+      },
+      {
+        "input": "",
+        "expected": "没有数据"
+      },
+      {
+        "input": "<title>烂片</title>\n\n<rating>9.9</rating>",
+        "expected": "格式错误\n格式错误\n没有数据"
+      }
+    ],
+    "hint": "流程六步：① 按空行分段（一段 = 一个网页）；② 每段用 re.findall 提取片名和评分；③ 坏段（缺字段 / 评分不是数字）用 try/except 接住、打印「格式错误」继续；④ 全部段处理完 movies 仍为空才打印「没有数据」；⑤ 按评分降序排、取前 3 名打印；⑥ 平均分 = 分数和 ÷ 数量，保留 1 位小数。",
+    "explain": "这就是完整爬虫项目的主链路：读入多段 HTML（sys.stdin.read() + split(\"\\n\\n\") 按空行分段，一段 = 一个网页）→ 提取（两个 findall 分别取片名和评分）→ 清洗（float 转数字）→ 统计（平均分 = sum/len，%.1f 保留 1 位）→ 排序输出（sorted + key=lambda m: m[1] 降序，切片 [:3] 取前 3 名）。异常兜底两层：坏段用 try/except (IndexError, ValueError) 逐段接住、打印「格式错误」不拖垮全局；所有段处理完后 movies 仍为空，才打印「没有数据」——空数据检查必须放在循环之后。",
+    "concept": [
+      "综合运用",
+      "爬虫",
+      "提取",
+      "排序",
+      "统计",
+      "异常兜底",
+      "独立挑战"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通过了影评峡谷的结业大考，**独立完成了一个完整的爬虫项目** 🎉\n\n**这一课你打通了「爬虫项目」的完整流程**：\n1. **项目全景**：完整爬虫 = 读入多段 HTML → 分段 → 提取 → 清洗 → 统计 → 排序输出 → 异常兜底。多网页数据合并进同一个列表，再统一分析\n2. **提取与清洗**：两个 re.findall 同步取片名和评分，各自核对长度，评分记得 float() 转数字\n3. **排序与 Top**：sorted(movies, key=lambda m: m[1], reverse=True) 按评分降序，切片 top[:3] 取前 3 名——数据不足也不崩\n4. **异常兜底**：坏段 try/except (IndexError, ValueError) 逐段接住、打印「格式错误」；所有段处理完后无有效数据才打印「没有数据」——空数据检查放在循环之后\n\n**🎬 影评峡谷结业彩蛋！** 从 p2_l1 抓取与解析、p2_l2 提取与统计，到这一课的独立挑战——**你手里的网真的能用了**：能抓（多段 HTML 读进来）、能析（findall 提取、清洗成数字）、能统计（排序、Top、平均分）！峡谷为你颁发「爬虫工程师」结业证书，管理员拍了拍你的肩膀：「数据已经到手，下一站，去数据工坊把这一堆数字变成看得懂的报表。」\n\n下一站：**p3 数据分析·Excel**。你会用 pandas 读写 Excel、批量清洗、统计汇总——把影评峡谷抓下来的数据，变成一张张清清楚楚的报表。"
+  }
+}
