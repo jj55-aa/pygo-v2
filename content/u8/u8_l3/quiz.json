@@ -1,0 +1,201 @@
+{
+  "lesson": "u8_l3",
+  "title": "pip 与第三方库",
+  "questions": [
+    {
+      "id": "u8_l3_p1",
+      "type": "choice",
+      "stem": "PyPI（Python Package Index）是什么？",
+      "options": [
+        "Python 自带的一组标准库",
+        "Python 官方的第三方库仓库，里面是别人做好的包",
+        "一个专门运行 Python 代码的软件",
+        "pip 命令的另一个名字"
+      ],
+      "answer": 1,
+      "hint": "想想概念卡 1：PyPI 是\"仓库\"还是\"搬运工具\"？",
+      "explain": "PyPI = Python Package Index，Python 官方包仓库，里面是全世界开发者发布的第三方库（numpy、pandas、requests……）。pip 默认从它那里下载安装。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "标准库是随 Python 一起安装的自带工具；PyPI 是存放第三方库的在线仓库，不是自带库本身。"
+        },
+        {
+          "opt": 2,
+          "why": "运行 Python 代码的是解释器，不是 PyPI。"
+        },
+        {
+          "opt": 3,
+          "why": "pip 是下载安装工具（搬运工），PyPI 是仓库（货架），两者不是一回事。"
+        }
+      ],
+      "concept": ["PyPI", "第三方库"]
+    },
+    {
+      "id": "u8_l3_p2",
+      "type": "choice",
+      "stem": "在代码里写 import requests，运行时报错 ModuleNotFoundError: No module named 'requests'，最可能的原因是？",
+      "options": [
+        "requests 这个库名拼错了，应该写成 request",
+        "电脑上还没用 pip 安装 requests，这个库不在你的环境里",
+        "Python 版本太新，不支持 import 语句",
+        "requests 是标准库，根本不需要 import"
+      ],
+      "answer": 1,
+      "hint": "报错说\"找不到模块\"——模块不存在，通常是因为没装。",
+      "explain": "requests 是第三方库，没 pip install 之前它不在环境里，import 就报 ModuleNotFoundError。先 `pip install requests` 再 import 就好了。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "报错说的是\"找不到模块\"，不是拼错名字——就算拼成 request 一样找不到（除非真装过）。根本原因通常是没安装。"
+        },
+        {
+          "opt": 2,
+          "why": "import 是 Python 最基本的语法，任何版本都支持。"
+        },
+        {
+          "opt": 3,
+          "why": "requests 是第三方库，不是标准库，必须先 pip install 才能 import。"
+        }
+      ],
+      "concept": ["第三方库", "ModuleNotFoundError", "import"]
+    },
+    {
+      "id": "u8_l3_p3",
+      "type": "choice",
+      "stem": "用 pip install 装库时，下载到一半报错 ReadTimeout（超时），总是下载失败。最推荐的解决办法是？",
+      "options": [
+        "多敲几遍 pip install，碰运气直到成功",
+        "换国内镜像源：pip install 库名 -i https://pypi.tuna.tsinghua.edu.cn/simple",
+        "把 Python 卸载重装一遍",
+        "在代码里用 try/except 把报错吞掉"
+      ],
+      "answer": 1,
+      "hint": "ReadTimeout 是网络超时——pip 默认连的国外官方源太慢了。",
+      "explain": "pip 默认从国外官方源下载，网络不稳容易超时。换国内镜像源（清华/阿里/豆瓣）下载更快更稳，是治本的办法。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "网络不稳时重试是碰运气，可能一直失败；换镜像源才是治本。"
+        },
+        {
+          "opt": 2,
+          "why": "问题出在网络，不是 Python 安装坏了，重装解决不了。"
+        },
+        {
+          "opt": 3,
+          "why": "pip 是命令行里的安装操作，try/except 是代码里的异常处理，管不到安装过程。"
+        }
+      ],
+      "concept": ["pip", "镜像源", "网络"]
+    },
+    {
+      "id": "u8_l3_p4",
+      "type": "judge",
+      "stem": "numpy 是第三方库，需要先用 pip install numpy 安装，才能 import numpy 使用。",
+      "answer": true,
+      "hint": "numpy 是 Python 出厂自带的吗？",
+      "explain": "对。numpy（科学计算）、pandas（数据分析）、requests（网络请求）都是第三方库，Python 出厂没有，都要用 pip 装来。",
+      "concept": ["numpy", "第三方库", "pip"]
+    },
+    {
+      "id": "u8_l3_p5",
+      "type": "fill",
+      "stem": "Python 官方的第三方库大仓库叫什么名字？（填 4 个字母的英文缩写）",
+      "answer": ["PyPI", "Python Package Index", "Python包索引", "Python 包索引", "包索引", "官方包仓库"],
+      "hint": "四个字母，首字母是 P，它和 pip 长得很像但不是一回事。",
+      "explain": "PyPI = Python Package Index，Python 官方包仓库。pip 默认就是从它那里下载第三方库的。",
+      "traps": [
+        {
+          "wrong": "pip",
+          "why": "pip 是下载安装工具，不是仓库；仓库叫 PyPI（Python Package Index）。"
+        }
+      ],
+      "concept": ["PyPI"]
+    },
+    {
+      "id": "u8_l3_p6",
+      "type": "fill",
+      "stem": "在命令行里敲什么命令，可以查看电脑上已经安装了哪些库？（写完整命令，含 pip）",
+      "answer": ["pip list", "pip list 查看已安装的库", "pip list查看已安装的库", "pip freeze"],
+      "hint": "命令由两部分组成：工具名 pip + 一个英文单词，意思是\"列出\"。",
+      "explain": "pip list 会列出当前环境里所有已安装的库。装完新库后敲它，看到库名就说明装成功了。",
+      "traps": [
+        {
+          "wrong": "pip install",
+          "why": "pip install 是\"安装\"命令；查看已装库要用 pip list。"
+        },
+        {
+          "wrong": "import",
+          "why": "import 是代码里的导入语句，不是命令行查看已装库的命令。"
+        }
+      ],
+      "concept": ["pip", "pip list"]
+    },
+    {
+      "id": "u8_l3_p7",
+      "type": "sort",
+      "stem": "用 requests 发一个网络请求的完整流程，正确顺序是什么？（pip install → import → 使用 → 查看结果）",
+      "lines": [
+        "import requests",
+        "pip install requests",
+        "resp = requests.get(\"https://example.com\")",
+        "print(resp.status_code)"
+      ],
+      "answer": [1, 0, 2, 3],
+      "hint": "先安装，再导入，然后用它干活，最后查看结果。",
+      "explain": "先 `pip install requests` 把库装进电脑 → 再 `import requests` 导入 → 调 requests.get() 发请求 → 用 print 查看状态码。注意：import 必须在 install 之后，否则找不到模块。",
+      "concept": ["pip install", "import", "requests"]
+    },
+    {
+      "id": "u8_l3_p8",
+      "type": "code",
+      "stem": "模拟\"装库\"：你造了一个伪第三方库「工具箱」，里面的函数 box_area(r) 用标准库 math 计算圆的面积。\n\n- 读入半径 r（整数）\n- 补全 box_area，返回圆面积（= math.pi * r * r）\n- 输出面积，保留 2 位小数\n\n期望输出示例（输入 1）：\n```\n3.14\n```",
+      "code": "import math\n\n\ndef box_area(r):\n    # TODO: 用标准库 math 返回半径为 r 的圆面积\n    return 0\n\n\nr = int(input())\nprint(round(box_area(r), 2))",
+      "testcases": [
+        {
+          "input": "1",
+          "expected": "3.14"
+        },
+        {
+          "input": "2",
+          "expected": "12.57"
+        },
+        {
+          "input": "10",
+          "expected": "314.16"
+        }
+      ],
+      "hint": "圆面积公式是 πr²，用 math.pi 表示 π，最后 round(..., 2) 保留两位小数。",
+      "explain": "box_area(r) 返回 math.pi * r * r；print(round(box_area(r), 2)) 输出保留两位小数的面积。把工具封装成函数、import 就能用——这就是\"第三方库\"的感觉，只不过这里用的是标准库。",
+      "concept": ["math", "函数", "标准库"]
+    }
+  ],
+  "quest": {
+    "id": "u8_l3_quest",
+    "title": "剧情任务：装库决策官",
+    "story": "你走进百宝箱最深处的房间，老工匠递来一张图纸：新项目要一个「算圆工具箱」——输入半径，输出圆的面积和周长。老工匠提醒你：requests、numpy 这些大件要等下一站才轮到装，但百宝箱里就有现成的 math。你这位「装库决策官」一拍脑袋：math 是标准库，出厂自带，不用 pip 装！直接用标准库造一个伪第三方库——把工具封装成函数，import 就能用，这就是\"装库\"的精神！",
+    "stem": "完成「伪第三方库」工具箱函数 tool_box(r)：\n\n- 读入半径 r（整数）\n- 第一行输出圆面积（= math.pi * r * r，保留 2 位小数）\n- 第二行输出圆周长（= 2 * math.pi * r，保留 2 位小数）\n\n期望输出示例（输入 1）：\n```\n3.14\n6.28\n```",
+    "code": "import math\n\n\ndef tool_box(r):\n    # 面积 = πr²，周长 = 2πr，都保留 2 位小数\n    area = 0\n    length = 0\n    return f\"{area}\\n{length}\"\n\n\nr = int(input())\nprint(tool_box(r))",
+    "testcases": [
+      {
+        "input": "1",
+        "expected": "3.14\n6.28"
+      },
+      {
+        "input": "2",
+        "expected": "12.57\n12.57"
+      },
+      {
+        "input": "5",
+        "expected": "78.54\n31.42"
+      }
+    ],
+    "hint": "想想面积和周长分别怎么用 math.pi 和 r 表示？保留两位小数用什么函数？最后怎么按「第一行面积、第二行周长」拼成两行输出？",
+    "explain": "面积 = πr²，周长 = 2πr，都保留 2 位小数。老工匠试了试：「圆面积 78.54、周长 31.42，分毫不差！」你这位装库决策官深藏功与名——没有 pip，标准库照样能造出趁手的工具。下一站，真正的第三方库 requests 在等你！",
+    "concept": ["math", "函数", "标准库", "第三方库"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「pip 与第三方库」一课 🎉\n\n**这一课你学会了**：\n1. 第三方库 = 别人做好、发布到 PyPI 的工具；标准库自带，第三方库要 pip 装\n2. 装库三步走：`pip install 库名`（装）→ `import 库名`（用）→ `pip list`（查）\n3. 装库失败先看最后两行：网络超时换国内镜像、pip 太旧就升级、找不到 pip 检查 PATH/权限、版本冲突用虚拟环境\n4. 虚拟环境 = 每个项目一间独立小房间，各装各的库，版本再也不打架\n\n**剧情推进**：百宝箱守库人看着你造的「伪第三方库」工具箱，满意地点点头：「没有 pip，你也能造出趁手的工具。现在，该见识一件真正 pip 装来的大件了——」他翻开下一张图纸：**requests**，Python 里最出名的网络请求库。下一站：requests 初探！"
+  }
+}
