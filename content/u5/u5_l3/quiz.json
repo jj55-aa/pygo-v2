@@ -1,0 +1,253 @@
+{
+  "lesson": "u5_l3",
+  "title": "面向对象应用",
+  "questions": [
+    {
+      "id": "u5_l3_p1",
+      "type": "choice",
+      "stem": "给魔法生物做需求分析时，把需求描述里的「名词」圈出来（比如：小火龙、血量、魔杖）。这些名词通常对应什么？",
+      "options": [
+        "类或属性",
+        "运算符",
+        "if 判断的条件",
+        "循环的次数"
+      ],
+      "answer": 0,
+      "hint": "「英雄、怪物、血量、武器」——这些词是什么词性？",
+      "explain": "名词通常是对象或对象的属性（小火龙、血量、魔杖），动词通常是方法（攻击、战斗）。先圈名词和动词，再设计类和类的方法。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "运算符是动词行为。名词对应的是类或属性。"
+        },
+        {
+          "opt": 2,
+          "why": "if 条件是逻辑细节。先圈名词定类/属性，圈动词定方法。"
+        },
+        {
+          "opt": 3,
+          "why": "循环次数是流程。需求分析第一步是找名词。"
+        }
+      ],
+      "concept": [
+        "需求分析",
+        "类",
+        "属性"
+      ]
+    },
+    {
+      "id": "u5_l3_p2",
+      "type": "choice",
+      "stem": "小火龙、冰霜史莱姆、雷鹰都有名字和血量，都会攻击，但攻击方式各不相同。最合理的设计是？",
+      "options": [
+        "写三个完全独立的类，代码各写各的",
+        "抽一个父类放公共属性和方法，三种生物继承它并重写 attack",
+        "用三个函数代替类",
+        "把三种生物的全部代码塞进一个类"
+      ],
+      "answer": 1,
+      "hint": "重复的代码应该抽到哪里？",
+      "explain": "公共部分（名字、血量、is_alive）放父类，差异部分（攻击方式）由子类重写。以后新增魔法生物，只需要写一个新子类。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "三份重复代码难维护。公共属性和方法应抽到父类。"
+        },
+        {
+          "opt": 2,
+          "why": "函数表达不了对象关系。有属性有行为的应设计类。"
+        },
+        {
+          "opt": 3,
+          "why": "一个类塞三种生物会乱成一团。继承 + 重写才是合理设计。"
+        }
+      ],
+      "concept": [
+        "继承",
+        "类设计"
+      ]
+    },
+    {
+      "id": "u5_l3_p3",
+      "type": "judge",
+      "stem": "子类重写了 attack 方法后，调用子类对象的 attack() 时，执行的是父类里的原始版本。",
+      "answer": false,
+      "hint": "想想多态：同一个方法名，谁的对象执行谁的版本？",
+      "explain": "这是多态：子类重写后，调用子类对象的 attack() 执行的是子类版本，而不是父类版本。",
+      "concept": [
+        "多态",
+        "继承"
+      ]
+    },
+    {
+      "id": "u5_l3_p4",
+      "type": "fill",
+      "stem": "在 setter 里写 self.__hp = ___(0, value)，血量就永远不会变成负数。横线处填什么函数名？（填英文）",
+      "answer": [
+        "max",
+        "最大"
+      ],
+      "hint": "「取两者中较大的那个」用哪个函数？",
+      "explain": "max(0, value) 返回 0 和 value 中较大的值，所以 value 为负数时结果就是 0——血量永远不会低于 0。",
+      "traps": [
+        {
+          "wrong": "min",
+          "why": "min(0, value) 会取更小的那个，负值会更负。max(0, value) 才是保底。"
+        },
+        {
+          "wrong": "abs",
+          "why": "abs 是取绝对值，和血量钳制无关。max(0, value) 才保证不为负。"
+        }
+      ],
+      "concept": [
+        "封装",
+        "property",
+        "max"
+      ]
+    },
+    {
+      "id": "u5_l3_p5",
+      "type": "pair",
+      "stem": "把「类与类的关系」和对应的描述配对。",
+      "leftOptions": [
+        "Slime 继承 Monster（史莱姆是怪物的一种）",
+        "Hero 拥有技能列表 skills（英雄有技能）",
+        "battle 函数里用到 monster（战斗中临时使用）"
+      ],
+      "rightOptions": [
+        "is-a（继承）",
+        "has-a（拥有/关联）",
+        "use-a（临时使用）"
+      ],
+      "answer": [
+        [
+          0,
+          0
+        ],
+        [
+          1,
+          1
+        ],
+        [
+          2,
+          2
+        ]
+      ],
+      "hint": "「是」一种 → is-a；「有」一个 → has-a；「临时用到」→ use-a。",
+      "explain": "史莱姆「是」Monster 的子类 → is-a（继承）；英雄「拥有」技能列表 → has-a；函数里临时用到某个对象 → use-a。",
+      "concept": [
+        "类关系",
+        "继承",
+        "对象协作"
+      ]
+    },
+    {
+      "id": "u5_l3_p6",
+      "type": "sort",
+      "stem": "把下面的代码行按正确顺序排好，实现回合制战斗循环：先初始化回合号；双方都存活时，打印回合号 → 英雄先攻击 → 怪物活着就反击 → 回合数 +1。",
+      "lines": [
+        "    if monster.is_alive():",
+        "    round_no += 1",
+        "while hero.is_alive() and monster.is_alive():",
+        "    print(f'—— 第 {round_no} 回合 ——')",
+        "round_no = 1",
+        "        monster.attack(hero)",
+        "    hero.attack(monster)"
+      ],
+      "answer": [
+        4,
+        2,
+        3,
+        6,
+        0,
+        5,
+        1
+      ],
+      "hint": "分四段想：① 循环前先初始化回合号；② while 条件保证双方都活着才打；③ 每回合先打印回合号、英雄先出手；④ 怪物活着才反击（想想这个判断应该放在哪一步之后）、回合号在结尾 +1。",
+      "explain": "先 round_no = 1；while 双方都存活：打印回合号，hero.attack(monster)；if monster.is_alive(): monster.attack(hero)；最后 round_no += 1。",
+      "concept": [
+        "回合制",
+        "对象协作",
+        "while"
+      ]
+    },
+    {
+      "id": "u5_l3_p7",
+      "type": "debug",
+      "stem": "史莱姆明明「重写」了 attack，可运行结果却还是父类的「发动了攻击」——仔细看看子类的方法名，是不是拼错了？\n\n期望输出：\n小绿用软软的身体撞你，造成 8 点伤害",
+      "code": "class Monster:\n    def __init__(self, name, hp):\n        self.name = name\n        self.hp = hp\n\n    def attack(self):\n        return f'{self.name}发动了攻击'\n\n\nclass Slime(Monster):\n    def attak(self):\n        return f'{self.name}用软软的身体撞你，造成 8 点伤害'\n\n\nm = Slime(input(), 50)\nprint(m.attack())",
+      "testcases": [
+        {
+          "input": "小绿",
+          "expected": "小绿用软软的身体撞你，造成 8 点伤害"
+        },
+        {
+          "input": "果冻",
+          "expected": "果冻用软软的身体撞你，造成 8 点伤害"
+        }
+      ],
+      "hint": "子类方法名必须和父类一模一样才算「重写」。attak 和 attack 是同一个名字吗？",
+      "explain": "方法名拼错不会报错，只会让「重写」静默失败：调用 m.attack() 时子类里找不到，就落回父类版本。把 attak 改成 attack 即可。",
+      "concept": [
+        "调试",
+        "多态",
+        "继承"
+      ]
+    },
+    {
+      "id": "u5_l3_p8",
+      "type": "code",
+      "stem": "补全 Monster 的 take_hit 方法：受到 damage 点伤害后扣血，且血量不能低于 0（用 max 钳制）。然后运行测试。\n\n程序输出应为：\n18\n6\n0",
+      "code": "class Monster:\n    def __init__(self, name, hp):\n        self.name = name\n        self.hp = hp\n\n    def take_hit(self, damage):\n        # 补全：扣血，且血量不能低于 0\n        pass\n\n\nname = input()\nhp = int(input())\ndmg = int(input())\nm = Monster(name, hp)\nm.take_hit(dmg)\nprint(m.hp)\nm.take_hit(dmg)\nprint(m.hp)\nm.take_hit(dmg)\nprint(m.hp)",
+      "testcases": [
+        {
+          "input": "小火龙\n30\n12",
+          "expected": "18\n6\n0"
+        },
+        {
+          "input": "史莱姆\n10\n4",
+          "expected": "6\n2\n0"
+        }
+      ],
+      "hint": "受到伤害后血量怎么改？要保证血量不为负，想想用哪个函数能「取两者中较大值」来兜底？",
+      "explain": "take_hit 的职责：扣血 + 不许为负。self.hp = max(0, self.hp - damage) 一行搞定。",
+      "concept": [
+        "封装",
+        "方法",
+        "max"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u5_l3_quest",
+    "title": "剧情任务：毕业实战——魔法生物对决",
+    "story": "魔法学院的毕业考核到了！院长把两只魔法生物——小火龙和冰霜史莱姆——交到你手上：「给它们建好档案，再让它们堂堂正正打一场回合制对决！用类描述它们（继承 + 重写 attack），再用战斗循环指挥战斗——你入学以来学的所有本事，今天一次用上！」",
+    "stem": "补全三处，实现两只魔法生物的回合制对决：\n1. FireDragon 的 attack：先打印 f'{self.name}喷出火焰！'，再调用父类的 attack(other)\n2. FrostSlime 的 attack：先打印 f'{self.name}用冰霜身体撞击！'，再调用父类的 attack(other)\n3. 战斗循环：双方都存活时，打印 f'—— 第 {round_no} 回合 ——'；a 先攻击 b；b 还活着就反击；回合数 +1。战斗结束（循环退出）后，打印获胜方：f'🎉 {xx.name}获胜！'",
+    "code": "class Monster:\n    def __init__(self, name, hp, atk):\n        self.name = name\n        self.hp = hp\n        self.atk = atk\n\n    def is_alive(self):\n        return self.hp > 0\n\n    def attack(self, other):\n        other.hp = max(0, other.hp - self.atk)\n        print(f'{self.name}攻击{other.name}，造成 {self.atk} 点伤害')\n        print(f'{other.name}剩余血量：{other.hp}')\n\n\nclass FireDragon(Monster):\n    def attack(self, other):\n        # 补全：先打印喷火台词，再调用父类的 attack(other)\n        pass\n\n\nclass FrostSlime(Monster):\n    def attack(self, other):\n        # 补全：先打印撞击台词，再调用父类的 attack(other)\n        pass\n\n\na_name = input()\na_hp = int(input())\na_atk = int(input())\nb_name = input()\nb_hp = int(input())\nb_atk = int(input())\n\na = FireDragon(a_name, a_hp, a_atk)\nb = FrostSlime(b_name, b_hp, b_atk)\n\nround_no = 1\n# 补全：回合制战斗循环 + 结束时打印获胜方",
+    "testcases": [
+      {
+        "input": "小火龙\n50\n12\n冰霜史莱姆\n40\n8",
+        "expected": "—— 第 1 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 12 点伤害\n冰霜史莱姆剩余血量：28\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 8 点伤害\n小火龙剩余血量：42\n—— 第 2 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 12 点伤害\n冰霜史莱姆剩余血量：16\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 8 点伤害\n小火龙剩余血量：34\n—— 第 3 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 12 点伤害\n冰霜史莱姆剩余血量：4\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 8 点伤害\n小火龙剩余血量：26\n—— 第 4 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 12 点伤害\n冰霜史莱姆剩余血量：0\n🎉 小火龙获胜！"
+      },
+      {
+        "input": "小火龙\n30\n5\n冰霜史莱姆\n50\n12",
+        "expected": "—— 第 1 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 5 点伤害\n冰霜史莱姆剩余血量：45\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 12 点伤害\n小火龙剩余血量：18\n—— 第 2 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 5 点伤害\n冰霜史莱姆剩余血量：40\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 12 点伤害\n小火龙剩余血量：6\n—— 第 3 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 5 点伤害\n冰霜史莱姆剩余血量：35\n冰霜史莱姆用冰霜身体撞击！\n冰霜史莱姆攻击小火龙，造成 12 点伤害\n小火龙剩余血量：0\n🎉 冰霜史莱姆获胜！"
+      },
+      {
+        "input": "小火龙\n50\n20\n冰霜史莱姆\n20\n9",
+        "expected": "—— 第 1 回合 ——\n小火龙喷出火焰！\n小火龙攻击冰霜史莱姆，造成 20 点伤害\n冰霜史莱姆剩余血量：0\n🎉 小火龙获胜！"
+      }
+    ],
+    "hint": "子类想复用父类 attack 的伤害结算，怎么调用（想想 super）？战斗要打到一方倒下为止，循环条件怎么判断双方都还活着？结束后怎么判断谁是胜者？",
+    "explain": "FireDragon.attack 先打印台词，再 super().attack(other) 完成伤害结算；FrostSlime 同理。战斗循环：while a.is_alive() and b.is_alive(): 打印回合号 → a.attack(b) → if b.is_alive(): b.attack(a) → round_no += 1。结束后 if a.is_alive() 打印 a 获胜，否则打印 b 获胜。",
+    "concept": [
+      "继承",
+      "super",
+      "对象协作",
+      "回合制"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你从魔法学院毕业了 🎉 毕业实战——两只魔法生物的对决——完美落幕！\n\n**这一课你学会了**：\n1. **需求分析**：名词找类/属性，动词找方法，先设计再写码\n2. **类设计**：一个游戏角色 = 属性（名字/血量/攻击）+ 方法（attack / 受击 / is_alive）\n3. **继承让生物多样化**：公共部分放父类，子类重写 attack 实现多态\n4. **回合制战斗**：两个对象通过方法调用互相「发消息」，用 while 循环驱动回合\n5. **封装保护**：私有属性 + @property 让血量永远不会变成负数；__str__ 让对象自我介绍\n\n从「用类造出你的第一只魔法生物」到「指挥它们打一场回合制战斗」——你已经能用面向对象设计完整的程序了。继续保持，Python 的世界还有更多魔法等着你！"
+  }
+}
