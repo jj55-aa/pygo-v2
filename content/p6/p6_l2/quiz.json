@@ -1,0 +1,251 @@
+{
+  "lesson": "p6_l2",
+  "title": "数据与模板",
+  "questions": [
+    {
+      "id": "p6_l2_p1",
+      "type": "choice",
+      "stem": "驿站后端的 Flask 路由函数里，想把数据填进 HTML 页面、再把整个页面发给浏览器，应该调用哪个函数？",
+      "options": [
+        "render_template(\"show.html\", students=students)——把 students 数据填进 show.html 模板，渲染出完整页面",
+        "json.loads(\"show.html\")——把页面文件当 JSON 解析",
+        "print(students)——把数据打印到终端",
+        "input()——从终端读入数据"
+      ],
+      "answer": 0,
+      "hint": "想想概念卡 3：Flask 里「把数据端上页面」的渲染函数叫什么？",
+      "explain": "render_template(\"模板文件名\", 变量名=数据) 会把数据填进模板、渲染成完整的 HTML 页面字符串，Flask 再把它作为响应发给浏览器——这就是「模板渲染」。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "json.loads 是把 JSON 字符串解析成 Python 数据，是「拆包」，不是渲染页面的函数。"
+        },
+        {
+          "opt": 2,
+          "why": "print 只是把数据打印到服务器终端（控制台），浏览器根本看不到。"
+        },
+        {
+          "opt": 3,
+          "why": "input() 是程序从终端读入数据，方向反了——我们要的是把数据输出成页面。"
+        }
+      ],
+      "concept": [
+        "render_template",
+        "模板渲染",
+        "Flask"
+      ]
+    },
+    {
+      "id": "p6_l2_p2",
+      "type": "choice",
+      "stem": "在 Flask 的模板文件 show.html 里，要把后端传来的变量 students 的值显示出来，应该写成下面哪种写法？",
+      "options": [
+        "{{ students }}——双大括号，Jinja2 显示变量的标准写法",
+        "${students}——PHP 风格的变量写法",
+        "{students}——单大括号",
+        "<students>——尖括号"
+      ],
+      "answer": 0,
+      "hint": "概念卡 3 讲过：模板里的变量「空位」用哪对符号？",
+      "explain": "Jinja2 模板里，{{ 变量 }} 会把变量的值渲染到页面上；${} 是 PHP / JS 模板字符串的写法，{} 是 Python 字典/集合的写法，<> 会被当成 HTML 标签——都不是 Jinja2 的变量语法。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "${} 是 PHP 等语言里插值变量的写法，Flask 的 Jinja2 模板用双大括号 {{ }}。"
+        },
+        {
+          "opt": 2,
+          "why": "单大括号 {students} 在模板里只会被当成普通文本原样输出，不会显示变量的值。"
+        },
+        {
+          "opt": 3,
+          "why": "<students> 会被浏览器当成一个 HTML 标签，而不是变量的值。"
+        }
+      ],
+      "concept": [
+        "模板",
+        "{{ }}",
+        "Jinja2"
+      ]
+    },
+    {
+      "id": "p6_l2_p3",
+      "type": "judge",
+      "stem": "JSON 字符串用 json.loads 解析成字典后，可以直接用点号取字段：data.name（假设解析结果存进了变量 data）。",
+      "answer": false,
+      "hint": "字典取键用哪种写法？想想概念卡 2 的易错点。",
+      "explain": "json.loads 返回的是 Python 字典（或列表），字典取键要用 data[\"name\"] 或 data.get(\"name\")；点号 data.name 是访问对象属性的写法，字典不支持，会报 AttributeError。",
+      "concept": [
+        "JSON",
+        "字典取值",
+        "json.loads"
+      ]
+    },
+    {
+      "id": "p6_l2_p4",
+      "type": "fill",
+      "stem": "把 JSON 字符串还原成 Python 的字典/列表（比如后端解析前端发来的数据），调用的函数是 json.____（填函数名，带 s 的那个）",
+      "answer": [
+        "loads",
+        "loads()",
+        "json.loads",
+        "解析",
+        "拆包",
+        "反序列化"
+      ],
+      "hint": "它和 dumps 是一对：dumps 把数据打包成字符串，____ 把字符串拆包还原。",
+      "explain": "json.loads(字符串) 把 JSON 字符串还原成 Python 数据，返回字典或列表；带 s 的是「字符串版」。注意它和 dumps 方向相反：dumps 打包，loads 拆包。",
+      "traps": [
+        {
+          "wrong": "dumps",
+          "why": "dumps 是反方向：把字典/列表打包成 JSON 字符串。把字符串还原成数据用的是 loads。"
+        },
+        {
+          "wrong": "load",
+          "why": "load（不带 s）是从文件对象里读 JSON；我们拿到的是一段字符串（input() 读入），要用带 s 的 loads。"
+        }
+      ],
+      "concept": [
+        "json.loads",
+        "JSON",
+        "反序列化"
+      ]
+    },
+    {
+      "id": "p6_l2_p5",
+      "type": "fill",
+      "stem": "驿站成绩接口返回的 JSON 是：[{\"name\": \"小明\", \"score\": 92}]。代码 stu = json.loads(s)[0] 得到了小明的字典，想取出分数 92，应写 stu[____]（填双引号里的键名，注意 JSON 键是英文）",
+      "answer": [
+        "score",
+        "\"score\""
+      ],
+      "hint": "看 JSON 里的键名：{\"name\": ..., \"score\": 92}——分数对应哪个英文键？",
+      "explain": "JSON 里的键是 \"score\"，所以取分数要写 stu[\"score\"]。字典取值的键必须和 JSON 里的键**一字不差**——写 stu[\"分数\"] 会抛 KeyError。",
+      "traps": [
+        {
+          "wrong": "分数",
+          "why": "JSON 里的键是英文 \"score\"！字典取值的键必须和 JSON 里的键完全一致，写 stu[\"分数\"] 会抛 KeyError。"
+        },
+        {
+          "wrong": "name",
+          "why": "\"name\" 是姓名对应的键，取出来的是 \"小明\"；分数对应的键是 \"score\"。"
+        }
+      ],
+      "concept": [
+        "JSON",
+        "键一致",
+        "KeyError"
+      ]
+    },
+    {
+      "id": "p6_l2_p6",
+      "type": "debug",
+      "stem": "驿站把学生名单以 JSON 发给了「成绩页面」，下面的程序想逐条渲染成文本行，可一运行就崩。观察报错信息，修复 bug。（提示：JSON 里的键是英文！）\n\n期望输出（输入 [{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]）：\n```\n姓名：小明，分数：92\n姓名：小红，分数：85\n```",
+      "code": "import json\n\ns = input()\nstudents = json.loads(s)\nfor stu in students:\n    # TODO: 修复 bug——stu 里的键是英文 \"score\"，这里写错了，导致 KeyError\n    print(\"姓名：\" + stu[\"name\"] + \"，分数：\" + str(stu[\"分数\"]))",
+      "testcases": [
+        {
+          "input": "[{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]",
+          "expected": "姓名：小明，分数：92\n姓名：小红，分数：85"
+        },
+        {
+          "input": "[{\"name\":\"小刚\",\"score\":60}]",
+          "expected": "姓名：小刚，分数：60"
+        }
+      ],
+      "hint": "报错 KeyError: '分数'——字典里没有中文键「分数」。键要和 JSON 里的英文键一字不差——对照 JSON 原文，正确的键名是什么？",
+      "explain": "JSON 里的键是 \"score\"，stu[\"分数\"] 找不到这个键就抛 KeyError。把 stu[\"分数\"] 改成 stu[\"score\"] 即可——字典取值的键必须和 JSON 里的键完全一致，这也是「JSON 键要一致」最常见的翻车现场。",
+      "concept": [
+        "调试",
+        "KeyError",
+        "JSON",
+        "键一致"
+      ]
+    },
+    {
+      "id": "p6_l2_p7",
+      "type": "code",
+      "stem": "驿站后台拿到一份学生名单 JSON（后端从数据库查出来的，要交给模板渲染）。请补全代码：读入一行 JSON，用 json.loads 解析成列表，然后**逐条**打印「姓名：X，分数：Y」（模拟模板把列表逐条渲染成文本行）。\n\n期望输出（输入 [{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]）：\n```\n姓名：小明，分数：92\n姓名：小红，分数：85\n```",
+      "code": "import json\n\n# 后端从数据库取出的学生列表，以 JSON 字符串形式给你（模拟接口响应）\ns = input()\nstudents = json.loads(s)\n# TODO: 逐条打印「姓名：X，分数：Y」，例如：姓名：小明，分数：92",
+      "testcases": [
+        {
+          "input": "[{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]",
+          "expected": "姓名：小明，分数：92\n姓名：小红，分数：85"
+        },
+        {
+          "input": "[{\"name\":\"小刚\",\"score\":60}]",
+          "expected": "姓名：小刚，分数：60"
+        },
+        {
+          "input": "[{\"name\":\"小丽\",\"score\":78},{\"name\":\"小强\",\"score\":55},{\"name\":\"小美\",\"score\":100}]",
+          "expected": "姓名：小丽，分数：78\n姓名：小强，分数：55\n姓名：小美，分数：100"
+        }
+      ],
+      "hint": "for 循环逐个取出字典：按哪个键取姓名、哪个键取分数？分数是数字，拼进字符串前要先做什么？",
+      "explain": "json.loads(s) 把 JSON 解析成列表；for 循环逐条取出字典 stu；print(\"姓名：\" + stu[\"name\"] + \"，分数：\" + str(stu[\"score\"])) 就是模板渲染列表时「逐条生成一行」的逻辑——真实环境里，这就是 render_template 里 {% for %} 干的事。",
+      "concept": [
+        "json.loads",
+        "模板渲染",
+        "for 循环"
+      ]
+    },
+    {
+      "id": "p6_l2_p8",
+      "type": "code",
+      "stem": "「成绩汇总页」要渲染两块内容：先逐条打印学生「姓名：X，分数：Y」，最后打印一行汇总「共 N 人」（N = 学生人数）。模拟模板里的列表循环 + 底部统计。\n\n期望输出（输入 [{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]）：\n```\n姓名：小明，分数：92\n姓名：小红，分数：85\n共 2 人\n```",
+      "code": "import json\n\ns = input()\nstudents = json.loads(s)\n# TODO: 逐条打印「姓名：X，分数：Y」\n# TODO: 最后打印「共 N 人」（N 是学生人数，用 len 统计）",
+      "testcases": [
+        {
+          "input": "[{\"name\":\"小明\",\"score\":92},{\"name\":\"小红\",\"score\":85}]",
+          "expected": "姓名：小明，分数：92\n姓名：小红，分数：85\n共 2 人"
+        },
+        {
+          "input": "[]",
+          "expected": "共 0 人"
+        },
+        {
+          "input": "[{\"name\":\"小刚\",\"score\":60},{\"name\":\"小丽\",\"score\":78},{\"name\":\"小强\",\"score\":55}]",
+          "expected": "姓名：小刚，分数：60\n姓名：小丽，分数：78\n姓名：小强，分数：55\n共 3 人"
+        }
+      ],
+      "hint": "先逐条打印每个学生，循环结束后统计人数——列表元素个数用什么函数？想想空列表时会输出什么。",
+      "explain": "列表渲染 = for 循环逐条生成一行；人数用 len(students) 统计，渲染在页面底部——这就是模板里「列表 + 汇总」的常见组合。空列表时 for 循环体一次都不执行，只输出「共 0 人」。",
+      "concept": [
+        "模板渲染",
+        "len",
+        "json.loads"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "p6_l2_quest",
+    "title": "剧情任务：驿站公告接口",
+    "story": "「网络驿站」的公告墙前挤满了旅人。驿站长拍着你的肩膀：「上一课你学会了路由与接口，驿站能『接客』了。可接口不能只会说 Hello——旅人访问公告页，是要看公告内容的！这一课的关键，就是把数据『渲染』出来。」他递给你一份接口文档：驿站公告接口会返回一段 JSON，里面有标题 title 和公告列表 items。驿站长说：「把它解析出来，标题一行、每条公告一行，念给驿站里所有旅人听！」",
+    "stem": "驿站公告接口返回一行 JSON（模拟的后端响应），格式如下：\n\n{\"title\": \"公告标题\", \"items\": [\"第一条内容\", \"第二条内容\", ...]}\n\n请补全代码：\n1. 用 json.loads 解析成字典 notice\n2. 打印「公告：标题」（「公告：」+ 标题）\n3. 逐条打印「- 内容」（短横线 + 空格 + 内容），每条一行\n\n期望输出（输入 {\"title\": \"驿站维护通知\", \"items\": [\"今晚 22:00 维护\", \"明日 6:00 恢复\"]}）：\n```\n公告：驿站维护通知\n- 今晚 22:00 维护\n- 明日 6:00 恢复\n```",
+    "code": "import json\n\n# 驿站公告接口返回的 JSON（模拟后端响应）：含标题 title 和公告列表 items\ns = input()\nnotice = json.loads(s)\n# TODO: 1. 打印「公告：标题」\n# TODO: 2. 逐条打印「- 内容」，每条一行",
+    "testcases": [
+      {
+        "input": "{\"title\": \"驿站维护通知\", \"items\": [\"今晚 22:00 维护\", \"明日 6:00 恢复\"]}",
+        "expected": "公告：驿站维护通知\n- 今晚 22:00 维护\n- 明日 6:00 恢复"
+      },
+      {
+        "input": "{\"title\": \"新信件到达\", \"items\": [\"蜘蛛峡谷的来信\", \"档案馆的结业证书\", \"百宝箱的感谢信\"]}",
+        "expected": "公告：新信件到达\n- 蜘蛛峡谷的来信\n- 档案馆的结业证书\n- 百宝箱的感谢信"
+      },
+      {
+        "input": "{\"title\": \"限时活动\", \"items\": [\"今日登录领双倍经验\"]}",
+        "expected": "公告：限时活动\n- 今日登录领双倍经验"
+      }
+    ],
+    "hint": "标题和列表分别存在哪个键下？标题直接取键值打印；列表要遍历逐条打印，每条前面加「- 」。",
+    "explain": "notice = json.loads(s) 解析出字典；notice[\"title\"] 是公告标题；for 循环遍历 notice[\"items\"]，每条 print(\"- \" + item)——这就是模拟模板把公告列表逐条渲染成文本行。驿站长看着公告墙上滚动的文字，竖起大拇指：「渲染得很漂亮，所有旅人都看到公告了！」",
+    "concept": [
+      "json.loads",
+      "模板渲染",
+      "接口",
+      "网络驿站"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「数据与模板」一课，驿站公告接口顺利上线 🎉\n\n**这一课你学会了**：\n1. **数据从哪来**：后端的数据来自请求参数（URL 上的 `?key=value`，Flask 用 `request.args.get` 取）或数据库查询——取到数据后要打包成 JSON 再交给前端\n2. **JSON 是前后端通用语言**：`json.dumps` 打包、`json.loads` 拆包；**键必须一字不差**，取字典值用 `data[\"键\"]`，不是 `data.键`\n3. **模板渲染**：`render_template(\"页面.html\", 变量=数据)` 把数据填进模板；模板里 `{{ 变量 }}` 显示值、`{% for %}` 循环列表——模板 = 页面骨架 + 数据\n4. **判题环境模拟**：没有 Flask/网络，就用「读入一行 JSON → `json.loads` 解析 → for 循环逐条 `print`」模拟渲染，和真实模板渲染是同一套逻辑\n\n**剧情推进**：公告接口上线，驿站正式有了「会说话」的页面！驿站长看着公告墙，又指向驿站墙上最后一面空墙：「路由有了、接口有了、数据模板也会了——就差把它们串成一个完整的网页服务了。那面墙，是留给独立挑战的。」下一站：独立挑战，把 p6 学到的一切组装成驿站的完整门面！"
+  }
+}
