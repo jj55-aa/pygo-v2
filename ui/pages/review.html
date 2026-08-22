@@ -1,0 +1,223 @@
+<style>
+  /* ===================== 复习中心 review.html ===================== */
+  .page.review { max-width: 720px; margin: 0 auto; padding: 20px 20px 60px; }
+  .rv-head { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+  .rv-title { font-size: 20px; font-weight: 700; color: var(--text); margin-right: auto; }
+
+  .rv-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card); padding: 18px; box-shadow: var(--shadow-card); animation: cardIn .25s var(--ease) both; }
+  .stat-num { font-size: 30px; font-weight: 700; color: var(--text); line-height: 1; }
+  .stat-num.due { color: var(--accent); }
+  .stat-label { font-size: 13px; color: var(--text-3); margin-top: 6px; }
+
+  .rv-cheer { background: #F4F5FD; border: 1px solid #E2E5FB; border-radius: var(--r-card); padding: 14px 16px; font-size: 14px; color: var(--accent); line-height: 1.7; margin-bottom: 20px; display: flex; gap: 10px; align-items: flex-start; }
+
+  .rv-list { display: flex; flex-direction: column; gap: 10px; }
+  .rv-item { display: flex; align-items: center; gap: 12px; background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card); padding: 14px 16px; cursor: pointer; transition: all .15s var(--ease); animation: cardIn .25s var(--ease) both; }
+  .rv-item:hover { border-color: var(--accent); }
+  .rv-icon { width: 36px; height: 36px; border-radius: 10px; background: #F4F5FD; color: var(--accent); display: flex; align-items: center; justify-content: center; flex: none; }
+  .rv-meta { flex: 1; min-width: 0; }
+  .rv-stem { font-size: 14px; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rv-src { font-size: 12px; color: var(--text-3); margin-top: 3px; }
+  .rv-due { font-size: 11px; color: #fff; background: var(--bad); padding: 2px 8px; border-radius: 999px; font-weight: 600; flex: none; }
+
+  .rv-empty { text-align: center; padding: 48px 20px; color: var(--text-3); }
+  .rv-empty .big { font-size: 40px; margin-bottom: 10px; }
+  .rv-empty .t { font-size: 15px; color: var(--text-2); }
+  .rv-empty .s { font-size: 13px; margin-top: 6px; }
+
+  .btn-primary { width: 100%; padding: 14px; border-radius: var(--r-btn); border: none; background: var(--accent); color: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: background .15s var(--ease), transform .1s var(--ease); margin-top: 20px; }
+  .btn-primary:hover { background: var(--accent-2); }
+  .btn-primary:active { transform: scale(.985); }
+  .btn-primary:disabled { opacity: .5; cursor: default; }
+
+  /* ---- 复习作答（复用课程页控件样式） ---- */
+  .rv-question { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card); padding: 18px; box-shadow: var(--shadow-card); animation: cardIn .25s var(--ease) both; }
+  .rv-qstem { font-size: 15px; color: var(--text); line-height: 1.7; margin-bottom: 14px; }
+  .rv-qbody .opts { display: flex; flex-direction: column; gap: 10px; }
+  .rv-qbody .opt { display: flex; align-items: center; gap: 10px; padding: 13px 16px; border: 1px solid var(--border); border-radius: var(--r-btn); background: #fff; color: var(--text); font-size: 14px; cursor: pointer; text-align: left; transition: all .15s var(--ease); }
+  .rv-qbody .opt:hover { border-color: var(--accent); }
+  .rv-qbody .opt .k { width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--border-2); flex: none; display: flex; align-items: center; justify-content: center; font-size: 12px; color: var(--text-3); }
+  .rv-qbody .opt.sel { border-color: var(--accent); background: #F4F5FD; box-shadow: 0 0 0 3px rgba(94,106,210,.12); }
+  .rv-qbody .opt.sel .k { border-color: var(--accent); background: var(--accent); color: #fff; }
+  .rv-qbody .judge-row { display: flex; gap: 12px; }
+  .rv-qbody .judge-btn { flex: 1; padding: 15px; border-radius: var(--r-card); border: 1px solid var(--border); background: #fff; font-size: 15px; font-weight: 600; cursor: pointer; transition: all .15s var(--ease); }
+  .rv-qbody .judge-btn.ok:hover, .rv-qbody .judge-btn.ok.sel { border-color: var(--ok); background: #ECFDF5; color: #047857; }
+  .rv-qbody .judge-btn.bad:hover, .rv-qbody .judge-btn.bad.sel { border-color: var(--bad); background: #FEF2F2; color: #B91C1C; }
+  .rv-qbody .fill-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border-2); border-radius: var(--r-btn); font-size: 14px; color: var(--text); outline: none; transition: all .15s var(--ease); }
+  .rv-qbody .fill-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(94,106,210,.12); }
+  .q-feedback { display: flex; align-items: flex-start; gap: 10px; padding: 12px 14px; border-radius: var(--r-card); margin-top: 12px; }
+  .q-feedback.ok { background: #ECFDF5; border: 1px solid #A7F3D0; }
+  .q-feedback.bad { background: #FEF2F2; border: 1px solid #FECACA; }
+  .q-feedback .fb-icon { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex: none; }
+  .q-feedback.ok .fb-icon { background: var(--ok); color: #fff; }
+  .q-feedback.bad .fb-icon { background: var(--bad); color: #fff; }
+  .q-feedback .fb-text { font-size: 14px; line-height: 1.6; flex: 1; }
+</style>
+
+<div class="page review" id="page-review">
+  <div class="rv-head">
+    <h1 class="rv-title">复习中心</h1>
+  </div>
+
+  <div class="rv-stats">
+    <div class="stat-card">
+      <div class="stat-num due" id="dueCount">0</div>
+      <div class="stat-label">待复习</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num" id="totalCount">0</div>
+      <div class="stat-label">已掌握</div>
+    </div>
+  </div>
+
+  <div class="rv-cheer" id="cheer"></div>
+
+  <div class="rv-list" id="rvList"></div>
+
+  <button class="btn-primary" id="btnStart">开始复习</button>
+</div>
+
+<script src="ui/pages/_shared.js"></script>
+<script>
+(function () {
+  'use strict';
+  var App = window.App;
+  var UI = window.PyGoUI;
+  var state = App.state;
+
+  var api = UI.bindPage(onState);
+
+  var selChoice = null;
+  var selJudge = null;
+  var sessionDirty = false;
+
+  function onState(s) {
+    var rv = s.review || {};
+    document.getElementById('dueCount').textContent = rv.dueCount || 0;
+    document.getElementById('totalCount').textContent = rv.total || 0;
+    var btn = document.getElementById('btnStart');
+    // 复习会话中 → 渲染复习模式；否则列表
+    if (rv.session && rv.session.active) {
+      btn.disabled = true;
+      renderSession(rv);
+    } else {
+      btn.disabled = !(rv.dueCount > 0);
+      renderCheer(rv);
+      renderList(rv);
+    }
+  }
+
+  // ---------- 复习模式：逐题作答 ----------
+  function renderSession(rv) {
+    var wrap = document.getElementById('rvList');
+    var cheer = document.getElementById('cheer');
+    var queue = rv.queue || [];
+    if (!queue.length) {
+      cheer.innerHTML = '<span style="font-size:18px">🎉</span><span>复习完成！错题都过了一遍，继续保持。</span>';
+      wrap.innerHTML = '<div class="rv-empty"><div class="big">🎉</div><div class="t">全部复习完毕</div></div>' +
+        '<button class="btn-primary" id="btnDone">完成复习</button>';
+      var done = document.getElementById('btnDone');
+      if (done) done.addEventListener('click', function () { App.actions.completeReview(); });
+      return;
+    }
+    var item = queue[0];
+    var q = item.question || {};
+    cheer.innerHTML = '<span style="font-size:18px">🧠</span><span>复习第 ' + (queue.length) + ' 题 · ' + UI.esc(q.stem || '') + '</span>';
+    selChoice = null; selJudge = null;
+
+    var html = '<div class="rv-question"><div class="rv-qstem">' + UI.esc(q.stem || '') + '</div><div class="rv-qbody" id="rvQBody"></div></div>';
+    html += '<div class="q-feedback" id="rvFeedback" hidden></div>';
+    html += '<button class="btn-primary" id="btnSubmit">' + (q.type === 'fill' ? '检查答案' : '提交答案') + '</button>';
+    wrap.innerHTML = html;
+
+    var body = document.getElementById('rvQBody');
+    if (q.type === 'choice') {
+      body.innerHTML = '<div class="opts">' + (q.options || []).map(function (o, i) {
+        return '<button class="opt" data-i="' + i + '"><span class="k">' + String.fromCharCode(65 + i) + '</span><span>' + UI.esc(o) + '</span></button>';
+      }).join('') + '</div>';
+      body.querySelectorAll('.opt').forEach(function (el) {
+        el.addEventListener('click', function () {
+          selChoice = +el.getAttribute('data-i');
+          body.querySelectorAll('.opt').forEach(function (x) { x.classList.toggle('sel', x === el); });
+        });
+      });
+    } else if (q.type === 'judge') {
+      body.innerHTML = '<div class="judge-row">' +
+        '<button class="judge-btn ok" data-v="true">✓ 正确</button>' +
+        '<button class="judge-btn bad" data-v="false">✗ 错误</button></div>';
+      body.querySelectorAll('.judge-btn').forEach(function (el) {
+        el.addEventListener('click', function () {
+          selJudge = el.getAttribute('data-v') === 'true';
+          body.querySelectorAll('.judge-btn').forEach(function (x) { x.classList.toggle('sel', x === el); });
+        });
+      });
+    } else if (q.type === 'fill') {
+      body.innerHTML = '<input class="fill-input" id="rvFill" type="text" placeholder="输入你的答案" autocomplete="off">';
+    }
+
+    var submit = document.getElementById('btnSubmit');
+    submit.addEventListener('click', function () {
+      var payload = null;
+      if (q.type === 'choice') payload = selChoice;
+      else if (q.type === 'judge') payload = selJudge;
+      else if (q.type === 'fill') {
+        var inp = document.getElementById('rvFill');
+        payload = inp ? inp.value.trim() : '';
+      }
+      if (payload == null || payload === '') { submit.textContent = '先作答再提交'; return; }
+      submit.disabled = true;
+      App.actions.submitReviewAnswer(payload).then(function (res) {
+        // 核心层判题并更新队列 → onState 会渲染下一题
+        if (res && res.correct === false) submit.textContent = '✗ 答错了，下一题';
+      }).catch(function () { submit.disabled = false; });
+    });
+  }
+
+  function renderCheer(rv) {
+    var due = rv.dueCount || 0;
+    var el = document.getElementById('cheer');
+    if (due === 0) {
+      el.innerHTML = '<span style="font-size:18px">🎉</span><span>没有待复习的内容了，太棒了！继续保持连胜。</span>';
+    } else if (due <= 5) {
+      el.innerHTML = '<span style="font-size:18px">💪</span><span>还有 ' + due + ' 道错题在等你，花几分钟把它们拿下。</span>';
+    } else {
+      el.innerHTML = '<span style="font-size:18px">⏰</span><span>上次的 ' + due + ' 道题该见见它们了，一次清空，心里踏实。</span>';
+    }
+  }
+
+  function renderList(rv) {
+    var wrap = document.getElementById('rvList');
+    var queue = rv.queue || [];
+    if (!queue.length) {
+      wrap.innerHTML = '<div class="rv-empty"><div class="big">📭</div><div class="t">队列空空如也</div><div class="s">答题或复习会产生待复习卡片</div></div>';
+      return;
+    }
+    wrap.innerHTML = queue.map(function (item, i) {
+      var q = item.question || {};
+      var stem = (q.stem || '题目').slice(0, 40);
+      var typeIcon = { choice: 'code', judge: 'code', fill: 'code', pair: 'code', sort: 'code', code: 'code', debug: 'warn', think: 'help' }[q.type] || 'book';
+      var typeName = { choice: '选择题', judge: '判断题', fill: '填空题', pair: '配对题', sort: '排序题', code: '编程题', debug: '调试题', think: '思考题' }[q.type] || '复习';
+      return '<div class="rv-item" style="animation-delay:' + (i * 60) + 'ms" data-i="' + i + '">' +
+        '<div class="rv-icon">' + UI.icon(typeIcon, 18) + '</div>' +
+        '<div class="rv-meta"><div class="rv-stem">' + UI.esc(stem) + '</div><div class="rv-src">' + typeName + '</div></div>' +
+        (item.dueIn ? '<span class="rv-due">' + UI.esc(item.dueIn) + '</span>' : '') +
+        '</div>';
+    }).join('');
+    wrap.querySelectorAll('.rv-item').forEach(function (el) {
+      el.addEventListener('click', function () {
+        var i = +el.getAttribute('data-i');
+        if (App.actions.submitReviewAnswer) {
+          // 复习模式由核心层调度；此处仅触发进入复习
+        }
+      });
+    });
+  }
+
+  document.getElementById('btnStart').addEventListener('click', function () {
+    if (App.actions.startReview) App.actions.startReview();
+  });
+
+  onState(state);
+})();
+</script>
