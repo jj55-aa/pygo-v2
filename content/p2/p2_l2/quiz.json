@@ -1,0 +1,255 @@
+{
+  "lesson": "p2_l2",
+  "title": "提取与统计",
+  "questions": [
+    {
+      "id": "p2_l2_p1",
+      "type": "choice",
+      "stem": "电影榜 HTML 里每部电影长这样：`<div class=\"movie\"><span class=\"title\">肖申克的救赎</span><span class=\"rating\">9.7</span></div>`。想用 re 模块把**所有电影的评分**（9.7 这些数字）提取成一个列表，应该用哪个？",
+      "options": [
+        "re.findall(r'<span class=\"score\">(.*?)</span>', html)",
+        "re.findall(r'<span class=\"rating\">(.*?)</span>', html)",
+        "re.findall(r'<div class=\"movie\">(.*)</div>', html)",
+        "re.findall(r'rating', html)"
+      ],
+      "answer": 1,
+      "hint": "评分的标签长什么样？class 名是 title 还是 rating？",
+      "explain": "评分藏在 `<span class=\"rating\">…</span>` 里，re.findall 按这个形状提取：`re.findall(r'<span class=\"rating\">(.*?)</span>', html)` 返回所有评分的列表 ['9.7', …]。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "class 名写错了：HTML 里评分标签的 class 是 rating，不是 score——正则要和 HTML 一字不差，否则匹配不到。"
+        },
+        {
+          "opt": 2,
+          "why": "贪婪的 .* 会从第一个 <div class=\"movie\"> 一路吞到最后一个 </div>，把整页并成一条；提取内容要用惰性的 .*?，而且这里根本没提取 rating 字段。"
+        },
+        {
+          "opt": 3,
+          "why": "这只是匹配单词 \"rating\"（标签名），不是提取标签里的评分内容，也没有分组 (.*?) 来捕获值。"
+        }
+      ],
+      "concept": [
+        "提取",
+        "re.findall",
+        "正则"
+      ]
+    },
+    {
+      "id": "p2_l2_p2",
+      "type": "choice",
+      "stem": "想统计评分 ≥ 8.0 的高分电影数量，循环体里要写 `count += 1`。初始化 `count = 0` 应该放在哪里？",
+      "options": [
+        "for 循环里面（每处理一部电影都先清零）",
+        "for 循环外面（开始统计前初始化一次）",
+        "不用初始化，直接 count += 1 就行",
+        "放在最后的 print 语句后面"
+      ],
+      "answer": 1,
+      "hint": "计数器要在循环外初始化一次，还是每轮都重置？",
+      "explain": "计数器 count = 0 必须在 for 循环外面初始化一次；循环里满足条件才 count += 1。放循环里每部电影都会把它清零，数完永远只有 0 或 1。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "计数器写在循环里，每部电影都把 count 清零——数完永远只有 0 或 1，账全废了。"
+        },
+        {
+          "opt": 2,
+          "why": "count 没初始化就 count += 1，第一次执行就 NameError：变量未定义。"
+        },
+        {
+          "opt": 3,
+          "why": "放 print 后面根本参与不到统计，而且程序已经打印完收尾了。"
+        }
+      ],
+      "concept": [
+        "统计",
+        "计数",
+        "循环"
+      ]
+    },
+    {
+      "id": "p2_l2_p3",
+      "type": "judge",
+      "stem": "提取出来的评分是字符串（比如 '9.7'）。不做转换，直接用 '9.7' >= '8.0' 这种字符串比较，也能准确判断出高分电影（评分 ≥ 8.0）。",
+      "answer": false,
+      "hint": "字符串比大小按字典序逐位比字符——想想 '10.0' 和 '8.0' 比会怎样？",
+      "explain": "字符串比较按字典序逐位比：'9.7' >= '8.0' 碰巧为 True，但 '10.0' >= '8.0' 会先比第 1 位 '1' 和 '8'（'1' < '8'）判成 False——10.0 分的电影反被当成低分！必须 float() 转成数字再比。",
+      "concept": [
+        "float",
+        "字符串比较",
+        "筛选"
+      ]
+    },
+    {
+      "id": "p2_l2_p4",
+      "type": "fill",
+      "stem": "把评分字符串 '9.7' 转成小数（浮点数），以便比较大小和求平均分，用 ____ 函数。",
+      "answer": [
+        "float",
+        "浮点数",
+        "浮点型",
+        "浮点"
+      ],
+      "hint": "转浮点数的函数叫什么？F 开头，5 个字母。",
+      "explain": "float('9.7') → 9.7（真正的浮点数）。评分是小数，必须用 float()；int('9.7') 会直接 ValueError。",
+      "traps": [
+        {
+          "wrong": "int",
+          "why": "int 是转整数：int('9.7') 会报 ValueError（9.7 不是整数）；小数评分要用 float()。"
+        },
+        {
+          "wrong": "str",
+          "why": "str 是把数字转成字符串，方向反了——我们是要把字符串转成数字。"
+        }
+      ],
+      "concept": [
+        "float",
+        "评分转数字"
+      ]
+    },
+    {
+      "id": "p2_l2_p5",
+      "type": "fill",
+      "stem": "提取出来的片名可能带着首尾空白（' 肖申克的救赎 '）。要去掉字符串**首尾**的空白字符（空格、换行、Tab），用字符串方法 ____。",
+      "answer": [
+        "strip",
+        "去空格",
+        "去掉空格",
+        "去空白",
+        "去首尾空白",
+        "去掉首尾空白"
+      ],
+      "hint": "去首尾空白的方法名是什么？S 开头，5 个字母。",
+      "explain": "' 肖申克的救赎 '.strip() → '肖申克的救赎'：strip() 去掉字符串首尾的空白（空格、换行、Tab），中间的字符不动。",
+      "traps": [
+        {
+          "wrong": "split",
+          "why": "split 是按分隔符把字符串拆成列表（如 split(' ')），不是去空白。"
+        },
+        {
+          "wrong": "replace",
+          "why": "replace(' ', '') 只能删空格字符，删不掉换行/Tab，还会误删字符串中间的整段空格——去首尾空白用 strip()。"
+        }
+      ],
+      "concept": [
+        "strip",
+        "数据清洗"
+      ]
+    },
+    {
+      "id": "p2_l2_p6",
+      "type": "debug",
+      "stem": "下面的程序想算电影榜的**平均分**，但一运行就报 TypeError——score 是从 HTML 里提取的字符串，被直接加进了数字 total。修复它，让程序输出平均分（保留 1 位小数）。\n\n期望输出（输入两部电影 9.7 和 9.5）：\n```\n平均分：9.6\n```",
+      "code": "import re\nimport sys\n\nhtml = sys.stdin.read()\nmovies = re.findall(r'<div class=\"movie\">(.*?)</div>', html)\ntotal = 0\ncount = 0\nfor m in movies:\n    title = re.search(r'<span class=\"title\">(.*?)</span>', m).group(1)\n    score = re.search(r'<span class=\"rating\">(.*?)</span>', m).group(1)\n    total += score     # BUG：score 是字符串，不能直接加进数字 total\n    count += 1\nprint(\"平均分：%.1f\" % (total / count))",
+      "testcases": [
+        {
+          "input": "<div class=\"movie\"><span class=\"title\">肖申克的救赎</span><span class=\"rating\">9.7</span></div>\n<div class=\"movie\"><span class=\"title\">霸王别姬</span><span class=\"rating\">9.5</span></div>",
+          "expected": "平均分：9.6"
+        },
+        {
+          "input": "<div class=\"movie\"><span class=\"title\">流浪地球</span><span class=\"rating\">8.0</span></div>\n<div class=\"movie\"><span class=\"title\">星际穿越</span><span class=\"rating\">7.5</span></div>\n<div class=\"movie\"><span class=\"title\">小时代</span><span class=\"rating\">6.5</span></div>",
+          "expected": "平均分：7.3"
+        }
+      ],
+      "hint": "total 是数字（0），score 是字符串——字符串不能直接加进数字。把 score 转成什么类型再加？",
+      "explain": "score 是字符串，total += score 报 TypeError。修复：total += float(score)，把评分转成浮点数再累加；评分是小数，用 float 而不是 int。",
+      "concept": [
+        "调试",
+        "float",
+        "评分转数字"
+      ]
+    },
+    {
+      "id": "p2_l2_p7",
+      "type": "code",
+      "stem": "电影榜 HTML 已经读入（多行，每部电影一行 `<div class=\"movie\">…</div>`，含片名和评分）。请完成提取与统计：\n\n1. 两个 re.findall 已经把片名 titles 和评分 ratings 提取好了（按下标一一对应）\n2. 遍历 ratings：每个评分先 strip 再 float() 转数字；评分 ≥ 8.0 就 high += 1；同时把分数累加进 total\n3. 计算平均分 avg = total / len(ratings)（所有电影的平均分）\n4. 打印「高分电影N部」和「平均分 X.X」（X.X 保留 1 位小数）\n\n期望输出示例（输入含 5 部高分、1 部低分的榜单）：\n```\n高分电影5部\n平均分 9.2\n```",
+      "code": "import re\nimport sys\n\n# 影评峡谷：电影榜 HTML（多行，每部电影一行 <div class=\"movie\">...</div>）\nhtml = sys.stdin.read()\n\n# 两个 findall 同时提取：片名列表 与 评分列表（按下标一一对应）\ntitles = re.findall(r'<span class=\"title\">(.*?)</span>', html)\nratings = re.findall(r'<span class=\"rating\">(.*?)</span>', html)\n\nhigh = 0     # 高分电影计数（评分 >= 8.0）\ntotal = 0.0  # 评分总和\navg = 0      # 平均分\n\n# TODO 1: 遍历 ratings，每个评分先 strip 再 float 转数字：\n#         评分 >= 8.0 就 high += 1；同时把分数累加进 total\n# 提示：for r in ratings:  score = float(r.strip()) ...\n\n# TODO 2: 计算平均分：avg = total / len(ratings)\n\nprint(\"高分电影%d部\" % high)\nprint(\"平均分 %.1f\" % avg)",
+      "testcases": [
+        {
+          "input": "<html>\n<body>\n\n<div class=\"movie\"><span class=\"title\"> 肖申克的救赎 </span><span class=\"rating\"> 9.7 </span></div>\n\n<div class=\"movie\"><span class=\"title\">霸王别姬</span><span class=\"rating\">9.6</span></div>\n<div class=\"movie\"><span class=\"title\">阿甘正传</span><span class=\"rating\">9.5</span></div>\n<div class=\"movie\"><span class=\"title\">星际穿越</span><span class=\"rating\">9.4</span></div>\n<div class=\"movie\"><span class=\"title\">盗梦空间</span><span class=\"rating\">9.4</span></div>\n<div class=\"movie\"><span class=\"title\">速度与激情</span><span class=\"rating\">7.8</span></div>\n\n</body>\n</html>",
+          "expected": "高分电影5部\n平均分 9.2"
+        },
+        {
+          "input": "<div class=\"movie\"><span class=\"title\">变形金刚</span><span class=\"rating\">7.9</span></div>\n<div class=\"movie\"><span class=\"title\">小时代</span><span class=\"rating\">4.7</span></div>\n<div class=\"movie\"><span class=\"title\">富春山居图</span><span class=\"rating\">3.1</span></div>",
+          "expected": "高分电影0部\n平均分 5.2"
+        },
+        {
+          "input": "<div class=\"movie\"><span class=\"title\">肖申克的救赎</span><span class=\"rating\">10.0</span></div>\n<div class=\"movie\"><span class=\"title\">霸王别姬</span><span class=\"rating\">8.0</span></div>\n<div class=\"movie\"><span class=\"title\">富春山居图</span><span class=\"rating\">7.9</span></div>",
+          "expected": "高分电影2部\n平均分 8.6"
+        }
+      ],
+      "hint": "评分是字符串：转成数字才能比较和累加——用什么函数转？高分计数和总和已在循环外初始化；平均分 = 总和 ÷ 个数，保留 1 位小数用什么格式化？",
+      "explain": "for r in ratings: 里 score = float(r.strip()) 转数字，score >= 8.0 就 high += 1，total += score 累加；循环结束后 avg = total / len(ratings)；最后 print(\"高分电影%d部\" % high) 和 print(\"平均分 %.1f\" % avg)。字符串不转数字直接比会按字典序（'10.0' < '8.0'）判错、直接加会拼字符串——先转数字是统计的地基。",
+      "concept": [
+        "提取",
+        "统计",
+        "float",
+        "平均分",
+        "筛选"
+      ]
+    },
+    {
+      "id": "p2_l2_p8",
+      "type": "code",
+      "stem": "电影榜 HTML 已经读入（多行，每部电影一行 `<div class=\"movie\">…</div>`），movies 已经用 re.findall 拆好（每部电影是一个内容块）。请完成：\n\n1. 遍历 movies，对每部电影用 re.search 提取片名 title 和评分 score（`<span class=\"title\">(.*?)</span>` 和 `<span class=\"rating\">(.*?)</span>`，取 .group(1)）\n2. 片名和评分都 strip 清洗后，打印「片名 评分」（中间一个空格）\n3. 最后打印「共N部电影」（N = len(movies)）\n\n期望输出示例（输入 3 部电影）：\n```\n肖申克的救赎 9.7\n霸王别姬 9.6\n阿甘正传 9.5\n共3部电影\n```",
+      "code": "import re\nimport sys\n\n# 影评峡谷：电影榜 HTML（多行，每部电影一行 <div class=\"movie\">...</div>）\nhtml = sys.stdin.read()\n\n# 拆出每部电影：movies 里是每部电影的内容（不含 <div class=\"movie\"> 标签本身）\nmovies = re.findall(r'<div class=\"movie\">(.*?)</div>', html)\n\n# TODO 1: 遍历 movies，对每部电影 m 提取片名和评分：\n#         title = re.search(r'<span class=\"title\">(.*?)</span>', m).group(1).strip()\n#         score = re.search(r'<span class=\"rating\">(.*?)</span>', m).group(1).strip()\n# TODO 2: 打印「片名 评分」（中间一个空格）\n# TODO 3: 全部处理完，打印「共N部电影」（N = len(movies)）",
+      "testcases": [
+        {
+          "input": "<div class=\"movie\"><span class=\"title\"> 肖申克的救赎 </span><span class=\"rating\"> 9.7 </span></div>\n<div class=\"movie\"><span class=\"title\"> 霸王别姬 </span><span class=\"rating\"> 9.6 </span></div>\n<div class=\"movie\"><span class=\"title\"> 阿甘正传 </span><span class=\"rating\"> 9.5 </span></div>",
+          "expected": "肖申克的救赎 9.7\n霸王别姬 9.6\n阿甘正传 9.5\n共3部电影"
+        },
+        {
+          "input": "<html>\n<body>\n\n<div class=\"movie\"><span class=\"title\">星际穿越</span><span class=\"rating\">9.4</span></div>\n\n<div class=\"movie\"><span class=\"title\">盗梦空间</span><span class=\"rating\">9.4</span></div>\n\n</body>\n</html>",
+          "expected": "星际穿越 9.4\n盗梦空间 9.4\n共2部电影"
+        },
+        {
+          "input": "<div class=\"movie\"><span class=\"title\">千与千寻</span><span class=\"rating\">9.4</span></div>",
+          "expected": "千与千寻 9.4\n共1部电影"
+        }
+      ],
+      "hint": "对每部电影 m 分别提取：片名用 title 标签模式、评分把 class 换成 rating；re.search 的结果怎么取到括号里的内容？清洗后逐行打印「片名 评分」，最后数一数有几部。",
+      "explain": "先 movies = re.findall(r'<div class=\"movie\">(.*?)</div>', html) 拆出每部电影，再对每个 m 用 re.search + group(1) 分别提取片名和评分，strip 去首尾空白后 print(title, score) 逐行打印，最后用 len(movies) 统计总数。这和「两个 findall（titles/ratings 按下标对应）」是两套等价的写法。",
+      "concept": [
+        "提取",
+        "re.search",
+        "strip",
+        "数据清洗"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "p2_l2_quest",
+    "title": "剧情任务：网里的数据，该分析了",
+    "story": "影评峡谷的网把电影榜 HTML 兜回来了！站长把这份热腾腾的榜单拍在你面前：「数据是抓回来了，可 30 多部电影摆在这儿，观众只认高分片！帮我挑出评分 ≥ 8.0 的，一部一行列出来，最后报个总数——峡谷影迷们等着开奖呢！」你挽起袖子：先拆行、再提取、转数字、筛高分，一笔一笔记账。",
+    "stem": "读入电影榜 HTML（多行，每部电影一行 `<div class=\"movie\">…</div>`，含 `<span class=\"title\">` 片名和 `<span class=\"rating\">` 评分，可能夹着空行和多余空格）。请完成：\n\n1. 用 re.findall(r'<div class=\"movie\">(.*?)</div>', html) 拆出每部电影\n2. 对每部电影提取片名和评分（先 strip 清洗，再 float 转数字）\n3. 评分 ≥ 8.0 的：逐行打印片名，并 high += 1\n4. 最后打印「高分电影共N部」\n\n期望输出示例（榜单里 3 部高分、2 部低分）：\n```\n肖申克的救赎\n霸王别姬\n阿甘正传\n高分电影共3部\n```",
+    "code": "import re\nimport sys\n\n# 影评峡谷：电影榜 HTML（每部电影一行，可能夹着空行和多余空格）\nhtml = sys.stdin.read()\n\n# TODO 1: 拆出每部电影\n# movies = re.findall(r'<div class=\"movie\">(.*?)</div>', html)\nmovies = []\n\nhigh = 0\nfor m in movies:\n    # TODO 2: 提取片名 title 和评分 score（先 strip 清洗，再 float 转数字）\n    # TODO 3: 评分 >= 8.0 就打印片名，并 high += 1\n    pass\n\n# TODO 4: 打印「高分电影共N部」\nprint(\"高分电影共%d部\" % high)",
+    "testcases": [
+      {
+        "input": "<div class=\"movie\"><span class=\"title\">肖申克的救赎</span><span class=\"rating\">9.7</span></div>\n<div class=\"movie\"><span class=\"title\">霸王别姬</span><span class=\"rating\">9.6</span></div>\n<div class=\"movie\"><span class=\"title\">阿甘正传</span><span class=\"rating\">9.5</span></div>\n<div class=\"movie\"><span class=\"title\">速度与激情</span><span class=\"rating\">7.9</span></div>\n<div class=\"movie\"><span class=\"title\">变形金刚</span><span class=\"rating\">7.1</span></div>",
+        "expected": "肖申克的救赎\n霸王别姬\n阿甘正传\n高分电影共3部"
+      },
+      {
+        "input": "<div class=\"movie\"><span class=\"title\"> 星际穿越 </span><span class=\"rating\"> 9.4 </span></div>\n<div class=\"movie\"><span class=\"title\"> 千与千寻 </span><span class=\"rating\"> 9.4 </span></div>\n<div class=\"movie\"><span class=\"title\"> 盗梦空间 </span><span class=\"rating\"> 9.4 </span></div>",
+        "expected": "星际穿越\n千与千寻\n盗梦空间\n高分电影共3部"
+      },
+      {
+        "input": "<div class=\"movie\"><span class=\"title\">小时代</span><span class=\"rating\">4.7</span></div>\n<div class=\"movie\"><span class=\"title\">富春山居图</span><span class=\"rating\">3.1</span></div>",
+        "expected": "高分电影共0部"
+      }
+    ],
+    "hint": "链路四步：① 先按 <div class=\"movie\"> 拆出每部电影；② 对每部分别提取片名和评分（怎么取分组内容？），strip + float 清洗；③ 评分 ≥ 8.0 才打印片名并计数；④ 最后打印总数。计数变量在哪初始化？",
+    "explain": "完整链路：拆行（findall 按 <div class=\"movie\"> 拆出每部电影）→ 提取（对每个 m 用 re.search + group(1) 拿片名和评分）→ 清洗（strip 去首尾空白）→ 转数字（float）→ 筛选（>= 8.0 才打印片名并 high += 1）→ 收尾（打印「高分电影共N部」）。计数器 high 在循环外初始化，否则每部都清零。站长拿着高分片名单连连点头，峡谷影迷们的口碑榜有着落了！",
+    "concept": [
+      "提取",
+      "统计",
+      "float",
+      "筛选",
+      "正则",
+      "综合应用"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「提取与统计」一课 🎉\n\n**这一课你学会了**：\n1. **一行数据拆两样**：两个 re.findall 各取各的（片名列表 ↔ 评分列表，按下标一一对应），或先拆 `<div class=\"movie\">` 再逐部 re.search——一部电影的片名和评分同时到手\n2. **评分转数字**：`strip()` 去首尾空白 + `float()` 转浮点数；字符串不能比大小（`'10.0' < '8.0'` 会判错）也不能求和（拼接/TypeError）\n3. **统计大招**：计数器/累加器放循环外初始化，`if score >= 8.0` 筛选计数，`total / len(ratings)` + `\"%.1f\"` 算平均分\n4. **数据清洗**：`strip()` 去首尾空白、`if not line` 跳空行——洗干净的鱼才数得准\n\n**剧情推进**：高分片名单列出来了，站长看着 8.0 分以上的好片清单连连点头：「抓、解析、提取、统计四步都齐了！可这些本领还散着——**下一站：独立挑战**，把抓取、解析、提取、统计、保存串成一条完整的爬虫流水线，做出一份能直接交付的『影评峡谷票房分析报告』！」"
+  }
+}
