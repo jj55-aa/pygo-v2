@@ -1,0 +1,209 @@
+{
+  "lesson": "u10_l4",
+  "title": "邮件自动化",
+  "questions": [
+    {
+      "id": "u10_l4_p1",
+      "type": "choice",
+      "stem": "要把一封邮件交给 SMTP 服务器发出去，程序员手里必须备齐哪三样东西（发信三要素）？",
+      "options": [
+        "SMTP 服务器地址、邮箱账号 + 授权码、收件人地址",
+        "收件人电话、身份证号、家庭住址",
+        "SMTP 端口、SSL 证书、快递单号",
+        "邮件标题、邮件正文、邮件附件"
+      ],
+      "answer": 0,
+      "hint": "想想概念卡 2 的「邮局比喻」：要寄信，得知道邮局在哪、自己是谁（凭证）、寄给谁。",
+      "explain": "发信三要素：①SMTP 服务器地址（邮局在哪）②邮箱账号 + 授权码（你是谁 + 托运凭证）③收件人地址（寄给谁）。三者齐了才能把信交给邮局。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "发信要的是收件人的邮箱地址，不是电话/身份证/住址——邮件系统根本不认识这些。"
+        },
+        {
+          "opt": 2,
+          "why": "端口和证书是「连接时」的细节，不属于发信前要备齐的三要素；快递单号更是无关。"
+        },
+        {
+          "opt": 3,
+          "why": "标题/正文/附件是「一封邮件的内容」，不是发信前要准备的地址和凭证。"
+        }
+      ],
+      "concept": ["发信三要素", "SMTP", "授权码"]
+    },
+    {
+      "id": "u10_l4_p2",
+      "type": "choice",
+      "stem": "真实环境里，登录 SMTP 服务器把邮件发出去，用下面哪个作为凭证？",
+      "options": [
+        "邮箱的登录密码",
+        "授权码（在邮箱设置里开启 SMTP 服务后生成）",
+        "手机验证码",
+        "不用凭证，连上服务器就能发"
+      ],
+      "answer": 1,
+      "hint": "密码是「家门钥匙」，发信要的是「邮局托运凭证」——两个不是一回事。",
+      "explain": "SMTP 发信用的是授权码：去邮箱设置里开启「SMTP 服务」后系统生成的那串专属凭证。用登录密码登录 SMTP 一定会失败。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "登录密码是登录网页邮箱用的；SMTP 发信要求出示专门的授权码，用登录密码登录一定失败。"
+        },
+        {
+          "opt": 2,
+          "why": "手机验证码是短信/扫码登录用的，跟 SMTP 发信没关系。"
+        },
+        {
+          "opt": 3,
+          "why": "SMTP 服务器必须验证你的身份，不登录连发送的资格都没有。"
+        }
+      ],
+      "concept": ["授权码", "SMTP", "登录密码"]
+    },
+    {
+      "id": "u10_l4_p3",
+      "type": "judge",
+      "stem": "在 PyGo 的判题环境（Pyodide）里，可以用 smtplib 真实地把邮件发到任何人的邮箱。",
+      "answer": false,
+      "hint": "判题环境能真发邮件吗？概念卡 3 的 ⚠️ 怎么说？",
+      "explain": "错。Pyodide 没有真实发信能力，也绝不能真发邮件——发信流程只作概念讲解，练习用字符串/列表模拟邮件数据组装（打印输出代替真实发送）。",
+      "concept": ["判题环境", "smtplib", "模拟"]
+    },
+    {
+      "id": "u10_l4_p4",
+      "type": "fill",
+      "stem": "负责「连接邮件服务器、登录并发送邮件」的 Python 标准库模块叫什么？（填英文模块名）",
+      "answer": [
+        "smtplib",
+        "smtplib模块",
+        "smtplib 模块",
+        "smtp库"
+      ],
+      "hint": "它和 SMTP 长得很像，只是多了个 lib 后缀——表示这是个「库」。",
+      "explain": "smtplib 负责「投递」：连接服务器、登录、发送、关闭。而 email 模块负责「写信」，别搞混。",
+      "traps": [
+        {
+          "wrong": "email",
+          "why": "email 模块负责「写信」（组织正文/主题/收件人），负责「投递」的是 smtplib。"
+        },
+        {
+          "wrong": "SMTP",
+          "why": "SMTP 是协议/服务器地址里的概念；Python 里负责发信的模块叫 smtplib（带 lib，表示库）。"
+        }
+      ],
+      "concept": ["smtplib", "标准库", "邮件"]
+    },
+    {
+      "id": "u10_l4_p5",
+      "type": "fill",
+      "stem": "真实环境里登录 SMTP 服务器发信，要用邮箱设置里专门生成的一串凭证，它叫什么？（3 个字，不是登录密码）",
+      "answer": [
+        "授权码",
+        "SMTP授权码",
+        "SMTP 授权码",
+        "授权密码"
+      ],
+      "hint": "开启邮箱的「SMTP 服务」后会生成它——和登录密码是两回事。",
+      "explain": "授权码：在邮箱设置里开启 SMTP 服务后生成的一串专属凭证，专门用来让程序登录发信。登录密码是网页登录用的，两者不能混用。",
+      "traps": [
+        {
+          "wrong": "密码",
+          "why": "登录密码是登录网页邮箱用的；SMTP 发信用的是在邮箱设置里开启 SMTP 服务后生成的授权码。"
+        },
+        {
+          "wrong": "验证码",
+          "why": "验证码是一次性短信/图形校验，授权码是长期有效的发信凭证。"
+        }
+      ],
+      "concept": ["授权码", "SMTP"]
+    },
+    {
+      "id": "u10_l4_p6",
+      "type": "sort",
+      "stem": "真实环境里用 Python 发一封邮件，按正确顺序排列（登录 SMTP → 组装邮件 → 发送 → 关闭）。",
+      "lines": [
+        "smtp.send_message(msg)",
+        "smtp.login(\"me@qq.com\", \"授权码\")",
+        "msg = MIMEText(\"周报正文\", \"plain\", \"utf-8\")",
+        "smtp.quit()"
+      ],
+      "answer": [1, 2, 0, 3],
+      "hint": "四个动作的顺序是：登录 → 组装 → 发送 → 关闭。",
+      "explain": "先用 smtp.login 登录邮局（出示授权码）→ 再用 MIMEText 把信组装好 → smtp.send_message 投信 → 最后 smtp.quit 关闭连接。先有信才能发，发完记得关。",
+      "concept": ["smtplib", "发信流程", "MIMEText"]
+    },
+    {
+      "id": "u10_l4_p7",
+      "type": "code",
+      "stem": "模拟批量发信：车间要把周报发给多个收件人，收件人列表**每行一个邮箱**（读入所有行，直到输入结束）。对每个收件人 X，打印邮件标题「收件人：X，主题：周报」（模拟批量发信，判题环境不真发）。\n\n期望输出示例（输入 boss@example.com\\nalice@example.com）：\n```\n收件人：boss@example.com，主题：周报\n收件人：alice@example.com，主题：周报\n```",
+      "code": "import sys\n\n# 收件人列表：每行一个邮箱（读入全部输入，直到结束）\ntext = sys.stdin.read()\nfor line in text.split(\"\\n\"):\n    addr = line.strip()\n    if not addr:\n        continue\n    # TODO: 用 f-string 生成邮件标题「收件人：X，主题：周报」并打印\n    pass",
+      "testcases": [
+        {
+          "input": "boss@example.com\nalice@example.com",
+          "expected": "收件人：boss@example.com，主题：周报\n收件人：alice@example.com，主题：周报"
+        },
+        {
+          "input": "x@test.com",
+          "expected": "收件人：x@test.com，主题：周报"
+        },
+        {
+          "input": "a@a.com\nb@b.com\nc@c.com",
+          "expected": "收件人：a@a.com，主题：周报\n收件人：b@b.com，主题：周报\n收件人：c@c.com，主题：周报"
+        }
+      ],
+      "hint": "想想怎么用 f-string 把变量 addr 填进「收件人：X，主题：周报」这个模板？花括号里写的是什么？",
+      "explain": "for 循环遍历每一行，addr 是当前收件人；print(f\"收件人：{addr}，主题：周报\") 按模板打印一行——这就是「循环 + 模板」的批量发信雏形，真实环境把 print 换成 send_message 即可。",
+      "concept": ["批量发信", "循环", "f-string", "模拟"]
+    },
+    {
+      "id": "u10_l4_p8",
+      "type": "code",
+      "stem": "给每位收件人套上称呼模板：先读入整数 N（收件人数），再读入 N 行「邮箱 姓名」（**空格分隔**），对每位打印「已发送给 邮箱：姓名同学，主题=周报」。\n\n期望输出示例（输入 2\\nalice@example.com 小红\\nbob@example.com 小明）：\n```\n已发送给 alice@example.com：小红同学，主题=周报\n已发送给 bob@example.com：小明同学，主题=周报\n```",
+      "code": "n = int(input())\n\nfor _ in range(n):\n    line = input()\n    # TODO: 用 split() 把一行拆成 邮箱 和 姓名，再打印「已发送给 邮箱：姓名同学，主题=周报」\n    pass",
+      "testcases": [
+        {
+          "input": "2\nalice@example.com 小红\nbob@example.com 小明",
+          "expected": "已发送给 alice@example.com：小红同学，主题=周报\n已发送给 bob@example.com：小明同学，主题=周报"
+        },
+        {
+          "input": "1\nboss@example.com 王工",
+          "expected": "已发送给 boss@example.com：王工同学，主题=周报"
+        },
+        {
+          "input": "3\nx@a.com 阿强\ny@a.com 小丽\nz@a.com 大刘",
+          "expected": "已发送给 x@a.com：阿强同学，主题=周报\n已发送给 y@a.com：小丽同学，主题=周报\n已发送给 z@a.com：大刘同学，主题=周报"
+        }
+      ],
+      "hint": "想想：一行「邮箱 姓名」怎么按空格拆成两段？邮箱和姓名分别在列表的哪个位置？怎么用 f-string 填进模板打印？",
+      "explain": "line.split() 按空格把「alice@example.com 小红」拆成 [邮箱, 姓名]，f-string 把两者填进模板——同一封邮件模板，不同收件人自动生成不同称呼，这就是「模板 + 循环」的威力。",
+      "concept": ["批量发信", "模板", "split", "f-string"]
+    }
+  ],
+  "quest": {
+    "id": "u10_l4_quest",
+    "title": "剧情任务：车间周报群发",
+    "story": "自动化车间的车间主任老周每天要手动给 50 位客户发周报邮件，复制粘贴到手指抽筋。他把你叫到工位：「这活必须自动化！」你一拍胸脯：用 Python 模拟批量发信——判题环境不能真发信，就先做一版「模拟发信」，把每个收件人的发送记录打印出来，验证逻辑跑通了，真实环境里把打印换成 smtplib 就能真发。",
+    "stem": "模拟批量发周报通知：读入多个收件人（**每行一个**，直到输入结束），对每个收件人 X 打印「已发送给 X：主题=周报」，最后再打印一行「全部发送完毕！」。\n\n期望输出示例（输入 boss@example.com\\nalice@example.com）：\n```\n已发送给 boss@example.com：主题=周报\n已发送给 alice@example.com：主题=周报\n全部发送完毕！\n```",
+    "code": "import sys\n\n# 车间客户收件人列表：每行一个邮箱，读到输入结束\ntext = sys.stdin.read()\nfor line in text.split(\"\\n\"):\n    addr = line.strip()\n    if not addr:\n        continue\n    # TODO: 模拟发信：打印「已发送给 X：主题=周报」\n    pass\n\nprint(\"全部发送完毕！\")",
+    "testcases": [
+      {
+        "input": "boss@example.com\nalice@example.com",
+        "expected": "已发送给 boss@example.com：主题=周报\n已发送给 alice@example.com：主题=周报\n全部发送完毕！"
+      },
+      {
+        "input": "x@test.com",
+        "expected": "已发送给 x@test.com：主题=周报\n全部发送完毕！"
+      },
+      {
+        "input": "a@a.com\nb@b.com",
+        "expected": "已发送给 a@a.com：主题=周报\n已发送给 b@b.com：主题=周报\n全部发送完毕！"
+      }
+    ],
+    "hint": "想想怎么在循环里用 f-string 按「已发送给 X：主题=周报」打印（变量是 addr）？循环结束后程序会自然执行最后那行打印。",
+    "explain": "for 循环遍历每行收件人，addr 去掉空白后就是邮箱；print(f\"已发送给 {addr}：主题=周报\") 模拟发出一封，循环结束再打印「全部发送完毕！」。老周看着满屏的发送记录，眼睛一亮：「50 位客户，一秒钟全部通知到位！」",
+    "concept": ["批量发信", "循环", "模拟", "smtplib"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「邮件自动化」一课 🎉\n\n**这一课你学会了**：\n1. 一封邮件 = 收件人 + 主题 + 正文 + 附件：数据组装好才能发，中文正文配 utf-8 防乱码\n2. 发信三要素：SMTP 服务器地址（邮局在哪）、邮箱账号 + 授权码（你是谁 + 托运凭证）、收件人地址（寄给谁）——**授权码 ≠ 登录密码**\n3. smtplib 发信流程：连接（SMTP_SSL）→ 登录（login）→ 发送（send_message）→ 关闭（quit）；email 模块负责「写信」，smtplib 负责「投递」\n4. 批量发信 = 模板 + 循环：一个 f-string 模板、一个 for 循环，遍历收件人列表自动生成；判题环境用模拟（打印代替真发），真实环境把 print 换成 send_message\n\n**剧情推进**：老周看着满屏的「已发送给 X：主题=周报」，满意地点头：「这下 50 位客户一秒钟全部通知到！」可他紧接着又甩来一份新差事：「光发周报还不够——车间这个月的数据，得整理成一份 Excel 报表交给老板。」你搓了搓手：发信只是热身，报表才是重头戏。下一站：综合实战，把学过的招式全部用上！"
+  }
+}
