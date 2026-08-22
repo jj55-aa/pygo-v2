@@ -1,0 +1,165 @@
+{
+  "lesson": "p3_l1",
+  "title": "读取与清洗",
+  "questions": [
+    {
+      "id": "p3_l1_p1",
+      "type": "choice",
+      "stem": "数据工坊的原料是一张张表格。看这张「销售报表」：第一行是表头（商品、价格），下面每一行记一个商品。在表格数据里，**一行**表示什么？",
+      "options": [
+        "一个字段：比如「价格」这一列的所有值",
+        "一条记录：一个商品的所有信息（商品名 + 价格）",
+        "一整张工作表",
+        "表头（字段名）"
+      ],
+      "answer": 1,
+      "hint": "想想这张表：一行「苹果, 5」——它装着苹果的完整信息，而不是单独一个价格。",
+      "explain": "表格数据是「行 × 列」：一行 = 一条记录（一个商品的所有信息），一列 = 一个字段（商品名或价格）。表头是字段名，不是记录。",
+      "traps": [
+        { "opt": 0, "why": "「价格」整列是一个字段，不是一行；行是横向的一条记录。" },
+        { "opt": 2, "why": "整张工作表 = 表头 + 所有行；一行只是其中的一条记录。" },
+        { "opt": 3, "why": "表头是列名（字段名），用来描述每列装什么，它本身不是一条记录。" }
+      ],
+      "concept": ["表格数据", "记录", "字段", "表头"]
+    },
+    {
+      "id": "p3_l1_p2",
+      "type": "choice",
+      "stem": "判题环境（Pyodide）里没有 pandas、openpyxl，也没有真实的 Excel 文件。想在练习里「读取表格数据」，应该用哪种方式模拟？",
+      "options": [
+        "import pandas as pd，然后 pd.read_excel(\"报表.xlsx\")",
+        "import csv，用 csv.reader 读 StringIO 包起来的 csv 文本",
+        "直接 open(\"报表.xlsx\") 打开 Excel 文件",
+        "用 requests.get() 从网上下载表格"
+      ],
+      "answer": 1,
+      "hint": "判题环境没有 pandas 也没有真实 Excel 文件——但 csv 是标准库，StringIO 能把字符串变成「假文件」。",
+      "explain": "csv（逗号分隔文本）是表格的文本形态；csv.reader(StringIO(文本)) 就能逐行读出表格——csv 和 io 都是标准库，判题环境可用。",
+      "traps": [
+        { "opt": 0, "why": "pandas 是第三方库，Pyodide 判题环境里 import pandas 会报 ModuleNotFoundError。" },
+        { "opt": 2, "why": "Pyodide 无法读取本地磁盘上的 Excel 文件（openpyxl 也没有），练习用 csv 文本模拟。" },
+        { "opt": 3, "why": "requests 是抓网页用的，而且判题环境没有网络；读表格用 csv。" }
+      ],
+      "concept": ["csv", "StringIO", "读取表格", "判题环境"]
+    },
+    {
+      "id": "p3_l1_p3",
+      "type": "judge",
+      "stem": "判题环境（Pyodide）里没有 pandas 和 openpyxl，所以本课所有练习都用「csv + io.StringIO」模拟表格数据：先读入多行 csv 文本，再用 csv.reader 逐行处理。",
+      "answer": true,
+      "hint": "回忆概念卡 2 和 4 的易错点：判题环境能 import pandas 吗？",
+      "explain": "对。Pyodide 没有 pandas/openpyxl，import pandas 会报 ModuleNotFoundError；练习统一用 csv + StringIO 模拟表格，把「读取 + 清洗」的手感练出来。",
+      "concept": ["Pyodide", "判题环境", "csv", "StringIO"]
+    },
+    {
+      "id": "p3_l1_p4",
+      "type": "fill",
+      "stem": "清洗第一步：字符串 \"  苹果  \" 的首尾带着多余空格。调用字符串方法 \"  苹果  \".____() 就能去掉首尾空白，得到干净的 \"苹果\"。（填英文方法名）",
+      "answer": ["strip", "strip()", "去空白", "去除空白", "去空格", "去首尾空白", "去除首尾空白", "去两端空白", "去除两端空白"],
+      "hint": "方法名和「剥掉、去掉」有关——剥掉字符串两头的空白。",
+      "explain": "字符串方法 strip() 去掉首尾空白：\"  苹果  \".strip() → \"苹果\"。注意它只去掉两端，中间的空白不动。",
+      "traps": [
+        { "wrong": "trim", "why": "trim 是很多其他语言的写法，Python 里去空白叫 strip()。" },
+        { "wrong": "split", "why": "split() 是按分隔符把字符串拆成列表，不是去空白。" }
+      ],
+      "concept": ["strip", "清洗", "字符串方法"]
+    },
+    {
+      "id": "p3_l1_p5",
+      "type": "fill",
+      "stem": "清洗第三步：转数字。字符串 \"5\" 转成整数用 int()；那字符串 \"5.5\" 转成小数（浮点数）用 ____()。（填英文函数名）",
+      "answer": ["float", "float()", "浮点数", "浮点型", "小数", "浮点"],
+      "hint": "和 int（整数）对应的另一个转换函数，名字和「浮动的小数点」有关。",
+      "explain": "float(\"5.5\") → 5.5：把数字字符串转成浮点数。int 转整数、float 转小数；转不动（比如 float(\"abc\")）会抛 ValueError。",
+      "traps": [
+        { "wrong": "double", "why": "double 是 Java/C 里的写法，Python 里转小数用 float()。" },
+        { "wrong": "decimal", "why": "Python 内置的转小数函数是 float()；decimal 是另一个模块里的类型。" }
+      ],
+      "concept": ["float", "转数字", "类型转换"]
+    },
+    {
+      "id": "p3_l1_p6",
+      "type": "debug",
+      "stem": "车间送来的销售流水里混着空行。程序想统计「商品,数量」流水里的数量之和，一遇到空行就崩溃。观察报错信息，修复它：把空行（包括全空白的行）跳过。",
+      "code": "import sys\n\nlines = sys.stdin.read().split('\\n')\n\ntotal = 0\nfor line in lines:\n    parts = line.split(',')\n    total += int(parts[1])   # BUG：碰到空行会崩\n\nprint(\"总数：\", total)",
+      "testcases": [
+        {
+          "input": "苹果,5\n香蕉,10\n\n橘子,3",
+          "expected": "总数： 18"
+        },
+        {
+          "input": "苹果,5\n香蕉,10\n橘子,3",
+          "expected": "总数： 18"
+        }
+      ],
+      "hint": "空行拆分后只有一个空字符串，parts[1] 不存在——想想怎么在拆之前把空行挡掉：先清洗再判断是否为空，为空就跳过本轮。",
+      "explain": "空行 \"\" 用 split(',') 拆成 ['']，parts[1] 不存在 → IndexError。修复：先 strip 去空白，空行（含全空白行）用 continue 跳过，再拆分、转换、累加。",
+      "concept": ["调试", "跳过空行", "IndexError", "清洗"]
+    },
+    {
+      "id": "p3_l1_p7",
+      "type": "code",
+      "stem": "车间送来多行「商品,价格」，但价格字段带着多余空格（比如「苹果, 5」）。请完成清洗并求和：\n\n1. 每行先 .strip() 去首尾空白，空行直接跳过（已写好）\n2. 按逗号拆成 [商品, 价格]，价格字段用 .strip() 清洗后 int() 转成整数\n3. 把价格累加到 total，最后打印：`print(\"总价：\", total)`\n\n输入示例（价格带空格）：\n```\n苹果, 5\n香蕉,10\n橘子, 3\n```\n期望输出：`总价： 18`",
+      "code": "import sys\n\n# 车间送来多行「商品,价格」：价格可能带多余空格\nlines = sys.stdin.read().split('\\n')\n\ntotal = 0\nfor line in lines:\n    line = line.strip()      # ① 清洗：去首尾空白\n    if line == '':           # ② 清洗：跳过空行\n        continue\n    parts = line.split(',')  # 拆成 [商品, 价格]\n    # TODO ③：价格字段 parts[1] 可能带空格——先 .strip() 清洗，再 int() 转整数，累加到 total\n    total += 0\n\nprint(\"总价：\", total)",
+      "testcases": [
+        {
+          "input": "苹果, 5\n香蕉,10\n橘子, 3",
+          "expected": "总价： 18"
+        },
+        {
+          "input": "苹果,5\n\n香蕉, 10\n\n橘子,3",
+          "expected": "总价： 18"
+        }
+      ],
+      "hint": "价格字段可能带空格——先清洗再转换。想想：parts[1] 要先做什么、再做什么？转成整数后怎么累加进 total？",
+      "explain": "价格字段 \" 5\" 先 .strip() 变 \"5\"，再 int() 转成整数 5 累加；空行和全空白行被①②挡在循环外，最后 print(\"总价：\", total) 输出总价。",
+      "concept": ["strip", "int", "清洗", "求和", "csv数据"]
+    },
+    {
+      "id": "p3_l1_p8",
+      "type": "code",
+      "stem": "这份表格的第一行是**表头**「商品,数量」，下面是商品数据，中间可能混着空行。请用 csv + StringIO 读取并统计：\n\n1. 把读入的文本 text 用 StringIO 包起来交给 csv.reader（已写好）\n2. 跳过空行（csv.reader 对空行返回空列表 []）\n3. 跳过表头行（第一个字段清洗后是「商品」的行）\n4. 数一数共有多少条商品记录，打印：`print(\"共%d条记录\" % count)`\n\n输入示例：\n```\n商品,数量\n苹果,5\n香蕉,10\n```\n期望输出：`共2条记录`",
+      "code": "import csv\nimport sys\nfrom io import StringIO\n\n# 车间送来一份带表头的表格：第一行是「商品,数量」\ntext = sys.stdin.read()\nreader = csv.reader(StringIO(text))\n\ncount = 0\nfor row in reader:\n    # TODO ①：跳过空行（row 是空列表）——if not row: continue\n    # TODO ②：跳过表头行（row[0] 清洗后是「商品」）\n    # TODO ③：剩下的每行都是一条记录，count 加 1\n    count += 0\n\nprint(\"共%d条记录\" % count)",
+      "testcases": [
+        {
+          "input": "商品,数量\n苹果,5\n香蕉,10\n橘子,3",
+          "expected": "共3条记录"
+        },
+        {
+          "input": "商品,数量\n苹果,5\n\n香蕉,10\n\n橘子,3",
+          "expected": "共3条记录"
+        }
+      ],
+      "hint": "三种行要区分：空行（row 是空列表）、表头行（第一个字段是「商品」）、数据行。每种怎么判断？只有数据行才计数。",
+      "explain": "csv.reader 对空行返回空列表 []（not row 跳过），全空白行 row[0].strip() 为空也被跳过；表头行第一个字段是「商品」，单独排除；剩余每行都是记录，count 加 1。",
+      "concept": ["csv", "StringIO", "表头", "跳过空行", "计数"]
+    }
+  ],
+  "quest": {
+    "id": "p3_l1_quest",
+    "title": "剧情任务：清洗第一批销售流水",
+    "story": "你走进「数据工坊」，工头老王指着传送带上的一堆纸条：「车间刚送来一批销售流水，每张纸条写着一个商品和它的数量——不过你也看到了，有的字迹带空格，还有几张空纸条混在里面。数据分析的第一步，就是把原料洗干净！清点一下，告诉我一共处理了多少条、数量总共多少。」",
+    "stem": "程序会读入多行「商品,数量」销售流水（可能有空格和空行）。请完成清洗并统计：\n\n1. 每行先 .strip() 去首尾空白，空行直接跳过\n2. 按逗号拆成 [商品, 数量]，数量字段 .strip() 清洗后 int() 转整数\n3. 每处理一条记录 count 加 1，数量累加到 total\n4. 最后打印：`print(\"共处理%d条，总数%d\" % (count, total))`\n\n输入示例：\n```\n苹果, 5\n香蕉,10\n橘子, 3\n```\n期望输出：`共处理3条，总数18`",
+    "code": "import sys\n\n# 数据工坊：车间送来的销售流水，每行「商品,数量」，可能有空格和空行\nlines = sys.stdin.read().split('\\n')\n\ncount = 0   # 处理了多少条记录\ntotal = 0   # 数量总和\nfor line in lines:\n    line = line.strip()       # ① 清洗：去首尾空白\n    if line == '':            # ② 清洗：跳过空行\n        continue\n    parts = line.split(',')   # 拆成 [商品, 数量]\n    # TODO ③：数量字段 parts[1] 可能带空格——清洗后转整数，累加到 total，并让 count 加 1\n\nprint(\"共处理%d条，总数%d\" % (count, total))",
+    "testcases": [
+      {
+        "input": "苹果, 5\n香蕉,10\n橘子, 3",
+        "expected": "共处理3条，总数18"
+      },
+      {
+        "input": "苹果,5\n\n香蕉, 10\n\n橘子,3",
+        "expected": "共处理3条，总数18"
+      },
+      {
+        "input": "苹果, 5\n香蕉, 10",
+        "expected": "共处理2条，总数15"
+      }
+    ],
+    "hint": "数量字段先清洗（去空白）再转数字，累加进 total；每处理一条记录 count 加 1。想想转换的顺序：先 strip 还是先 int？",
+    "explain": "三板斧齐上阵：strip() 去掉整行和数量字段的空白，空行 continue 跳过，int() 把数量字符串转成整数；count 记条数、total 记总数。老王的销售流水清点完毕！",
+    "concept": ["清洗", "strip", "跳过空行", "int", "统计", "数据工坊"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「读取与清洗」一课 🎉\n\n**这一课你学会了**：\n1. **表格数据长什么样**：行 = 一条记录，列 = 一个字段，第一行表头是字段名、不是数据\n2. **读取表格（进料口）**：csv（逗号分隔文本）+ io.StringIO 把字符串伪装成文件，csv.reader 逐行读出；判题环境没有 pandas/openpyxl，就用这套模拟\n3. **清洗三板斧**：strip() 去首尾空白 → 跳过空行（先 strip 再判断）→ int()/float() 转数字\n4. **pandas 认识一下**：数据分析界的「装表格的库」，read_excel 读 Excel、DataFrame 按列统计；本课先用 csv 把读取 + 清洗的手感练扎实\n\n**剧情推进**：销售流水洗干净了，条数和总数都清点完毕！但老王盯着数字直摇头：「光知道总数可不够——哪些商品卖得多、哪个月业绩最好，还得把这一列列数据汇总、算一算。」下一站：统计与汇总，用 Python 给报表算账！"
+  }
+}
