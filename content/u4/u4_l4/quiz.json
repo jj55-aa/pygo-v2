@@ -1,0 +1,236 @@
+{
+ "lesson": "u4_l4",
+ "title": "函数的高级应用",
+ "questions": [
+  {
+   "id": "u4_l4_p1",
+   "type": "choice",
+   "stem": "装饰器（decorator）最主要的作用是？",
+   "options": [
+    "删除函数",
+    "在不改函数本身的前提下，给函数附加额外功能",
+    "让函数运行得更快",
+    "给函数换名字"
+   ],
+   "answer": 1,
+   "hint": "想想「装备 buff」的比喻：招式没变，威力变了。",
+   "explain": "装饰器就像给函数加 buff：函数本身的代码不动，但被包上了一层额外功能（日志、计时、权限检查等）。",
+   "traps": [
+    {
+     "opt": 0,
+     "why": "装饰器不删除函数，它只是把函数包装一层。"
+    },
+    {
+     "opt": 2,
+     "why": "装饰器不加速，它加的是功能（日志/计时/权限）。"
+    },
+    {
+     "opt": 3,
+     "why": "函数名和调用方式都不变，只是行为多了 buff。"
+    }
+   ],
+   "concept": [
+    "装饰器",
+    "decorator"
+   ]
+  },
+  {
+   "id": "u4_l4_p2",
+   "type": "fill",
+   "stem": "生成器和普通函数的区别在于：函数体里出现___关键字，函数就变成了生成器。",
+   "answer": [
+    "yield",
+    "产出"
+   ],
+   "hint": "英文单词，意思是「产出」。",
+   "explain": "函数体里只要有 yield，函数就变成生成器：每次 yield 交出一个值并暂停，下次从暂停处继续。",
+   "traps": [
+    {
+     "wrong": "return",
+     "why": "return 是普通函数。函数体里有 yield 才会变成生成器。"
+    },
+    {
+     "wrong": "next",
+     "why": "next() 是取值的工具，不是让函数变生成器的关键字。"
+    }
+   ],
+   "concept": [
+    "生成器",
+    "yield"
+   ]
+  },
+  {
+   "id": "u4_l4_p3",
+   "type": "choice",
+   "stem": "关于闭包（closure），下列说法【正确】的是？",
+   "options": [
+    "内层函数能「记住」外层函数的变量",
+    "闭包里的变量用完就立刻消失",
+    "闭包只能在类里使用",
+    "闭包和 lambda 是一回事"
+   ],
+   "answer": 0,
+   "hint": "想想 make_greeter 里被记住的 name。",
+   "explain": "闭包的特点：外层函数返回内层函数，内层函数「记住」了外层函数的变量，即使外层函数已经执行完。",
+   "traps": [
+    {
+     "opt": 1,
+     "why": "外层变量被内层函数引用，不会立刻消失。"
+    },
+    {
+     "opt": 2,
+     "why": "闭包不限于类，普通嵌套函数就能形成闭包。"
+    },
+    {
+     "opt": 3,
+     "why": "lambda 只是匿名函数；闭包是「函数记住外层变量」的机制。"
+    }
+   ],
+   "concept": [
+    "闭包",
+    "closure"
+   ]
+  },
+  {
+   "id": "u4_l4_p4",
+   "type": "choice",
+   "stem": "运行下面的代码，输出结果是？\nprint(list(zip([1, 2], [3, 4])))",
+   "options": [
+    "[(1, 3), (2, 4)]",
+    "[(1, 2), (3, 4)]",
+    "[1, 2, 3, 4]",
+    "报错"
+   ],
+   "answer": 0,
+   "hint": "zip 是「拉链」，两边的元素按位置一一配对。",
+   "explain": "zip 把两个列表按位置配对成元组：1 和 3 配对、2 和 4 配对，结果是 [(1, 3), (2, 4)]。",
+   "traps": [
+    {
+     "opt": 1,
+     "why": "那是把列表整体配对。zip 是按位置逐对配对。"
+    },
+    {
+     "opt": 2,
+     "why": "zip 不摊平展开，它生成的是元组对。"
+    },
+    {
+     "opt": 3,
+     "why": "zip 对等长列表正常配对，不会报错。"
+    }
+   ],
+   "concept": [
+    "zip",
+    "内置函数"
+   ]
+  },
+  {
+   "id": "u4_l4_p5",
+   "type": "judge",
+   "stem": "生成器可以无限次遍历：遍历完一遍之后，还能从头再遍历一遍。",
+   "answer": false,
+   "hint": "想想「一次性吸管」的比喻。",
+   "explain": "生成器像一次性吸管，只能遍历一次，挤完就没了。想反复用要先 list() 转成列表存起来。",
+   "concept": [
+    "生成器"
+   ]
+  },
+  {
+   "id": "u4_l4_p6",
+   "type": "fill",
+   "stem": "print(abs(-5)) 的输出结果是？（填数字）",
+   "answer": "5",
+   "hint": "绝对值就是「去掉负号」。",
+   "explain": "abs 是求绝对值的函数，abs(-5) = 5。",
+   "traps": [
+    {
+     "wrong": "-5",
+     "why": "绝对值会去掉负号，-5 变成 5。"
+    },
+    {
+     "wrong": "5.0",
+     "why": "整数取绝对值仍是整数 5，不是浮点数。"
+    }
+   ],
+   "concept": [
+    "内置函数",
+    "abs"
+   ]
+  },
+  {
+   "id": "u4_l4_p7",
+   "type": "code",
+   "stem": "补全生成器 countdown(n)：从 n 开始，依次产出 n, n-1, ..., 1。然后打印 list(countdown(n))。\n\n程序输出应为：\n[3, 2, 1]",
+   "code": "def countdown(n):\n    # 补全：用 while 循环 + yield 依次产出 n, n-1, ..., 1\n    pass\n\nn = int(input())\nprint(list(countdown(n)))",
+   "testcases": [
+    {
+     "input": "3",
+     "expected": "[3, 2, 1]"
+    },
+    {
+     "input": "1",
+     "expected": "[1]"
+    },
+    {
+     "input": "5",
+     "expected": "[5, 4, 3, 2, 1]"
+    }
+   ],
+   "hint": "生成器产出值用什么关键字？循环条件怎么判断（从 n 一直减到几为止）？每次产出后别忘了让 n 减少，否则会怎样？",
+   "explain": "函数体里出现 yield 就是生成器：while n > 0: yield n; n -= 1 依次交出 n 到 1，list() 收集成列表。",
+   "concept": [
+    "生成器",
+    "yield"
+   ]
+  },
+  {
+   "id": "u4_l4_p8",
+   "type": "debug",
+   "stem": "老师傅想让输出带上装饰线，代码里已经定义了 shout 装饰器，可输出里却看不到装饰线「==」。看看是不是忘了在 hello 上面加装饰器。\n\n期望输出：\n==\n收到 零件\n==",
+   "code": "def shout(func):\n    def wrapper():\n        print(\"==\")\n        func()\n        print(\"==\")\n    return wrapper\n\ndef hello():\n    n = input()\n    print(\"收到\", n)\n\nhello()",
+   "testcases": [
+    {
+     "input": "零件",
+     "expected": "==\n收到 零件\n=="
+    },
+    {
+     "input": "工具",
+     "expected": "==\n收到 工具\n=="
+    }
+   ],
+   "hint": "装饰器是用什么符号「贴」到函数上的？它要写在函数定义的哪一行？想想 @ 语法糖的作用。",
+   "explain": "@shout 是装饰器语法糖，等价于 hello = shout(hello)：把 hello 替换成加了装饰线的 wrapper 版本。补上 @shout 后，输出就有装饰线了。",
+   "concept": [
+    "装饰器",
+    "语法糖",
+    "调试"
+   ]
+  }
+ ],
+ "quest": {
+  "id": "u4_l4_quest",
+  "title": "剧情任务：压轴大订单——给工序加日志",
+  "story": "工坊的压轴大订单来了！老师傅把最难的活交给你：「最后这单，每一道工序都要记上开工、完工的日志。给 make 函数加上日志装饰器，让它既能干活，又能报进度——这可是把你这几课学的本事都用上了！」",
+  "stem": "补全 log_it 装饰器：它接收函数 func，返回包装函数 wrapper；wrapper 先打印「开工」，再调用 func()，最后打印「完工」。然后运行 make()。\n\n程序输出应为：\n开工\n制作零件 3 个\n完工",
+  "code": "def log_it(func):\n    def wrapper():\n        # 先打印\"开工\"\n        # 再调用 func()\n        # 最后打印\"完工\"\n        pass\n    return wrapper\n\n@log_it\ndef make():\n    n = int(input())\n    print(\"制作零件\", n, \"个\")\n\nmake()",
+  "testcases": [
+   {
+    "input": "3",
+    "expected": "开工\n制作零件 3 个\n完工"
+   },
+   {
+    "input": "5",
+    "expected": "开工\n制作零件 5 个\n完工"
+   }
+  ],
+  "hint": "wrapper 要做三件事：先打印「开工」，再真正调用被装饰的函数，最后打印「完工」。想想调用传入的 func 时要不要带括号？",
+  "explain": "装饰器就是「函数套函数」：log_it 接收 make，返回的 wrapper 在调用 func() 前后打印日志。@log_it 等价于 make = log_it(make)，所以 make() 会先打印开工、执行工序、再打印完工。",
+  "concept": [
+   "装饰器",
+   "高阶函数",
+   "函数"
+  ]
+ },
+ "summary": {
+  "body": "恭喜！你出师了——工坊老师傅把压箱底的绝活都传给了你 🎉\n\n**这一课你学会了**：\n1. **装饰器**：`@装饰器名` 给函数加 buff，等价于 `函数名 = 装饰器(函数名)`；内层 wrapper 记得调用原函数\n2. **闭包**：外层造变量、内层用变量、外层返回内层函数——内层函数「记住」外层变量；改外层变量用 `nonlocal`\n3. **生成器**：函数里有 `yield` 就是生成器；边做边给、省内存；**只能遍历一次**\n4. **常用内置函数**：`abs` / `round` / `sum` / `max` / `min` / `enumerate` / `zip` / `all` / `any`\n\n现在你已经是工坊里独当一面的师傅了：用 lambda 偷懒、用递归拆解难题、用 map/filter 批量加工、用装饰器加 buff、用生成器省内存——单元目标「把重复劳动封装成函数」，你做到了！"
+ }
+}
