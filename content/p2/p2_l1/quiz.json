@@ -1,0 +1,165 @@
+{
+  "lesson": "p2_l1",
+  "title": "抓取与解析",
+  "questions": [
+    {
+      "id": "p2_l1_p1",
+      "type": "choice",
+      "stem": "影评峡谷的第一张网要织起来了：把「电影榜」的数据抓下来。爬虫抓数据有四步走——发请求 → 拿响应 → 解析 → 提取数据。作为第一步，你应该做什么？",
+      "options": [
+        "把电影榜 HTML 里的片名用正则抠出来",
+        "用 requests 向榜单页面发请求，拿到网页源码",
+        "把评分从字符串转成数字",
+        "直接打印电影数量"
+      ],
+      "answer": 1,
+      "hint": "四步走的第一步是「发请求」——向服务器要网页。",
+      "explain": "第一步是发请求：requests.get(网址) 向服务器要网页；拿到响应（网页源码）之后，才能谈解析、提取。",
+      "traps": [
+        { "opt": 0, "why": "解析（抠片名）是第三步——连网页源码都还没拿到，拿什么解析？" },
+        { "opt": 2, "why": "转数字属于第四步「提取数据」里的清洗工作，第一步应该是发请求。" },
+        { "opt": 3, "why": "统计数量是拿到数据之后的事；第一步先发请求，把网页源码拿回来。" }
+      ],
+      "concept": ["爬虫四步", "发请求", "requests"]
+    },
+    {
+      "id": "p2_l1_p2",
+      "type": "choice",
+      "stem": "影评峡谷的 HTML 里，一部电影长这样：`<div class=\"movie\"><p class=\"title\">肖申克的救赎</p><span class=\"score\">9.7</span></div>`。想用正则把片名「肖申克的救赎」抓下来，应该匹配哪个标签？（它带 class 属性，方便和别的片名一起抓）",
+      "options": [
+        "<span class=\"score\">",
+        "<p class=\"title\">",
+        "<div class=\"movie\">",
+        "<p>"
+      ],
+      "answer": 1,
+      "hint": "片名被哪个标签包着？这个标签的 class 叫什么？",
+      "explain": "片名被 `<p class=\"title\">` 包着：`<p class=\"title\">肖申克的救赎</p>`。span 装评分，div 是装整部电影的容器。",
+      "traps": [
+        { "opt": 0, "why": "span class=\"score\" 是装评分的标签，不是片名。" },
+        { "opt": 2, "why": "div class=\"movie\" 是装整部电影的容器，片名在里面还包着一层 <p>。" },
+        { "opt": 3, "why": "光写 <p> 会把页面里所有段落都匹配上；class=\"title\" 才是片名的身份标记。" }
+      ],
+      "concept": ["HTML", "标签", "class属性"]
+    },
+    {
+      "id": "p2_l1_p3",
+      "type": "judge",
+      "stem": "判题环境（Pyodide）里没有 requests 库、也没有网络，所以本课的练习不会真的联网抓豆瓣——而是「题目直接给你一段电影榜 HTML 字符串，你用 re 正则提取片名和评分」。",
+      "answer": true,
+      "hint": "回忆概念卡 1 的易错点：判题环境能 import requests 吗？",
+      "explain": "对。Pyodide 无 requests、无网络：完整爬虫流程先记概念；练习用「给定的 HTML 字符串」当响应，重点练解析与提取。",
+      "concept": ["Pyodide", "判题环境", "正则提取"]
+    },
+    {
+      "id": "p2_l1_p4",
+      "type": "fill",
+      "stem": "爬虫第一步「发请求」：用 requests 库向网页发请求、拿回响应的函数是 requests.____()。（填英文方法名）",
+      "answer": ["get", "GET", "requests.get"],
+      "hint": "方法名和「得到、取回」对应——向服务器要东西。",
+      "explain": "requests.get(网址) 向服务器发 GET 请求，返回响应对象；响应对象的 .text 就是网页源码。",
+      "traps": [
+        { "wrong": "post", "why": "post 一般用于提交数据（登录、上传表单）；抓取网页内容用 get。" },
+        { "wrong": "read", "why": "read() 是读文件的方法；向服务器要网页用 requests.get()。" }
+      ],
+      "concept": ["requests", "get", "发请求"]
+    },
+    {
+      "id": "p2_l1_p5",
+      "type": "fill",
+      "stem": "正则 `(.*?)` 里的 `?` 让 `.*` 变成「尽量少匹配」的____匹配——保证一个 `<p class=\"title\">` 只吃到最近的 `</p>` 就停。（提示：和「贪婪」相反）",
+      "answer": ["非贪婪", "非贪心", "惰性", "懒惰", "最短匹配", "最小匹配"],
+      "hint": "和「贪婪」相反：贪婪尽量多吃，它尽量少吃。",
+      "explain": "非贪婪（惰性）匹配：.*? 能少匹配就少匹配，遇到最近的 </p> 就停，不会把后面几个片名标签一起吞掉。",
+      "traps": [
+        { "wrong": "分组", "why": "分组是 ( ) 的职责；? 加在 * 后面是让匹配变非贪婪。" },
+        { "wrong": "量词", "why": "量词（*、+、?）控制「重复多少次」；这里 ? 的作用是让 * 尽量少匹配，叫非贪婪。" }
+      ],
+      "concept": ["正则", "非贪婪", "惰性匹配"]
+    },
+    {
+      "id": "p2_l1_p6",
+      "type": "debug",
+      "stem": "程序从「电影榜」HTML 里提取片名，能运行，但输出里混进了多余的换行和缩进——因为多行 HTML 里片名标签的内容带着首尾空白。观察输出，修复它：给打印前的片名做清洗。",
+      "code": "import re\nimport sys\n\nhtml = sys.stdin.read()\ntitles = re.findall(r'<p class=\"title\">(.*?)</p>', html, re.S)\nfor t in titles:\n    print(t)   # BUG：没清洗，换行和缩进混进了输出",
+      "testcases": [
+        {
+          "input": "<div class=\"movie\">\n  <p class=\"title\">\n    肖申克的救赎\n  </p>\n  <span class=\"score\">9.7</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">\n    千与千寻\n  </p>\n  <span class=\"score\">9.1</span>\n</div>",
+          "expected": "肖申克的救赎\n千与千寻"
+        },
+        {
+          "input": "<p class=\"title\">流浪地球</p>",
+          "expected": "流浪地球"
+        }
+      ],
+      "hint": "代码里已带 re.S（让 . 能匹配换行），所以捞出的 t 长这样：'\\n    肖申克的救赎\\n  '——用字符串方法去掉首尾空白再打印。",
+      "explain": "(.*?) + re.S 把标签中间的内容原样捞出来，多行缩进时带进换行和空格；print(t.strip()) 先清洗再打印，输出就干净了。",
+      "concept": ["调试", "strip", "清洗", "正则"]
+    },
+    {
+      "id": "p2_l1_p7",
+      "type": "code",
+      "stem": "影评峡谷的「电影榜」HTML 是多行字符串：每部电影是一个 <div class=\"movie\"> 条目，片名藏在 <p class=\"title\">片名</p> 里。请完成：\n\n1. 用 re.findall 按 r'<p class=\"title\">(.*?)</p>' 提取所有片名\n2. 把每个片名单独打印一行（记得 strip 清洗）\n3. 没有片名时什么都不打印",
+      "code": "import re\nimport sys\n\n# 电影榜 HTML（多行）：片名藏在 <p class=\"title\"> 标签里\nhtml = sys.stdin.read()\n\n# TODO: 用 re.findall 提取所有片名\ntitles = []\n\n# TODO: 逐行打印每个片名（strip 清洗）",
+      "testcases": [
+        {
+          "input": "<h1>影评峡谷电影榜</h1>\n<div class=\"movie\">\n  <p class=\"title\">肖申克的救赎</p>\n  <span class=\"score\">9.7</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">星际穿越</p>\n  <span class=\"score\">9.4</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">千与千寻</p>\n  <span class=\"score\">9.1</span>\n</div>",
+          "expected": "肖申克的救赎\n星际穿越\n千与千寻"
+        },
+        {
+          "input": "<h1>影评峡谷电影榜·周末场</h1>\n<div class=\"movie\">\n  <p class=\"title\">流浪地球</p>\n  <span class=\"score\">8.5</span>\n</div>",
+          "expected": "流浪地球"
+        }
+      ],
+      "hint": "正则模式题目已经给了——用哪个函数把「所有」匹配装进列表？拿到列表后怎么逐条打印？记得清洗首尾空白。",
+      "explain": "sys.stdin.read() 一次读入整段 HTML；re.findall 把所有片名装进列表；for 循环逐个 strip 后打印。没有片名时 findall 返回空列表，循环不执行，什么都不打印。",
+      "concept": ["re.findall", "sys.stdin.read", "提取片名", "正则"]
+    },
+    {
+      "id": "p2_l1_p8",
+      "type": "code",
+      "stem": "还是那份「电影榜」HTML，这次要抓**评分**：每部电影的评分藏在 <span class=\"score\">9.7</span> 里。请完成：\n\n1. 用 re.findall 按 r'<span class=\"score\">(.*?)</span>' 提取所有评分\n2. 把每个评分单独打印一行（记得 strip 清洗）\n3. 没有评分时什么都不打印",
+      "code": "import re\nimport sys\n\n# 电影榜 HTML（多行）：评分藏在 <span class=\"score\"> 标签里\nhtml = sys.stdin.read()\n\n# TODO: 用 re.findall 提取所有评分\nscores = []\n\n# TODO: 逐行打印每个评分（strip 清洗）",
+      "testcases": [
+        {
+          "input": "<h1>影评峡谷电影榜</h1>\n<div class=\"movie\">\n  <p class=\"title\">肖申克的救赎</p>\n  <span class=\"score\">9.7</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">千与千寻</p>\n  <span class=\"score\">9.1</span>\n</div>",
+          "expected": "9.7\n9.1"
+        },
+        {
+          "input": "<h1>影评峡谷电影榜</h1>\n<p>榜单更新中……</p>",
+          "expected": ""
+        }
+      ],
+      "hint": "和提取片名同一套路：把正则里的标签换成评分标签（class 名注意看题目），用 re.findall 取全部，逐条清洗后打印。",
+      "explain": "和提取片名同一套路：换一个标签形状 <span class=\"score\">…</span>，re.findall 把所有评分捞进列表，for 循环 strip 后逐行打印；没有评分时返回空列表，什么都不打印。",
+      "concept": ["re.findall", "提取评分", "span", "正则"]
+    }
+  ],
+  "quest": {
+    "id": "p2_l1_quest",
+    "title": "剧情任务：织起影评峡谷的第一张网",
+    "story": "你站在影评峡谷的入口，峡谷两壁的「电影榜」石碑上刻满了电影名和评分——可惜石碑上全是 HTML 符号，肉眼根本读不出哪部是好片。老猎人递给你一捆蛛丝：「真正的爬虫，就是织一张网把碑文上的数据一条条捞下来。你的第一张网，就从最基础的开始：把榜单上的片名全部抓下来！」你点点头，掏出 re 正则，开始织网。",
+    "stem": "程序会读入「电影榜」HTML（多行字符串）。请完成：\n\n1. 用 re.findall 按 r'<p class=\"title\">(.*?)</p>' 提取 HTML 里所有片名\n2. 把每个片名单独打印一行（记得 strip 清洗）\n3. 最后打印「共N部电影」（N 是片名数量）",
+    "code": "import re\nimport sys\n\n# 影评峡谷第一张网：读入电影榜 HTML（多行）\nhtml = sys.stdin.read()\n\n# TODO 1: titles = re.findall(r'<p class=\"title\">(.*?)</p>', html)\ntitles = []\n\n# TODO 2: 逐行打印每个片名（strip 清洗），最后打印「共N部电影」",
+    "testcases": [
+      {
+        "input": "<h1>影评峡谷·电影榜</h1>\n<div class=\"movie\">\n  <p class=\"title\">肖申克的救赎</p>\n  <span class=\"score\">9.7</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">霸王别姬</p>\n  <span class=\"score\">9.6</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">阿甘正传</p>\n  <span class=\"score\">9.5</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">泰坦尼克号</p>\n  <span class=\"score\">9.5</span>\n</div>",
+        "expected": "肖申克的救赎\n霸王别姬\n阿甘正传\n泰坦尼克号\n共4部电影"
+      },
+      {
+        "input": "<h1>影评峡谷·电影榜·精华版</h1>\n<div class=\"movie\">\n  <p class=\"title\">千与千寻</p>\n  <span class=\"score\">9.1</span>\n</div>\n<div class=\"movie\">\n  <p class=\"title\">星际穿越</p>\n  <span class=\"score\">9.4</span>\n</div>",
+        "expected": "千与千寻\n星际穿越\n共2部电影"
+      },
+      {
+        "input": "<h1>影评峡谷·电影榜</h1>\n<p>榜单数据正在织网中，敬请期待……</p>",
+        "expected": "共0部电影"
+      }
+    ],
+    "hint": "第一步用 re.findall 提取全部片名（模式题目已给）；第二步逐条清洗后打印；第三步统计数量——列表有几个元素用什么函数？",
+    "explain": "sys.stdin.read() 读入整段电影榜 HTML；re.findall 用非贪婪分组把每个片名捞进列表；for 循环 strip 后逐行打印；len(titles) 统计数量，打印「共N部电影」。没有片名时 findall 返回空列表，只打印「共0部电影」——第一张网，织好了！",
+    "concept": ["re.findall", "提取片名", "非贪婪", "统计", "爬虫实战"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「抓取与解析」一课 🎉\n\n**这一课你学会了**：\n1. **爬虫四步走**：发请求（撒网）→ 拿响应（收网）→ 解析（拆网）→ 提取数据（入库）；Pyodide 判题环境没有 requests、没有网络，完整流程先记牢概念\n2. **requests 概念回顾**：requests.get(网址) 发请求拿响应，响应 .text 就是网页源码；判题环境用「题目给定的 HTML 字符串」当响应来练\n3. **HTML 里找数据**：电影条目是 <div class=\"movie\"> 容器，片名在 <p class=\"title\">…</p>，评分在 <span class=\"score\">…</span>——class 属性名必须一字不差\n4. **正则提取**：re.findall 一次提取所有匹配；(.*?) 非贪婪防止吞掉后续标签；strip() 清洗首尾空白\n\n**剧情推进**：第一张网织好了，榜单上的片名一条不落！但老猎人盯着名单直摇头：「光有片名可不够——哪部评分高、哪部值得看，还得把评分也捞出来算一算。」下一站：提取与统计，把片名和评分织成一张完整的清单！"
+  }
+}
