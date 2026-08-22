@@ -1,0 +1,143 @@
+{
+  "lesson": "u11_l5",
+  "title": "抓取实战",
+  "questions": [
+    {
+      "id": "u11_l5_p1",
+      "type": "choice",
+      "stem": "一只完整的爬虫要按顺序完成四个步骤。下面哪个顺序才是对的？",
+      "options": [
+        "解析网页 → 发请求 → 拿响应 → 提取数据",
+        "发请求 → 拿响应 → 解析网页 → 提取数据",
+        "发请求 → 解析网页 → 拿响应 → 提取数据",
+        "提取数据 → 发请求 → 拿响应 → 解析网页"
+      ],
+      "answer": 1,
+      "hint": "想想蜘蛛的动作顺序：先织网、等猎物撞进来、再拆解猎物、最后把战利品收进仓库——分别对应爬虫的哪四步？",
+      "explain": "爬虫四步的固定顺序：发请求 → 拿响应 → 解析网页 → 提取数据。拿不到响应就无从解析，解析不了就提取不出数据。",
+      "traps": [
+        { "opt": 0, "why": "连响应都还没拿到，谈何解析？解析的对象是服务器返回的网页源码。" },
+        { "opt": 2, "why": "响应是解析的原料：必须先拿到响应（网页源码），才能去解析它。" },
+        { "opt": 3, "why": "顺序完全反了——数据还没抓到，怎么可能先提取？" }
+      ],
+      "concept": ["爬虫", "四步流程", "发请求", "拿响应", "解析", "提取数据"]
+    },
+    {
+      "id": "u11_l5_p2",
+      "type": "choice",
+      "stem": "表格里有一行 HTML：<tr><td>流浪地球</td><td>8.5</td></tr>。想用 re 模块把两个单元格的内容（流浪地球、8.5）都提取出来，应该用哪个？",
+      "options": [
+        "re.findall(r\"<td>(.*?)</td>\", row)",
+        "re.findall(r\"<td>(.*)</td>\", row)",
+        "re.search(r\"<td>(.*?)</td>\", row)",
+        "re.findall(r\"<td>\", row)"
+      ],
+      "answer": 0,
+      "hint": "要「所有」匹配用 findall；要精准停在最近的 </td> 用惰性 .*?；分组 (.*?) 只留内容。",
+      "explain": "re.findall 找全部匹配，惰性 .*? 让每个 <td> 精准配到最近的 </td>，分组 (.*?) 只留下标签里的内容 → ['流浪地球', '8.5']。",
+      "traps": [
+        { "opt": 1, "why": "贪婪的 .* 会一直吃到最后一个 </td>，把中间的 </td><td> 也吞进内容里。" },
+        { "opt": 2, "why": "search 只返回第一个匹配对象，拿不到「所有」单元格。" },
+        { "opt": 3, "why": "这个模式只匹配标签本身 <td>，结果是 ['<td>', '<td>']，不是标签里的内容。" }
+      ],
+      "concept": ["正则", "re.findall", "惰性匹配", "表格解析"]
+    },
+    {
+      "id": "u11_l5_p3",
+      "type": "judge",
+      "stem": "Pyodide 判题环境里没有 requests 库、也没有网络，所以完整爬虫流程只能学概念；练习题会直接给一段 HTML 字符串，用正则提取数据。",
+      "answer": true,
+      "hint": "回忆概念卡 1 的易错点：判题环境能 import requests 吗？",
+      "explain": "对。判题环境（Pyodide）无 requests、无 bs4、无网络——完整流程照讲概念，练习用「题目给定的 HTML + 正则」模拟抓取。",
+      "concept": ["Pyodide", "判题环境", "爬虫"]
+    },
+    {
+      "id": "u11_l5_p4",
+      "type": "fill",
+      "stem": "爬虫四步里，把解析出来的原始数据做清洗（strip、转数字）、统计、保存——这一步叫「____数据」？（填中文或英文均可）",
+      "answer": ["提取", "提取数据", "提取入库", "入库", "存储", "保存", "extract"],
+      "hint": "四步是：发请求 → 拿响应 → 解析 → ____。最后一步把干净的数据收进仓库。",
+      "explain": "第四步是「提取数据」（入库）：清洗（strip、float）、统计（计数 / 求和 / 平均）、打印或保存。",
+      "traps": [
+        { "wrong": "解析", "why": "解析是把结构拆开、按标签形状找内容；把找到的数据整理、统计、保存才是提取数据。" },
+        { "wrong": "请求", "why": "发请求是第一步——向服务器要数据，不是整理数据。" }
+      ],
+      "concept": ["提取数据", "爬虫四步"]
+    },
+    {
+      "id": "u11_l5_p5",
+      "type": "fill",
+      "stem": "想用 json 模块把字典 / 列表转成 JSON 字符串（比如打印入库结果），应该调用哪个函数？（填函数名，形如 xxx.yyy）",
+      "answer": ["json.dumps", "json.dumps()", "dumps", "dumps()"],
+      "hint": "想想 dumps 这个名字的含义：dump + string，把数据 dump 成字符串——它的完整函数名怎么写？注意别和写入文件的 json.dump 搞混。",
+      "explain": "json.dumps(数据, ensure_ascii=False) 把字典 / 列表转成 JSON 字符串；json.dump 是写入文件，dumps 是返回字符串。",
+      "traps": [
+        { "wrong": "json.dump", "why": "json.dump 是往文件里写，不返回字符串；练习里要打印结果，用 json.dumps 返回字符串。" },
+        { "wrong": "json.loads", "why": "loads 是反方向：把 JSON 字符串解析回字典 / 列表。" }
+      ],
+      "concept": ["json", "dumps", "存储"]
+    },
+    {
+      "id": "u11_l5_p6",
+      "type": "debug",
+      "stem": "峡谷情报站想统计「峡谷电影榜」的平均分，下面的程序却运行报错了。观察报错信息（TypeError：字符串和数字不能相加），修复它。",
+      "code": "import re\nimport sys\n\nhtml = sys.stdin.read()\nrows = re.findall(r\"<tr>(.*?)</tr>\", html)\ntotal = 0\ncount = 0\nfor row in rows:\n    cells = re.findall(r\"<td>(.*?)</td>\", row)\n    score = cells[1].strip()\n    total += score     # BUG：score 是字符串，不能直接加进数字 total\n    count += 1\nprint(\"平均分：%.1f\" % (total / count))",
+      "testcases": [
+        { "input": "<table>\n<tr><td>流浪地球</td><td>8.0</td></tr>\n<tr><td>星际穿越</td><td>9.0</td></tr>\n</table>", "expected": "平均分：8.5" },
+        { "input": "<table>\n<tr><td>大闹天竺</td><td>7.5</td></tr>\n<tr><td>肖申克的救赎</td><td>8.5</td></tr>\n<tr><td>千与千寻</td><td>9.0</td></tr>\n</table>", "expected": "平均分：8.3" }
+      ],
+      "hint": "想想报错为什么：score 是正则捞出来的字符串（如 '8.0'），直接加进数字 total 当然报 TypeError——怎么把它转成数字（提示：float()）？转换前要不要先清洗？",
+      "explain": "正则捞出来的评分是字符串 '8.0'，直接 total += score 会抛 TypeError。改成 total += float(score.strip())：清洗（strip）+ 转数字（float）后再累加。",
+      "concept": ["调试", "清洗", "float", "TypeError", "统计"]
+    },
+    {
+      "id": "u11_l5_p7",
+      "type": "code",
+      "stem": "豆瓣电影列表 HTML 每行是一条 <tr><td>片名</td><td>评分</td></tr>。请完成代码：\n\n1. 用 re.findall 按 <tr>(.*?)</tr> 拆出每一行\n2. 对每行用 re.findall 按 <td>(.*?)</td> 拆出单元格，取第 1 个（片名）收集进 titles\n3. 逐行打印片名（记得 strip 清洗），最后打印「共N部电影」",
+      "code": "import re\nimport sys\n\n# 豆瓣电影列表 HTML：每行一条 <tr><td>片名</td><td>评分</td></tr>\nhtml = sys.stdin.read()\n\n# TODO 1: rows = re.findall(...) 拆出每一行\nrows = []\n\n# TODO 2: 对每行拆单元格，片名 = cells[0].strip()，收集进 titles\ntitles = []\n\n# TODO 3: 逐行打印片名，最后打印「共N部电影」",
+      "testcases": [
+        { "input": "<table>\n<tr><td>流浪地球</td><td>8.5</td></tr>\n<tr><td>星际穿越</td><td>9.4</td></tr>\n<tr><td>大闹天竺</td><td>3.7</td></tr>\n</table>", "expected": "流浪地球\n星际穿越\n大闹天竺\n共3部电影" },
+        { "input": "<table>\n<tr><td>千与千寻</td><td>9.1</td></tr>\n<tr><td>疯狂动物城</td><td>8.9</td></tr>\n</table>", "expected": "千与千寻\n疯狂动物城\n共2部电影" }
+      ],
+      "hint": "想想三层：怎么按 <tr> 拆出行？每行怎么按 <td> 拆出单元格？片名是第几个单元格、要不要清洗？最后数量怎么统计？",
+      "explain": "先按 <tr> 拆行、再按 <td> 拆单元格：片名是每行第 1 个单元格 cells[0]，strip 清洗后收集；遍历打印 titles，最后用 len(titles) 统计数量打印「共N部电影」。",
+      "concept": ["正则", "表格解析", "tr", "td", "统计"]
+    },
+    {
+      "id": "u11_l5_p8",
+      "type": "code",
+      "stem": "还是那份豆瓣电影列表 HTML（每行 <tr><td>片名</td><td>评分</td></tr>）。这次要挑出**高分电影**（评分 ≥ 8.0）：\n\n1. 拆行、拆单元格，取出片名 cells[0] 和评分 cells[1]\n2. 评分先 strip 再 float() 转成数字\n3. 评分 ≥ 8.0 的：打印片名，并计数\n4. 最后打印「高分电影共N部」",
+      "code": "import re\nimport sys\n\n# 豆瓣电影列表 HTML：每行一条 <tr><td>片名</td><td>评分</td></tr>\nhtml = sys.stdin.read()\n\n# TODO 1: 拆行、拆单元格，取出片名 cells[0] 和评分 cells[1]\n# TODO 2: 评分 strip 后 float() 转数字；>= 8.0 打印片名并计数\n# TODO 3: 最后打印「高分电影共N部」",
+      "testcases": [
+        { "input": "<table>\n<tr><td>流浪地球</td><td>8.5</td></tr>\n<tr><td>星际穿越</td><td>9.4</td></tr>\n<tr><td>大闹天竺</td><td>3.7</td></tr>\n</table>", "expected": "流浪地球\n星际穿越\n高分电影共2部" },
+        { "input": "<table>\n<tr><td>小时代</td><td>4.5</td></tr>\n<tr><td>千与千寻</td><td>9.1</td></tr>\n</table>", "expected": "千与千寻\n高分电影共1部" }
+      ],
+      "hint": "想想：评分是第几个单元格？它现在是字符串还是数字，怎么转换？比较用哪个符号（注意 8.0 算不算高分）？满足条件的才打印和计数。",
+      "explain": "清洗（strip）→ 转数字（float）→ 比较（>= 8.0）→ 打印片名并计数，最后输出「高分电影共N部」。注意正则捞出的评分是字符串，必须先转数字再比大小。",
+      "concept": ["清洗", "float", "比较", "统计", "正则"]
+    }
+  ],
+  "quest": {
+    "id": "u11_l5_quest",
+    "title": "剧情任务：峡谷电影榜大收网",
+    "story": "你踩着钢丝桥爬进蜘蛛峡谷的情报站。站长头顶的蜘蛛正忙着结网，他反手把一沓还带着蜘蛛丝的 HTML 拍在桌上：「这是刚从『峡谷电影榜』网页上截下来的情报！帮我把电影名全抠出来，一行一部列个清单，最后报个总数——峡谷影迷们都等着呢！」",
+    "stem": "把下面的程序补全：\n\n- 用 re.findall 按 <p class=\"title\">(.*?)</p> 提取 HTML 里所有片名\n- 按行打印每个片名（记得 strip 清洗）\n- 最后打印「共N部电影」（N 是片名数量）",
+    "code": "import re\nimport sys\n\n# 峡谷情报站抓到的「峡谷电影榜」HTML\nhtml = sys.stdin.read()\n\n# TODO: titles = re.findall(r'<p class=\"title\">(.*?)</p>', html)\ntitles = []\n\n# TODO: 按行打印每个片名（strip 清洗），最后打印「共N部电影」",
+    "testcases": [
+      {
+        "input": "<h1>峡谷电影榜</h1>\n<p class=\"title\">流浪地球</p>\n<p class=\"title\">星际穿越</p>\n<p class=\"title\">大闹天竺</p>\n<p class=\"title\">肖申克的救赎</p>\n<p class=\"title\">这个杀手不太冷</p>\n<p class=\"title\">千与千寻</p>",
+        "expected": "流浪地球\n星际穿越\n大闹天竺\n肖申克的救赎\n这个杀手不太冷\n千与千寻\n共6部电影"
+      },
+      {
+        "input": "<h1>峡谷电影榜·精华版</h1>\n<p class=\"title\">哪吒之魔童降世</p>\n<p class=\"title\">疯狂动物城</p>\n<p class=\"title\">寻梦环游记</p>",
+        "expected": "哪吒之魔童降世\n疯狂动物城\n寻梦环游记\n共3部电影"
+      }
+    ],
+    "hint": "想想：怎么按 <p class=\"title\">...</p> 的形状把所有片名提取出来（提示：re.findall + 分组）？打印时为什么要 strip？最后数量怎么统计？",
+    "explain": "re.findall 按 <p class=\"title\">…</p> 的形状把片名全捞出来；遍历打印（strip 去掉可能的首尾空白）；len(titles) 统计总数，打印「共N部电影」。站长看着整整齐齐的清单，朝你竖起了大拇指。",
+    "concept": ["正则", "re.findall", "提取", "统计", "爬虫实战"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「抓取实战」一课 🎉\n\n**这一课你学会了**：\n1. **爬虫四步走**：发请求（织网）→ 拿响应（收网）→ 解析（拆解）→ 提取数据（入库）——完整流程装进脑子\n2. **表格解析**：`<table>` 套 `<tr>` 行、`<tr>` 套 `<td>` 单元格，用 `re.findall(r\"<tr>(.*?)</tr>\")` + `re.findall(r\"<td>(.*?)</td>\")` 从外到内逐层拆\n3. **提取与清洗**：惰性 `.*?` 精准取内容、`strip()` 去首尾空白、`float()` 把评分字符串转数字，再比较、计数、求平均\n4. **存储与收尾**：CSV（逗号分隔表格，`csv.writer`）和 JSON（`json.dumps(..., ensure_ascii=False)`）两种通用格式；判题环境里用 StringIO 模拟文件、用 print 输出入库结果\n\n**剧情推进**：情报站的第一批情报成功入库！站长看着整整齐齐的电影清单，又望向峡谷深处更高的山峰：「零散抓一两页谁都会，可要**系统性地**把一整座『信息矿脉』挖下来，才是蜘蛛峡谷的终极考验。」下一站：综合项目——把请求、解析、清洗、存储串成一条完整的爬虫流水线！"
+  }
+}
