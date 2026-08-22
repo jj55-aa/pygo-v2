@@ -1,0 +1,249 @@
+{
+  "lesson": "u12_l3",
+  "title": "进阶查询",
+  "quest": {
+    "id": "u12_l3_quest",
+    "title": "剧情任务：数据地堡结业（Track 1 终极任务）",
+    "story": "「这里是数据地堡核心终端。欢迎，档案管理员。」冰冷的合成音在空旷的地堡大厅里响起。「你从 u12_l1 认识了 SQLite 的表格，到 u12_l2 学会增删改查，再到这一课的进阶查询——现在，地堡把整座档案库的终极查询交给你：从全部玩家档案中，找出等级 ≥ 40 的精英档案，按金币从高到低排序，把最强的 2 名带到我面前。这是 Track 1 的最后一关。完成它，你的 Python 核心课程结业证书，就会从这里打印出来。」终端屏幕亮起一行小字：WHERE → ORDER BY → LIMIT。",
+    "stem": "读入玩家档案，每行一条「id 名字 等级 金币」（空格分隔）。完成地堡终极查询：**筛选等级 >= 40** → **按金币降序排序** → **取前 2 名**，每行打印「名字 金币」。\n\n期望输出（输入 1 剑圣 50 99999 / 2 奶茶猫 32 5200 / 3 摸鱼大师 41 88000）：\n```\n剑圣 99999\n摸鱼大师 88000\n```",
+    "code": "import sys\n\n# 地堡终极查询：读入玩家档案，每行一条「id 名字 等级 金币」\nplayers = []\nfor line in sys.stdin.read().strip().split(\"\\n\"):\n    if not line.strip():\n        continue\n    pid, name, level, gold = line.split()\n    players.append({\"id\": pid, \"name\": name, \"level\": int(level), \"gold\": int(gold)})\n\n# TODO: 终极查询——筛选等级 >= 40，按金币降序排序，取前 2 名，打印「名字 金币」\n# 提示：top = sorted([p for p in players if p[\"level\"] >= 40], key=lambda p: p[\"gold\"], reverse=True)[:2]\n\ntop = []\nfor p in top:\n    print(p[\"name\"], p[\"gold\"])",
+    "testcases": [
+      {
+        "input": "1 剑圣 50 99999\n2 奶茶猫 32 5200\n3 摸鱼大师 41 88000\n4 熬夜冠军 60 300",
+        "expected": "剑圣 99999\n摸鱼大师 88000"
+      },
+      {
+        "input": "101 小明 30 100\n102 小红 45 500\n103 小刚 40 800",
+        "expected": "小刚 800\n小红 500"
+      },
+      {
+        "input": "1 阿强 42 777\n2 阿珍 38 99999\n3 阿伟 50 888",
+        "expected": "阿伟 888\n阿强 777"
+      }
+    ],
+    "hint": "想想三步怎么合成：筛选（等级 >= 40）、降序排序（按金币）、限量（取前 2 名）——每一步分别用什么写法？最后打印「名字 金币」。",
+    "explain": "终极查询就是综合查询三件套：WHERE → ORDER BY DESC → LIMIT。注意第 3 个用例：阿珍金币最多但等级只有 38，被 WHERE 筛掉——先筛选再排序，顺序不能反。",
+    "concept": [
+      "综合查询",
+      "WHERE",
+      "ORDER BY",
+      "LIMIT",
+      "数据地堡结业"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通过了数据地堡的终极查询，也走完了 **Python 核心 12 单元全课程** 🎉\n\n**这一课你打通了 SQL 进阶查询**：\n1. **WHERE 筛选**：`SELECT 列 FROM 表 WHERE 条件`，挑出满足条件的行；SQL 判断相等用单个 `=`，条件可用 `AND` / `OR` 组合\n2. **ORDER BY 排序**：`ASC` 升序（默认）/ `DESC` 降序；`ORDER BY 列` 不写方向默认从小到大\n3. **LIMIT 与聚合**：`LIMIT n` 限量取前 n 行（放查询最后）；`COUNT(*)` 数行数、`SUM(列)` 求和、`AVG(列)` 求平均，把多行压成一个数\n4. **综合查询与 Python 接入**：`WHERE → ORDER BY → LIMIT` 可串成一条综合查询；真实程序里 Python 用「连接 → 执行 → 取结果」接数据库（`connect` / `cursor.execute` / `fetchall` / `close`，改数据要 `commit`）\n\n**🗄️ 数据地堡结业彩蛋！** 从 u12_l1 认识表结构、u12_l2 增删改查，到这一课的进阶查询——你现在能在地堡里**挑、排、限量、统计**海量档案，还能把查询写进 Python 程序。地堡的结业舱门缓缓打开，一枚「数据地堡管理员」徽章落在你胸前。\n\n**🏆 Track 1 通关彩蛋！** 恭喜你完成 **Python 核心 12 单元全课程**！回望来时路：新手村（变量与类型）→ 流程控制 → 序列容器 → 函数 → 面向对象 → 异常调试 → 文件数据 → 常用库 → 正则 → 办公自动化 → 网络爬虫 → 数据库。你已经能用 Python 读写文件、整理报表、爬取网页、查询数据库——**从只会 print，到能处理真实数据**。接下来还有两段旅程等你：**应用实战 Track 2**（用 Python 解决真实项目问题、做出自己的小作品）和 **Web/AI 编程 Track 3**（网页应用与人工智能）。数据地堡管理员向你敬礼：「档案管理员，下一站见！」"
+  },
+  "questions": [
+    {
+      "id": "u12_l3_p1",
+      "type": "choice",
+      "stem": "地堡查询要找出等级正好 40 级的玩家，SQL 里 WHERE 条件应该怎么写？",
+      "options": [
+        "WHERE level = 40（SQL 判断相等只用一个等号 =）",
+        "WHERE level == 40（和 Python 一样用两个等号）",
+        "WHERE \"level\" = 40（列名加双引号更规范）",
+        "WHERE level = \"40\"（数字值加引号更保险）"
+      ],
+      "answer": 0,
+      "hint": "SQL 和 Python 的「判断相等」写法不一样：Python 用 ==，SQL 用 =。",
+      "explain": "SQL 判断相等只写一个等号：WHERE level = 40。== 是 Python 的写法，在 SQL 里直接语法错误。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "== 是 Python 的写法，SQL 里只认单个 =；写 == 会直接语法错误。"
+        },
+        {
+          "opt": 2,
+          "why": "列名本身无需加引号；且双引号语义各数据库不一（SQLite 里双引号是标识符引用，MySQL 默认模式可能当字符串字面量），加引号并非更规范。"
+        },
+        {
+          "opt": 3,
+          "why": "数字值不加引号；只有文本值才加单引号（WHERE name = '剑圣'）。"
+        }
+      ],
+      "concept": [
+        "WHERE",
+        "筛选"
+      ]
+    },
+    {
+      "id": "u12_l3_p2",
+      "type": "choice",
+      "stem": "地堡查询 `SELECT name, gold FROM players ORDER BY gold;`（没写 ASC/DESC）会按什么顺序返回结果？",
+      "options": [
+        "按金币从小到大（升序，ORDER BY 默认就是 ASC）",
+        "按金币从大到小（降序 DESC）",
+        "直接报错：ORDER BY 后面必须写 ASC 或 DESC",
+        "按玩家名字的字母顺序返回"
+      ],
+      "answer": 0,
+      "hint": "ORDER BY 不写方向时的默认值是什么？想想「默认」两个字。",
+      "explain": "ORDER BY 不写 ASC/DESC 时默认 ASC 升序（小 → 大）。想从高到低必须显式写 DESC。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "降序必须显式写 DESC；不写方向默认是升序 ASC。"
+        },
+        {
+          "opt": 2,
+          "why": "ASC/DESC 是可选的，不写不会报错，默认按 ASC 升序排。"
+        },
+        {
+          "opt": 3,
+          "why": "ORDER BY gold 是按 gold 这一列的值排序，和名字无关。"
+        }
+      ],
+      "concept": [
+        "ORDER BY",
+        "排序"
+      ]
+    },
+    {
+      "id": "u12_l3_p3",
+      "type": "judge",
+      "stem": "下面这条 SQL 是正确的：`SELECT name, gold FROM players LIMIT 2 WHERE level >= 40;`",
+      "answer": false,
+      "hint": "想想查询里各个子句的书写顺序：SELECT → FROM → WHERE → ORDER BY → LIMIT。",
+      "explain": "各子句顺序固定：SELECT → FROM → WHERE → ORDER BY → LIMIT。LIMIT 必须放在查询最后，写在 WHERE 前面是语法错误。正确写法：SELECT name, gold FROM players WHERE level >= 40 LIMIT 2;",
+      "concept": [
+        "LIMIT",
+        "综合查询"
+      ]
+    },
+    {
+      "id": "u12_l3_p4",
+      "type": "fill",
+      "stem": "想统计地堡档案一共有多少条记录，SQL 用 `SELECT ___(*) FROM players;`，横线处填什么？（填函数名，英文或中文都可以）",
+      "answer": [
+        "COUNT",
+        "count",
+        "Count",
+        "统计",
+        "计数"
+      ],
+      "hint": "数行数的聚合函数，英文是「数数」的意思，C 开头。",
+      "explain": "COUNT(*) 数行数：SELECT COUNT(*) FROM players 返回档案总条数。类似的还有 SUM(列) 求和、AVG(列) 求平均。",
+      "traps": [
+        {
+          "wrong": "SUM",
+          "why": "SUM 是求和（把一列的值加起来），数行数要用 COUNT。"
+        },
+        {
+          "wrong": "AVG",
+          "why": "AVG 是求平均值，数行数要用 COUNT。"
+        },
+        {
+          "wrong": "SELECT",
+          "why": "横线处填的是函数名，SELECT 是查询关键字，不是聚合函数。"
+        }
+      ],
+      "concept": [
+        "聚合",
+        "COUNT"
+      ]
+    },
+    {
+      "id": "u12_l3_p5",
+      "type": "fill",
+      "stem": "想让查询结果按金币从高到低排列：`ORDER BY gold ___`，横线处填什么？（填英文关键字）",
+      "answer": [
+        "DESC",
+        "desc",
+        "Desc",
+        "降序"
+      ],
+      "hint": "「降序」的英文缩写，De 开头。",
+      "explain": "ORDER BY gold DESC 表示按金币降序（从高到低）。不写方向默认 ASC 升序；降序必须写 DESC。",
+      "traps": [
+        {
+          "wrong": "ASC",
+          "why": "ASC 是升序（从小到大）；从高到低要写 DESC。"
+        },
+        {
+          "wrong": "SORT",
+          "why": "SQL 排序的关键字是 ORDER BY 里的 ASC/DESC，没有 SORT 这个方向词。"
+        }
+      ],
+      "concept": [
+        "ORDER BY",
+        "DESC"
+      ]
+    },
+    {
+      "id": "u12_l3_p6",
+      "type": "debug",
+      "stem": "下面的程序想按金币**降序**取前 2 名并打印「名字 金币」，但结果却从最少金币的开始打印。找出 bug 并修复，让程序输出：\n```\n剑圣 99999\n摸鱼大师 88000\n```",
+      "code": "players = [\n    {\"name\": \"剑圣\", \"level\": 50, \"gold\": 99999},\n    {\"name\": \"奶茶猫\", \"level\": 32, \"gold\": 5200},\n    {\"name\": \"摸鱼大师\", \"level\": 41, \"gold\": 88000},\n]\ntop = sorted(players, key=lambda p: p[\"gold\"])[:2]\nfor p in top:\n    print(p[\"name\"], p[\"gold\"])",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "剑圣 99999\n摸鱼大师 88000"
+        }
+      ],
+      "hint": "sorted 默认升序（小 → 大），想从大到小要加哪个参数？",
+      "explain": "sorted 默认升序，这里缺了 reverse=True。修复：sorted(players, key=lambda p: p[\"gold\"], reverse=True)，再 [:2] 才能取到金币最多的 2 名。",
+      "concept": [
+        "sorted",
+        "reverse",
+        "调试"
+      ]
+    },
+    {
+      "id": "u12_l3_p7",
+      "type": "code",
+      "stem": "地堡终端送来玩家数据：每行一条「名字 等级 金币」（空格分隔）。完成综合查询：**筛选等级 >= 40** → **按金币降序** → **取前 2 名**，每行打印「名字 金币」。\n\n期望输出（输入 剑圣 50 99999 / 奶茶猫 32 5200 / 摸鱼大师 41 88000）：\n```\n剑圣 99999\n摸鱼大师 88000\n```",
+      "code": "import sys\n\n# 读入玩家数据：每行一条「名字 等级 金币」\nplayers = []\nfor line in sys.stdin.read().strip().split(\"\\n\"):\n    if not line.strip():\n        continue\n    name, level, gold = line.split()\n    players.append({\"name\": name, \"level\": int(level), \"gold\": int(gold)})\n\n# TODO: 综合查询——筛选等级 >= 40，按金币降序，取前 2 名\n# 提示：top = sorted([p for p in players if p[\"level\"] >= 40], key=lambda p: p[\"gold\"], reverse=True)[:2]\n\ntop = []\nfor p in top:\n    print(p[\"name\"], p[\"gold\"])",
+      "testcases": [
+        {
+          "input": "剑圣 50 99999\n奶茶猫 32 5200\n摸鱼大师 41 88000",
+          "expected": "剑圣 99999\n摸鱼大师 88000"
+        },
+        {
+          "input": "小明 35 100\n小红 45 500\n小刚 40 800",
+          "expected": "小刚 800\n小红 500"
+        },
+        {
+          "input": "小强 40 1000\n小李 38 9999\n小王 45 2000",
+          "expected": "小王 2000\n小强 1000"
+        }
+      ],
+      "hint": "想想三件事怎么合成一条：筛选（列表推导里加条件）、降序排序（sorted 的 key 指定按金币排，再加哪个参数才是降序？）、限量（用切片取前 2 个）——然后逐行打印「名字 金币」。",
+      "explain": "综合查询 = 筛选 + 排序 + 限量：列表推导的 if p[\"level\"] >= 40 对应 WHERE，sorted 的 key + reverse=True 对应 ORDER BY gold DESC，[:2] 对应 LIMIT 2。注意小李金币最多但等级只有 38，要先被筛掉。",
+      "concept": [
+        "综合查询",
+        "筛选",
+        "排序",
+        "LIMIT"
+      ]
+    },
+    {
+      "id": "u12_l3_p8",
+      "type": "code",
+      "stem": "地堡盘点：读入玩家数据，每行一条「名字 等级 金币」（空格分隔）。用聚合思想统计：**总人数（COUNT）**、**金币总和（SUM）**、**平均等级（AVG，保留 1 位小数）**，按一行打印：\n`共N人，总金币X，平均等级Y`\n\n期望输出（输入 剑圣 50 99999 / 奶茶猫 32 5200 / 摸鱼大师 41 88000）：\n```\n共3人，总金币193199，平均等级41.0\n```",
+      "code": "import sys\n\n# 读入玩家数据：每行一条「名字 等级 金币」\nplayers = []\nfor line in sys.stdin.read().strip().split(\"\\n\"):\n    if not line.strip():\n        continue\n    name, level, gold = line.split()\n    players.append({\"name\": name, \"level\": int(level), \"gold\": int(gold)})\n\n# TODO: 统计总人数（COUNT）、金币总和（SUM）、平均等级（AVG，保留 1 位小数）\n# 提示：len(players) 数人数；sum(p[\"gold\"] for p in players) 求和；平均 = 等级和 / 人数\n\nprint()",
+      "testcases": [
+        {
+          "input": "剑圣 50 99999\n奶茶猫 32 5200\n摸鱼大师 41 88000",
+          "expected": "共3人，总金币193199，平均等级41.0"
+        },
+        {
+          "input": "小明 10 100\n小红 20 200\n小刚 30 300\n小丽 40 400",
+          "expected": "共4人，总金币1000，平均等级25.0"
+        },
+        {
+          "input": "阿强 10 5\n阿珍 21 10",
+          "expected": "共2人，总金币15，平均等级15.5"
+        }
+      ],
+      "hint": "想想三个统计分别怎么算：人数（提示：len）、金币总和（提示：sum 配合生成式）、平均等级（等级总和 ÷ 人数）？最后按「共N人，总金币X，平均等级Y」格式化打印，Y 保留 1 位小数。",
+      "explain": "COUNT → len(players)；SUM → sum(p[\"gold\"] for p in players)；AVG → sum(等级) / 人数。平均等级保留 1 位小数用 %.1f 或 f\"{avg:.1f}\"。",
+      "concept": [
+        "聚合",
+        "COUNT",
+        "SUM",
+        "AVG"
+      ]
+    }
+  ]
+}
