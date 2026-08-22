@@ -1,0 +1,187 @@
+{
+  "lesson": "u11_l6",
+  "title": "综合项目",
+  "questions": [
+    {
+      "id": "u11_l6_p1",
+      "type": "choice",
+      "stem": "蜘蛛峡谷情报站处理一个网页数据的完整「爬虫流水线」，正确顺序是？",
+      "options": [
+        "请求 → 解析 → 清洗 → 统计 → 输出/存储（先发请求拿 HTML，再解析出数据，清洗去杂质，统计汇总，最后输出或存盘）",
+        "解析 → 请求 → 统计 → 清洗 → 输出（先解析后请求——数据都还没拿到，解析什么？）",
+        "请求 → 统计 → 解析 → 清洗 → 输出（还没解析出标题和链接，统计什么？）",
+        "输出 → 请求 → 解析 → 清洗 → 统计（结果都还没有，输出什么？）"
+      ],
+      "answer": 0,
+      "hint": "想想情报站站长的流程：先撒网才能收网，鱼要洗了才能数，数完才谈得上入库——把五步按先后排出来。",
+      "explain": "五步流水线：请求（发请求拿 HTML）→ 解析（re 提取标题/链接）→ 清洗（strip、跳空行）→ 统计（计数/求和）→ 输出/存储（print 或写文件）。顺序不能乱：数据没到手，后面的解析、统计、输出全是空中楼阁。",
+      "traps": [
+        { "opt": 1, "why": "解析的前提是先把网页请求到手——数据都没拿到就解析，是无米之炊。请求是第一步。" },
+        { "opt": 2, "why": "统计要建立在解析出来的标题、链接之上——还没解析就统计，统计的是空气。解析要在统计之前。" },
+        { "opt": 3, "why": "输出是流水线的最后一环：结果都还没有，输出什么？顺序应该是请求最先、输出最后。" }
+      ],
+      "concept": ["爬虫流水线", "请求", "解析", "统计"]
+    },
+    {
+      "id": "u11_l6_p2",
+      "type": "choice",
+      "stem": "html = '<a href=\"http://a.com/1\">第一条</a><a href=\"http://b.com/2\">第二条</a>'，执行 re.findall(r'<a href=\"(.*?)\">', html) 返回什么？",
+      "options": [
+        "['http://a.com/1', 'http://b.com/2']——两个链接的网址（href 的值）",
+        "['第一条', '第二条']——两个链接的显示文字",
+        "['<a href=\"http://a.com/1\">', '<a href=\"http://b.com/2\">']——两段完整标签",
+        "报错：正则表达式不能处理 HTML"
+      ],
+      "answer": 0,
+      "hint": "分组括号 (.*?) 圈住的是 href=\"...\" 里的哪一部分？再想想非贪婪 `.*?` 会匹配到哪里停。",
+      "explain": "模式 <a href=\"(.*?)\"> 中，括号圈住 href=\" 和 \" 之间的网址，非贪婪 .*? 让每个链接各归各，所以返回两个网址 ['http://a.com/1', 'http://b.com/2']。",
+      "traps": [
+        { "opt": 1, "why": "第一条、第二条是 </a> 之间的显示文字，要用 <a[^>]*>(.*?)</a> 这类模式才能抓到；当前模式括号圈的是引号里的 href 值。" },
+        { "opt": 2, "why": "括号只圈了 href=\" 和 \" 之间的内容，`<a href=\"` 这些标签部分不在分组里。" },
+        { "opt": 3, "why": "正则把 HTML 当普通文本处理，匹配字符模式完全没问题——这正是它最拿手的活。" }
+      ],
+      "concept": ["re.findall", "正则提取", "非贪婪"]
+    },
+    {
+      "id": "u11_l6_p3",
+      "type": "judge",
+      "stem": "re.findall(r'<a href=\"(.*?)\"', html) 在 html 里一个链接都没有时，会返回空列表 []，程序不会报错。",
+      "answer": true,
+      "hint": "想想 findall 的返回类型——匹配不到是报错，还是给一个空列表？",
+      "explain": "re.findall 匹配不到时返回空列表 []（len 为 0），程序不会崩——这和 re.search 匹配不到返回 None 一样，都不会报错。所以抓数据后要自己判断：len(links) == 0 或 m is None，别以为「没报错就是抓到了」。",
+      "concept": ["re.findall", "空结果", "None"]
+    },
+    {
+      "id": "u11_l6_p4",
+      "type": "fill",
+      "stem": "正则 `.*?` 里的问号，让 `.*` 从「贪婪」变成「____」匹配——匹配到第一个 `</a>` 就停，不会把后面的标签也吞掉。（填中文或英文都可以）",
+      "answer": ["非贪婪", "最小匹配", "懒惰匹配", "懒惰", "不贪婪", "非贪心", "lazy", "最小"],
+      "hint": "和「贪婪」相反：见好就收，匹配到最早能停的地方就停——这种匹配方式叫什么？",
+      "explain": ".*? 是非贪婪（懒惰/lazy）匹配：能少匹配就少匹配，遇到第一个能停的地方（如第一个 `\"` 或 `</a>`）就停；贪婪的 `.*` 则尽量多吞。提取 HTML 里的链接和标题必须用非贪婪，否则会把相邻标签一起吞进同一个匹配。",
+      "traps": [
+        { "wrong": "贪婪", "why": "贪婪 .* 会尽量多匹配、把相邻标签一起吞掉——正是它导致链接数变少；让 .* 见好就收的是它的反面：非贪婪（加问号）。" },
+        { "wrong": "递归", "why": "递归是函数自己调用自己，和正则量词的匹配方式无关；这里问号改的是匹配的「贪心程度」，即非贪婪。" }
+      ],
+      "concept": ["非贪婪", ".*?", "正则"]
+    },
+    {
+      "id": "u11_l6_p5",
+      "type": "debug",
+      "stem": "情报站想统计一个网页里的链接数，但程序总是数少——因为贪婪的 `.*` 把相邻的几个链接吞成了 1 个。修复它，让程序正确输出链接数。",
+      "code": "import re\n\nhtml = input()\n# BUG：.* 是贪婪的，会把相邻链接之间的内容一起吞掉，几个链接只匹配出 1 个\nlinks = re.findall(r'<a href=\".*\">', html)\nprint(\"链接数%d\" % len(links))",
+      "testcases": [
+        {
+          "input": "<a href=\"http://a.com/1\">第一条</a><a href=\"http://b.com/2\">第二条</a>",
+          "expected": "链接数2"
+        },
+        {
+          "input": "<a href=\"http://a.com/1\">第一条</a><a href=\"http://b.com/2\">第二条</a><a href=\"http://c.com/3\">第三条</a>",
+          "expected": "链接数3"
+        }
+      ],
+      "hint": "想想：贪婪的 .* 为什么会把几个链接吞成一个？怎么让它见好就收、匹配到第一个引号就停（提示：在量词后面加个符号）？",
+      "explain": "贪婪的 `.*` 会尽量多吞：模式 <a href=\".*\"> 里，.* 一路吃到最后一个 `\"`，把 `<a href=\"http://a.com/1\">第一条</a><a href=\"http://b.com/2\">` 整段匹配成 1 个，所以链接数变少。改成 `.*?` 非贪婪后，匹配到第一个 `\"` 就停：每个 <a href=\"...\"> 各算 1 个，2 个链接输出「链接数2」，3 个链接输出「链接数3」。",
+      "concept": ["非贪婪", "调试", "re.findall"]
+    },
+    {
+      "id": "u11_l6_p6",
+      "type": "code",
+      "stem": "情报站收到一个网页的 HTML（可能跨多行）。写程序：用 re.findall 提取所有链接的 href（`<a href=\"...\">` 里引号中的网址），打印「链接数N」。\n\n期望输出（输入含 2 个链接）：\n```\n链接数2\n```",
+      "code": "import re\nimport sys\n\n# 一个网页的 HTML（可能跨多行）\nhtml = sys.stdin.read()\n\n# TODO: 用 re.findall 提取所有 <a href=\"...\"> 里引号中的网址，存入列表 links\nlinks = []\n\nprint(\"链接数%d\" % len(links))",
+      "testcases": [
+        {
+          "input": "<a href=\"http://a.com/1\">一</a><a href=\"http://b.com/2\">二</a>",
+          "expected": "链接数2"
+        },
+        {
+          "input": "<a href=\"http://x.com/only\">只有一条</a>",
+          "expected": "链接数1"
+        },
+        {
+          "input": "这是一个没有链接的纯文本页面",
+          "expected": "链接数0"
+        }
+      ],
+      "hint": "想想提取链接的模式怎么写：<a href=\"...\"> 中引号里的网址要用分组 () 抠出来；<a 和 href 之间可能有空白（用 \\s+ 吃掉）；还要注意别让贪婪匹配吞掉多个链接。",
+      "explain": "re.findall 返回所有 href 的列表：['http://a.com/1', 'http://b.com/2']，len() 就是链接数。一个链接都没有时 findall 返回 []，len 为 0，输出「链接数0」——匹配不到不会报错，要自己用 len 判断。",
+      "concept": ["re.findall", "正则提取", "链接"]
+    },
+    {
+      "id": "u11_l6_p7",
+      "type": "code",
+      "stem": "情报站收到多段网页 HTML（每行一段，可能夹着空行）。写程序：逐段清洗（strip、跳空行），用 re.search 提取每页的标题（`<title>` 和 `</title>` 之间），统计标题数，打印「标题数N」。\n\n期望输出（输入两页都有标题）：\n```\n标题数2\n```",
+      "code": "import re\nimport sys\n\n# 多段网页 HTML：每行一段，可能夹着空行\ntext = sys.stdin.read()\n\ncount = 0\nfor page in text.split(\"\\n\"):\n    page = page.strip()\n    if not page:           # 空行跳过\n        continue\n    # TODO: 用 re.search 提取这一页的标题（<title> 和 </title> 之间），提取到就 count += 1\n    pass\n\nprint(\"标题数%d\" % count)",
+      "testcases": [
+        {
+          "input": "<html><title>峡谷新闻</title></html>\n<html><title>峡谷公告</title></html>",
+          "expected": "标题数2"
+        },
+        {
+          "input": "<html><title>一</title></html>\n\n<html><title>二</title></html>",
+          "expected": "标题数2"
+        },
+        {
+          "input": "<html><title>只有一页</title></html>",
+          "expected": "标题数1"
+        }
+      ],
+      "hint": "想想：用哪个函数提取 <title> 和 </title> 之间的标题？匹配不到时返回什么？怎么判断「匹配到了」再计数？",
+      "explain": "循环里：strip 清洗去空白 → 空行 continue 跳过 → re.search 提取标题 → 匹配到（m 不为 None）就 count += 1。空行不会被当成数据；没有 <title> 的段落 m 是 None，if m 判断为假不计数。",
+      "concept": ["清洗", "strip", "re.search", "计数"]
+    },
+    {
+      "id": "u11_l6_p8",
+      "type": "code",
+      "stem": "情报站收到的网页里偶尔混进格式坏的：**缺 `<title>` 标签**。写程序：逐段解析，好页照常统计标题数；**格式坏的用 try/except 兜底**——提取不到标题就 `raise ValueError` 交给 except，打印「格式错误」后跳过，继续处理后面的页。最后打印「标题数N」。\n\n期望输出（输入 好页 / 坏页 / 好页）：\n```\n格式错误\n标题数2\n```",
+      "code": "import re\nimport sys\n\n# 多段网页 HTML：可能混进缺 <title> 的格式坏页\ntext = sys.stdin.read()\n\ncount = 0\nfor page in text.split(\"\\n\"):\n    page = page.strip()\n    if not page:\n        continue\n    try:\n        # TODO: 用 re.search 提取这一页的标题存到变量 m\n        #       匹配不到（m 是 None，格式坏了）→ raise ValueError 交给 except 接住\n        #       匹配到了 → 标题数 count += 1\n        pass\n    except ValueError:\n        # TODO: 打印「格式错误」，跳过这一页继续\n        pass\n\nprint(\"标题数%d\" % count)",
+      "testcases": [
+        {
+          "input": "<html><title>一</title></html>\n<html><title>二</title></html>",
+          "expected": "标题数2"
+        },
+        {
+          "input": "<html><title>正常页</title></html>\n<html>没有标题的坏页</html>\n<html><title>第三页</title></html>",
+          "expected": "格式错误\n标题数2"
+        },
+        {
+          "input": "<html>格式坏的页面</html>",
+          "expected": "格式错误\n标题数0"
+        }
+      ],
+      "hint": "想想：怎么提取标题（提示：re.search + 分组）？提取不到（结果是 None）时，怎么主动抛个异常交给 except 接住（提示：raise）？except 里打印什么？",
+      "explain": "提取不到 <title> 时 re.search 返回 None——用 if m is None: raise ValueError 主动抛错（防御式编程的「主动报错」），except ValueError 接住打印「格式错误」并跳过这一页；好页照常 count += 1。坏页被跳过，两页好页 = 标题数2；全坏 = 标题数0。",
+      "concept": ["异常兜底", "raise", "try/except", "防御式编程"]
+    }
+  ],
+  "quest": {
+    "id": "u11_l6_quest",
+    "title": "剧情任务：峡谷情报站（单元结业）",
+    "story": "蜘蛛峡谷的最后一课，情报站站长把一沓网页源码拍在你桌上：「这些网页是从峡谷各处收集来的情报——每个网页都带着标题，还藏着通往下一处情报点的链接。这是整个蜘蛛峡谷的终极考验：把所有网页的标题和链接都提取出来，数清楚——链接数多少、标题数多少。要是啥都没有，就说句人话『没有数据』；要是哪个网页格式坏了（连标题都没有），也不能崩，要提示『数据格式错误』。你在 u11 学过的发请求、解析、提取、兜底，这一仗全用上。」站长背着手，目光落在门外峡谷尽头的结业旗帜上。",
+    "stem": "峡谷情报站送来多段网页 HTML（每行一个网页，空行跳过；每页含一个 `<title>...</title>` 标题和若干 `<a href=\"...\">文字</a>` 链接）。请完成：\n\n- 逐段解析：提取每页标题（标题数 +1），提取所有链接的 href（数量累加到链接数）\n- 一条数据都没有 → 打印「没有数据」\n- 有数据 → 打印「链接数X，标题数Y」（X 是链接总数，Y 是标题总数）\n- 某一页格式坏（提取不到 `<title>`）→ 打印「数据格式错误，请检查网页源码」（异常兜底，程序不能崩）",
+    "code": "import re\nimport sys\n\n# 峡谷情报站：输入是多段网页 HTML（每行一个网页，空行跳过）。\n# 每页含一个 <title>...</title> 标题（标题数 +1）和若干 <a href=\"...\">文字</a> 链接（数量累加到链接数）。\ntext = sys.stdin.read()\n\nlink_count = 0\ntitle_count = 0\n\ntry:\n    for page in text.split(\"\\n\"):\n        page = page.strip()\n        if not page:            # 空行跳过\n            continue\n        # TODO 1: 用 re.search 提取这一页的标题（<title> 和 </title> 之间），存到变量 m\n        #         提取不到（m 是 None，这一页格式坏了）→ raise ValueError 交给 except 接住\n        # TODO 2: 标题数 title_count += 1；再用 re.findall 提取所有链接的 href，\n        #         把数量累加到 link_count\n        pass\n    # TODO 3: 一条数据都没有 → 打印「没有数据」；否则打印「链接数X，标题数Y」\n    pass\nexcept ValueError:\n    # TODO 4: 打印「数据格式错误，请检查网页源码」\n    pass",
+    "testcases": [
+      {
+        "input": "<html><head><title>峡谷新闻</title></head><body><a href=\"http://news.gorge.com/a\">第一条</a><a href=\"http://news.gorge.com/b\">第二条</a></body></html>\n<html><head><title>峡谷公告</title></head><body><a href=\"http://notice.gorge.com/1\">开峡谷门</a></body></html>",
+        "expected": "链接数3，标题数2"
+      },
+      {
+        "input": "<html><head><title>今日要闻</title></head><body><a href=\"http://g.com/1\">一</a><a href=\"http://g.com/2\">二</a><a href=\"http://g.com/3\">三</a></body></html>",
+        "expected": "链接数3，标题数1"
+      },
+      {
+        "input": "",
+        "expected": "没有数据"
+      },
+      {
+        "input": "<html><head><title>正常页</title></head><body><a href=\"http://g.com/a\">甲</a></body></html>\n<html><body>这个页面没有标题</body></html>",
+        "expected": "数据格式错误，请检查网页源码"
+      }
+    ],
+    "hint": "想想每步做什么：怎么提取标题、提取不到怎么抛异常交给 except？怎么提取所有链接、数量怎么累加？循环后怎么判断「没有数据」（看看 title_count）？",
+    "explain": "完整五步流水线：请求（练习环境用给定 HTML 字符串模拟）→ 解析（re.search 拿标题、re.findall 拿链接）→ 清洗（strip、跳空行）→ 统计（title_count / link_count 累加）→ 输出（print）。空数据靠 title_count == 0 兜底打印「没有数据」；格式坏靠 try/except ValueError 兜底：某页提取不到 <title>（m 是 None）时 raise ValueError，except 接住打印「数据格式错误，请检查网页源码」——程序不崩，还给人话提示。",
+    "concept": ["爬虫流水线", "正则提取", "异常兜底", "统计", "综合实战"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「综合项目」一课，也闯过了蜘蛛峡谷的最后一道关卡 🎉\n\n**这一课你把 u11 学的一切串成了一条龙**：\n1. **爬虫项目全景**：请求 → 解析 → 清洗 → 统计 → 输出/存储。从 URL 到数据的完整流水线，缺一环都不行\n2. **解析与提取**：re.search 拿标题、re.findall 拿所有链接；非贪婪 `.*?` 见好就收，不会把相邻标签一口吞\n3. **清洗与统计**：`strip()` 去首尾空白、`if not line` 跳空行、计数器放循环外——洗干净的鱼才数得准\n4. **异常兜底与输出**：格式坏的页面 `raise ValueError` 主动报错，`except ValueError` 打印友好提示；一条数据都没有要打印「没有数据」——程序不崩，还给人话\n\n**🕷️ 蜘蛛峡谷结业彩蛋！** 从 u11_l1 HTTP 与 requests（能发请求：状态码、User-Agent）、u11_l2 解析 HTML（能解析：看清网页结构）、u11_l3 反爬与应对（能礼貌抓取）、u11_l4 并发抓取（能批量抓）、u11_l5 抓取实战，到这一课的综合项目——你现在**能发请求（概念）**、**能解析**（读懂 HTML）、**能提取**（正则捞出标题和链接）、**能存储**（配合 u7 的文件/CSV/JSON，结果想存哪存哪）了。峡谷尽头的石门轰然打开，情报站的旗帜在风中招展——你正式成为蜘蛛峡谷的「情报站站长」！\n\n下一站：**数据地堡（u12）——数据库与进阶**。门外是地堡的铁门：情报越攒越多，堆在文件里越来越难管，SQL 才是开启它们的钥匙——把爬回来的数据存进数据库，才是这条冒险路的真正终点。"
+  }
+}
