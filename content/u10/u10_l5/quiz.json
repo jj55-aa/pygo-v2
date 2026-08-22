@@ -1,0 +1,142 @@
+{
+  "lesson": "u10_l5",
+  "title": "综合实战",
+  "questions": [
+    {
+      "id": "u10_l5_p1",
+      "type": "choice",
+      "stem": "自动化车间处理一份报表数据的标准「流水线」顺序是什么？",
+      "options": [
+        "读数据 → 清洗 → 统计 → 输出（先把报表读进来，洗掉脏数据，再统计计算，最后生成摘要）",
+        "统计 → 读数据 → 输出 → 清洗（先统计，再读数据，然后输出，最后清洗）",
+        "输出 → 清洗 → 读数据 → 统计（先输出，再清洗，然后读数据，最后统计）",
+        "读数据 → 输出 → 清洗 → 统计（先读数据，再直接输出，然后清洗，最后统计）"
+      ],
+      "answer": 0,
+      "hint": "想想车间传送带的顺序：原料先送到哪一步？脏数据什么时候洗？加工和打包谁先谁后？一步步排出来。",
+      "explain": "自动化流水线四步：读数据（拿到内存）→ 清洗（strip、跳过空行、转数字）→ 统计（计数/求和/平均）→ 输出（print 生成摘要）。数据都没读到，后面的清洗、统计、输出都是空中楼阁。",
+      "traps": [
+        { "opt": 1, "why": "没读数据就统计、没清洗就算——数据从哪来？读是第一步，输出是最后一步，顺序不能反。" },
+        { "opt": 2, "why": "结果都没算出来，输出什么呢？输出是流水线的最后一环，不是第一环。" },
+        { "opt": 3, "why": "没清洗的脏数据（空行、字符串数字）直接统计，结果全是错的——清洗要在统计之前。" }
+      ],
+      "concept": ["自动化流水线", "读清洗算输出"]
+    },
+    {
+      "id": "u10_l5_p2",
+      "type": "choice",
+      "stem": "用 csv.reader 读取 io.StringIO 模拟的报表「小明,8\\n小红,6」，第一行 row 是什么？",
+      "options": [
+        "['小明', '8'] —— 一个列表，两个字符串元素",
+        "('小明', 8) —— 一个元组，第二个是数字",
+        "'小明,8' —— 一整条字符串",
+        "报错：csv 模块不能读 StringIO"
+      ],
+      "answer": 0,
+      "hint": "csv.reader 是读卡器：把每一行按逗号拆开变成什么类型？里面的元素又是什么类型？",
+      "explain": "csv.reader 把每一行拆成一个列表：['小明', '8']，一个元素一列。注意读出来的全是字符串——'8' 是字符串，要算工时得先 int('8')。csv 模块天生支持读 StringIO，不会报错。",
+      "traps": [
+        { "opt": 1, "why": "row 是列表不是元组，而且 csv 读出来的全是字符串，第二个元素是 '8' 不是数字 8。" },
+        { "opt": 2, "why": "reader 已经把逗号当分隔符切开了——row 是一个拆好的列表，不是一整条原样字符串。" },
+        { "opt": 3, "why": "csv 模块和 io.StringIO 是绝配：StringIO 就是伪装成文件的文本，csv.reader 专门吃这一套。" }
+      ],
+      "concept": ["csv", "StringIO", "读报表"]
+    },
+    {
+      "id": "u10_l5_p3",
+      "type": "judge",
+      "stem": "用 csv.reader 读出的「工时」列（如 '8'）是字符串，必须用 int() 或 float() 转成数字才能做加法。",
+      "answer": true,
+      "hint": "回想 csv 读出来的一行 row 是什么类型——再想想 '8' 和 8 的区别。",
+      "explain": "CSV 是纯文本格式，读出来的所有内容都是字符串：'8' 是字符串，'8' + '6' 会拼成 '86'。想算总工时，必须先 int('8') 或 float('8') 转成数字。这是处理表格数据翻车率最高的坑。",
+      "concept": ["csv", "类型转换"]
+    },
+    {
+      "id": "u10_l5_p4",
+      "type": "fill",
+      "stem": "清洗一行文本：去掉行首行尾的空白和换行符，用字符串的哪个方法？（英文方法名或中文都可以）",
+      "answer": ["strip", "去空白", "去空格", "去掉首尾空白", "去除空白"],
+      "hint": "读文件出来的每行末尾常带着换行符 \\n，这个方法把它们和首尾空格一起去掉，英文名和「条带、剥离」有关。",
+      "explain": "line.strip() 去掉字符串首尾的空白（空格、换行符 \\n、Tab），是清洗流水线的第一步——先 strip 再 split，拆出来的字段才干净。",
+      "traps": [
+        { "wrong": "split", "why": "split 是按分隔符把字符串切成一串元素，不是去空白。去首尾空白是 strip 的活。" },
+        { "wrong": "replace", "why": "replace 是替换指定字符，会把中间的也替换掉；strip 只处理首尾空白。" }
+      ],
+      "concept": ["清洗", "strip"]
+    },
+    {
+      "id": "u10_l5_p5",
+      "type": "debug",
+      "stem": "下面的周报程序统计多行「姓名,工时」的总工时和人均工时，但一运行就报 TypeError——有个 bug：工时没转成数字。修复它，让程序输出「总工时14，人均7.0」。",
+      "code": "import io\nimport sys\n\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ntotal = 0\ncount = 0\nfor line in data:\n    line = line.strip()\n    if not line:\n        continue\n    parts = line.split(\",\")\n    total += parts[1]      # BUG：工时是字符串，直接相加会出问题\n    count += 1\n\nprint(\"总工时%s，人均%.1f\" % (total, total / count))",
+      "testcases": [
+        { "input": "小明,8\n小红,6", "expected": "总工时14，人均7.0" },
+        { "input": "小明,10\n小红,5", "expected": "总工时15，人均7.5" }
+      ],
+      "hint": "想想：total 是整数 0，'8' 是字符串，0 + '8' 为什么报 TypeError？工时要怎么转换才能相加（提示：int()）？转换加在哪一步？",
+      "explain": "修复：total += int(parts[1])——工时字符串先转成数字再累加。修复前 total 是整数 0，0 + '8'（字符串）在第一次累加时就抛 TypeError，程序根本走不到除法；修复后 total 是数字 14，14 / 2 = 7.0，输出「总工时14，人均7.0」。",
+      "concept": ["类型转换", "调试", "统计"]
+    },
+    {
+      "id": "u10_l5_p6",
+      "type": "code",
+      "stem": "车间报表：每行一条「姓名,工时」（可能夹着空行）。写程序：逐行清洗解析，统计**总工时**，打印「总工时X」。\n\n期望输出（输入 小明,8 / 小红,6 / 小刚,4）：\n```\n总工时18\n```",
+      "code": "import io\nimport sys\n\n# 车间报表：每行一条「姓名,工时」，可能夹着空行\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ntotal = 0\nfor line in data:\n    line = line.strip()\n    if not line:          # 空行跳过\n        continue\n    # TODO: 用 split(\",\") 拆出工时，转数字后累加到 total\n    pass\n\nprint(\"总工时%d\" % total)",
+      "testcases": [
+        { "input": "小明,8\n小红,6\n小刚,4", "expected": "总工时18" },
+        { "input": "小明,10\n\n小红,5", "expected": "总工时15" },
+        { "input": "小明,1\n小红,2\n小刚,3\n小李,4", "expected": "总工时10" }
+      ],
+      "hint": "想想：一行怎么拆出姓名和工时？工时是字符串还是数字，怎么转换？转换后累加到 total——空行已经帮你跳过了。",
+      "explain": "循环里：split(\",\") 拆字段 → int(parts[1]) 转数字 → total += 累加。空行（if not line）直接跳过，不会把空行当成数据。10 + 5 = 15，输出「总工时15」。",
+      "concept": ["统计", "求和", "清洗"]
+    },
+    {
+      "id": "u10_l5_p7",
+      "type": "code",
+      "stem": "车间报表：每行一条「姓名,工时」。写程序：统计**人数**与**人均工时**（保留 1 位小数），打印「共N人，人均Y」。\n\n期望输出（输入 小明,8 / 小红,6 / 小刚,4）：\n```\n共3人，人均6.0\n```",
+      "code": "import io\nimport sys\n\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ntotal = 0\ncount = 0\nfor line in data:\n    line = line.strip()\n    if not line:\n        continue\n    # TODO: 拆出工时转数字累加 total，人数 count + 1\n    pass\n\n# TODO: 计算人均 avg = total / count\navg = 0\nprint(\"共%d人，人均%.1f\" % (count, avg))",
+      "testcases": [
+        { "input": "小明,8\n小红,6\n小刚,4", "expected": "共3人，人均6.0" },
+        { "input": "小明,10\n小红,5", "expected": "共2人，人均7.5" },
+        { "input": "小明,1\n小红,2\n小刚,3\n小李,4", "expected": "共4人，人均2.5" }
+      ],
+      "hint": "想想循环里统计哪两样东西？循环外平均怎么算？保留 1 位小数用什么格式化（提示：%.1f 或 round）？",
+      "explain": "循环里统计 total 和 count，循环外算 avg = total / count（8+6+4=18，18/3=6.0）。%.1f 把 6.0 保留 1 位小数输出——注意人均 2.5、7.5 这种 1 位小数要如实输出，不能截成整数。",
+      "concept": ["平均值", "格式化", "统计"]
+    },
+    {
+      "id": "u10_l5_p8",
+      "type": "code",
+      "stem": "报表里偶尔混进格式坏的原料：缺逗号、或工时不是数字。写程序：逐行解析「姓名,工时」，好行照常统计；**格式错的用 try/except 兜底**，打印「格式错误」后跳过，继续处理后面的行。最后打印「总工时X，共N人」。\n\n期望输出（输入 小明,8 / 坏档案 / 小红,6）：\n```\n格式错误\n总工时14，共2人\n```",
+      "code": "import io\nimport sys\n\n# 报表里可能混进格式坏的：缺逗号、或工时不是数字\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ntotal = 0\ncount = 0\nfor line in data:\n    line = line.strip()\n    if not line:\n        continue\n    try:\n        # TODO: 用 split(\",\") 拆出工时，转数字累加 total，人数 count + 1\n        pass\n    except (ValueError, IndexError):\n        # TODO: 打印「格式错误」，跳过这一行继续\n        pass\n\nprint(\"总工时%d，共%d人\" % (total, count))",
+      "testcases": [
+        { "input": "小明,8\n小红,6", "expected": "总工时14，共2人" },
+        { "input": "小明,8\n坏档案\n小红,6", "expected": "格式错误\n总工时14，共2人" },
+        { "input": "小明,abc\n小红,6", "expected": "格式错误\n总工时6，共1人" }
+      ],
+      "hint": "想想 try 里做哪几件事：拆字段、转数字、累加、计数？except 里打印什么？缺逗号会抛哪种异常、工时不是数字又会抛哪种？",
+      "explain": "缺逗号时 parts[1] 抛 IndexError；工时不是数字时 int() 抛 ValueError——except (ValueError, IndexError) 一起接住，打印「格式错误」并跳过。好行照常统计：坏档案被跳过，8 + 6 = 14，共 2 人。",
+      "concept": ["异常兜底", "try/except", "清洗"]
+    }
+  ],
+  "quest": {
+    "id": "u10_l5_quest",
+    "title": "剧情任务：周报生成器（自动化车间结业）",
+    "story": "自动化车间的最后一课。车间主任把一张报表拍在传送带起点：「这是本周全员工时表——每行一条『姓名,工时』。这一单元你学会了 Excel、Word、PDF、图像、邮件，现在是结业时刻：把这张表读进来、清洗、统计出总工时和人均工时，生成一份周报摘要。报表可能是空的，也可能混进格式坏的坏原料——空报表要报『没有数据』，坏原料要报『数据格式错误』，机器不能崩。记住你会的四步流水线：读 → 清洗 → 统计 → 输出。」传送带的尽头，是一张盖着钢印的结业证书。",
+    "stem": "车间送来本周工时报表：每行一条「姓名,工时」（用 io.StringIO 模拟文件，内容已整体读入变量 data）。完成「周报生成器」：\n- 逐行清洗解析：strip 去空白、跳过空行、split(\",\") 拆出姓名和工时，工时转数字\n- 统计：总工时 total 累加、人数 count + 1\n- 一条数据都没有 → 打印「没有数据」\n- 有数据 → 打印「总工时X，人均Y」（Y 保留 1 位小数）\n- 遇到格式错（缺逗号 / 工时不是数字）→ 打印「数据格式错误」，打印后程序立即结束，不再处理剩余行（异常兜底，程序不能崩）",
+    "code": "import io\nimport sys\n\n# 自动化车间：周报生成器 —— 输入每行一条「姓名,工时」\ntext = sys.stdin.read()\ndata = io.StringIO(text)\n\ntotal = 0\ncount = 0\ntry:\n    for line in data:\n        line = line.strip()\n        if not line:          # 清洗：空行跳过\n            continue\n        # TODO: 用 split(\",\") 拆出姓名和工时；工时转数字后累加 total，人数 count + 1\n        pass\n    # TODO: 一条数据都没有 → 打印「没有数据」；否则打印「总工时X，人均Y」（Y 保留 1 位小数）\n    pass\nexcept (ValueError, IndexError):\n    # TODO: 格式错（缺逗号 / 工时不是数字）→ 打印「数据格式错误」\n    pass",
+    "testcases": [
+      { "input": "小明,8\n小红,6\n小刚,4", "expected": "总工时18，人均6.0" },
+      { "input": "小明,10\n小红,5", "expected": "总工时15，人均7.5" },
+      { "input": "", "expected": "没有数据" },
+      { "input": "小明,8\n坏档案\n小红,6", "expected": "数据格式错误" }
+    ],
+    "hint": "想想循环里做哪几件事：拆字段、转数字、累加、计数？循环外怎么判断「没有数据」（看看 count）？人均怎么算、保留几位小数？格式坏的情况由 except 接住——缺逗号抛什么、工时不是数字抛什么？",
+    "explain": "这就是完整的自动化流水线：读（sys.stdin.read() + StringIO 模拟报表）→ 清洗（strip、跳过空行）→ 拆（split(\",\")）→ 统计（int 转数字、count/total 累加、total / count 算人均）→ 输出（%.1f 保留 1 位小数生成摘要）。空数据靠 count == 0 兜底打印「没有数据」；格式错靠 try/except (ValueError, IndexError) 兜底——缺逗号拆不出第 2 个字段抛 IndexError，工时不是数字 int() 抛 ValueError——两种都接住，程序不崩还给人话提示。",
+    "concept": ["自动化流水线", "csv", "统计", "异常兜底", "综合实战"]
+  },
+  "summary": {
+    "body": "恭喜！你从自动化车间正式毕业了 🎉\n\n**这一课你打通了「办公自动化」的完整流水线**：\n1. **自动化流水线**：读数据 → 清洗 → 统计 → 输出。原料进、成品出，把报表处理串成一条龙\n2. **读报表与清洗**：`io.StringIO` 把文本伪装成文件，`csv.reader` / `split(\",\")` 逐行拆字段；`strip()` 去空白、跳过空行；读出来全是字符串，算数先 `int()` / `float()`\n3. **统计与摘要**：计数 `count += 1`、求和 `total += x`、平均 `avg = total / count`；`round(avg, 1)` 或 `%.1f` 保留 1 位小数\n4. **异常兜底**：空数据先判断 `count == 0`；格式错（缺逗号 IndexError、工时不是数字 ValueError）用 `try/except` 接住，程序不崩、还给用户人话提示\n\n**⚙️ 自动化车间结业彩蛋！** u10 的旅程到此结束——Excel（openpyxl）、Word/PDF（python-docx / PyMuPDF）、图像（Pillow）、邮件（smtplib），加上这一课的流水线套路：**报表、文档、图像、邮件，你全都能自动化了**。车间主任为你盖上结业钢印：「重复的活交给 Python，你只管泡茶等结果。」\n\n下一站：**蜘蛛峡谷（u11）——网络爬虫**。让 Python 去网上把信息抓回来，再喂给你刚学会的自动化流水线。"
+  }
+}
