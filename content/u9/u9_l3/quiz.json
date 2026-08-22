@@ -1,0 +1,248 @@
+{
+  "lesson": "u9_l3",
+  "title": "正则表达式：re 模块实战",
+  "quest": {
+    "id": "u9_l3_quest",
+    "title": "剧情任务：破解迷宫出口口令",
+    "story": "你终于摸到了文字迷宫的出口。石门上的口令被岁月侵蚀得面目全非——字符之间挤满了多余的空格和换行，还混着乱码符号，根本读不通。守门石像缓缓开口：「口令的真身藏在字符之间——把多余空白压平，再抽出所有数字，就是开门的密码。」你掏出正则这把『扫描雷达』，对着石门最后一行符文按下回车。",
+    "stem": "程序读入被污染的多行口令（可能有多余空格、换行和乱码）。请完成三步清洗：\n1. 用 re.sub 把多个空格/换行压成单个空格\n2. 用 re.findall 提取其中所有数字\n3. 把数字拼接成密码并打印",
+    "code": "import re\nimport sys\n\n# 被污染的口令可能有多行：用 sys.stdin.read() 一次读入全部\ntext = sys.stdin.read()\n\n# 1) 用 re.sub 把多个空格/换行压成单个空格，存入 clean\n# clean = re.sub(???)\n\n# 2) 用 re.findall 提取 clean 里所有数字（\\d 匹配一个数字）\n# digits = re.findall(???)\n\n# 3) 把数字拼成密码并打印\n# print(???)",
+    "testcases": [
+      {
+        "input": "口 令: 3  2 4\n乱码! 1 5  6\n出口：7 8 9",
+        "expected": "324156789"
+      },
+      {
+        "input": "终 点 门 前\n坐标: 9 9 0  1\n机关：7 7",
+        "expected": "990177"
+      },
+      {
+        "input": " \n 口 令 2 0 2 6 \n ",
+        "expected": "2026"
+      }
+    ],
+    "hint": "想想三步分别用什么函数：把多个空白压成一个空格（re.sub？三个参数怎么填？）→ 提取所有数字（re.findall？）→ 把数字一个个拼成字符串（用什么方法连接？）。",
+    "explain": "① clean = re.sub(r\"\\s+\", \" \", text)：\\s 匹配空格/换行/制表符，+ 表示连续多个，整段压成单个空格；② digits = re.findall(r\"\\d\", clean)：\\d 匹配单个数字，返回按出现顺序排列的数字列表；③ print(\"\".join(digits))：把数字拼成密码。第一句口令清洗后是「口 令: 3 2 4 乱码! 1 5 6 出口：7 8 9」，抽出数字 324156789——石门应声而开。",
+    "concept": [
+      "re.sub",
+      "re.findall",
+      "综合实战",
+      "清洗文本"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你通关了**文字迷宫** 🎉\n\n**这一课你学会了「re 模块实战」**：\n1. **re.findall / re.finditer**：findall 找全部匹配返回列表；finditer 返回迭代对象，用 for + group() 逐个取（还能拆分组）\n2. **re.sub**：按模式整块替换——`re.sub(r\"\\s+\", \" \", text)` 把多个空格/换行压成一个空格；替换字符串里 `\\1` 引用第 1 组\n3. **re.split**：按「一类字符」切分返回列表；注意：模式里加了括号（分组），分隔符也会保留进结果\n4. **flags 与综合清洗**：re.IGNORECASE 是函数参数（flags）不是正则前缀；清洗流程 = 先 sub 压空白 → 去空白行 → 再 findall 提取\n\n**🧬 文字迷宫结业彩蛋！** 从 u9_l1 读懂元字符、u9_l2 学会量词与分组，到这一课的 re 模块实战——你现在**能读**（用模式匹配文本）、**能提取**（findall/finditer 抽出数字和字段）、**能清洗**（sub/split 把脏文本整理干净）了。迷宫尽头的大门缓缓开启，墙上的符文在你身后一盏一盏熄灭。\n\n下一站：**自动化车间（u10）——办公自动化**。门外是一座堆满重复劳动的车间：Excel 报表、Word 文档、PDF、邮件……文本清洗只是热身，让 Python 替你批量干完体力活，才是真正的舞台。"
+  },
+  "questions": [
+    {
+      "id": "u9_l3_p1",
+      "type": "choice",
+      "stem": "想找出文本里**所有**出现的数字（不只第一个），应该用 re 模块的哪个函数？",
+      "options": [
+        "re.findall(r\"\\d\", text)",
+        "re.search(r\"\\d\", text)",
+        "re.match(r\"\\d\", text)",
+        "re.sub(r\"\\d\", \"x\", text)"
+      ],
+      "answer": 0,
+      "hint": "关键词是「所有」——想想 search 和 match 各自有什么限制。",
+      "explain": "re.findall = 找全部匹配，返回列表。re.search 只找第一个匹配就停；re.match 只从字符串开头匹配，开头对不上就返回 None；re.sub 是替换，不是查找。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "search 找到第一个匹配就停，只返回一个匹配对象——「所有」要用 findall。"
+        },
+        {
+          "opt": 2,
+          "why": "match 只从开头匹配，开头对不上就返回 None——更不是「所有」。"
+        },
+        {
+          "opt": 3,
+          "why": "sub 是把匹配的内容替换掉，不是查找——方向就错了。"
+        }
+      ],
+      "concept": [
+        "re.findall",
+        "re.search",
+        "re.match"
+      ]
+    },
+    {
+      "id": "u9_l3_p2",
+      "type": "choice",
+      "stem": "text = \"苹果，香蕉,橙子\"，执行 re.split(r\"[，,]\", text) 返回什么？",
+      "options": [
+        "['苹果', '香蕉', '橙子']",
+        "'苹果 香蕉 橙子'（一个字符串）",
+        "['苹果，香蕉', '橙子']",
+        "['苹果', '香蕉']（丢掉了最后一段）"
+      ],
+      "answer": 0,
+      "hint": "[，,] 表示「中文逗号或英文逗号」都算切点；split 返回的是什么类型？",
+      "explain": "re.split 按模式把文本切成**列表**：中文逗号「，」和英文逗号「,」都是切点，两处都切，得到 ['苹果', '香蕉', '橙子']。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "split 返回的是列表，不是字符串——结果是 ['苹果', '香蕉', '橙子']。"
+        },
+        {
+          "opt": 2,
+          "why": "[，,] 同时匹配中文逗号和英文逗号，两个切点都生效，不是只切一处。"
+        },
+        {
+          "opt": 3,
+          "why": "split 不会丢片段，最后一个分隔符后面的内容也会作为一段保留。"
+        }
+      ],
+      "concept": [
+        "re.split",
+        "切分"
+      ]
+    },
+    {
+      "id": "u9_l3_p3",
+      "type": "judge",
+      "stem": "re.IGNORECASE 是写在正则字符串里的特殊前缀，比如 re.findall(r\"IGNORECASE\\d\", text) 就能忽略大小写地匹配数字。",
+      "answer": false,
+      "hint": "想想 re.IGNORECASE 是「正则字符串里的一部分」还是「函数的参数」。",
+      "explain": "re.IGNORECASE 是 flags（标志位）参数，要作为函数的第三个参数传入：re.findall(r\"python\", text, re.IGNORECASE)。写成 r\"IGNORECASE\\d\" 只是在匹配字面量文本 \"IGNORECASE\"，跟忽略大小写毫无关系。",
+      "concept": [
+        "re.IGNORECASE",
+        "flags"
+      ]
+    },
+    {
+      "id": "u9_l3_p4",
+      "type": "fill",
+      "stem": "re 模块中，找出文本里**所有**匹配、并把结果装进列表的方法是 re.____()。",
+      "answer": [
+        "findall",
+        "查找全部",
+        "查找所有"
+      ],
+      "hint": "方法名里有个 all，意思是「找全部」。",
+      "explain": "re.findall(模式, 文本) 返回所有匹配的列表：re.findall(r\"\\d\", \"a1b2\") → ['1', '2']。",
+      "traps": [
+        {
+          "wrong": "search",
+          "why": "search 只找第一个匹配，不是「所有」。"
+        },
+        {
+          "wrong": "finditer",
+          "why": "finditer 确实找全部，但返回的是迭代对象（要 for 配合 group() 取），不是列表。"
+        }
+      ],
+      "concept": [
+        "re.findall"
+      ]
+    },
+    {
+      "id": "u9_l3_p5",
+      "type": "fill",
+      "stem": "re.finditer 返回的不是列表，而是一个____对象——配合 for 循环可以逐个拿到匹配对象，再调用 .group() 取内容。",
+      "answer": [
+        "迭代",
+        "迭代器",
+        "迭代对象",
+        "iterator"
+      ],
+      "hint": "这种对象可以用 for 逐个取，但不能直接 len() 或按下标——它叫「迭代」什么？",
+      "explain": "finditer 返回**迭代器（迭代对象）**：for m in re.finditer(...) 逐个拿到匹配对象 m，用 m.group() 取整段、m.group(1) 取第 1 组。它比 findall 更适合带分组的场景。",
+      "traps": [
+        {
+          "wrong": "列表",
+          "why": "finditer 返回的不是列表，不能 len() 和下标——是迭代对象。"
+        },
+        {
+          "wrong": "字典",
+          "why": "迭代对象不是字典，没有键值对。"
+        }
+      ],
+      "concept": [
+        "re.finditer",
+        "迭代器"
+      ]
+    },
+    {
+      "id": "u9_l3_p6",
+      "type": "debug",
+      "stem": "下面的程序想把输入文本里**所有**数字提取出来拼成一个字符串，却只输出了第一段数字——因为 re.search 只找第一个匹配。修复它：改用 re.findall 找出全部数字，再拼接打印。",
+      "code": "import re\ntext = input()\nm = re.search(r\"\\d+\", text)\nprint(m.group())",
+      "testcases": [
+        {
+          "input": "a1b22c333",
+          "expected": "122333"
+        },
+        {
+          "input": "12x34",
+          "expected": "1234"
+        },
+        {
+          "input": "hello",
+          "expected": ""
+        }
+      ],
+      "hint": "想想：哪个函数能一次找出所有数字段（提示：和 search 只找第一个不同）？找出来的是一段段字符串，怎么拼成一个字符串打印？",
+      "explain": "re.search 只返回第一个匹配对象（1、12），所以只输出第一段数字。改成 print(\"\".join(re.findall(r\"\\d+\", text)))：findall 把 \"1\"、\"22\"、\"333\" 全部找出来，join 拼接成 \"122333\"。没有数字时 findall 返回空列表，join 得到空字符串，打印空行。",
+      "concept": [
+        "re.findall",
+        "re.search",
+        "调试"
+      ]
+    },
+    {
+      "id": "u9_l3_p7",
+      "type": "code",
+      "stem": "清洗文本：读入一行文本（可能夹着多个连续空格），用 re.sub 把多个空白压成**一个**空格并打印结果。\n\n期望输出（输入 a  b   c）：\n```\na b c\n```",
+      "code": "import re\ntext = input()\n# 用 re.sub 把多个空白（\\s+）压成一个空格，存入 clean 并打印",
+      "testcases": [
+        {
+          "input": "a  b   c",
+          "expected": "a b c"
+        },
+        {
+          "input": "hello    world  !",
+          "expected": "hello world !"
+        },
+        {
+          "input": "1  2   3    4",
+          "expected": "1 2 3 4"
+        }
+      ],
+      "hint": "想想 re.sub 的三个参数：匹配什么模式、替换成什么、作用在哪段文本上？\\s 匹配空白、+ 表示一个或多个——结果别忘了用变量接住。",
+      "explain": "re.sub(r\"\\s+\", \" \", text) 把所有连续空白（一个或多个空格）整块替换成单个空格，得到干净的 \"a b c\"。注意 re.sub 不修改原字符串，结果要靠返回值接住：clean = re.sub(...)。",
+      "concept": [
+        "re.sub",
+        "清洗文本",
+        "\\s+"
+      ]
+    },
+    {
+      "id": "u9_l3_p8",
+      "type": "code",
+      "stem": "读入一行英文文本，统计其中单词 \"python\"（**不区分大小写**）出现了几次，打印数量。\n\n期望输出（输入 Python python PYTHON）：\n```\n3\n```",
+      "code": "import re\ntext = input()\n# 用 re.findall 找出所有不区分大小写的 python，统计个数并打印",
+      "testcases": [
+        {
+          "input": "Python python PYTHON",
+          "expected": "3"
+        },
+        {
+          "input": "I love Python!",
+          "expected": "1"
+        },
+        {
+          "input": "no match here",
+          "expected": "0"
+        }
+      ],
+      "hint": "想想三件事：怎么让匹配忽略大小写（re 模块里有个 IGNORECASE 标志，它是第几个参数）？findall 返回什么类型？个数怎么数？",
+      "explain": "re.findall(r\"python\", text, re.IGNORECASE) 忽略大小写找出所有 \"python\"，返回列表；len() 统计个数。没有匹配时返回空列表，个数是 0。",
+      "concept": [
+        "re.IGNORECASE",
+        "re.findall",
+        "flags"
+      ]
+    }
+  ]
+}
