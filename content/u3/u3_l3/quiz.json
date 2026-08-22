@@ -1,0 +1,237 @@
+{
+  "lesson": "u3_l3",
+  "title": "字符串进阶",
+  "quest": {
+    "id": "u3_l3_quest",
+    "title": "剧情任务：数数字条上的字母",
+    "story": "仓库里的每箱货都贴着一张字条（字符串）。管理员挑了一张字条，想知道某个字母在上面出现了几次——用来核对货物批次。你帮他数一数！",
+    "stem": "第一行读入一个字条内容（字符串），第二行读入一个字母，打印这个字母在字条里出现的次数。",
+    "code": "s = input()\nch = input()\n# 用 count 统计 ch 在 s 中出现的次数并打印\n",
+    "testcases": [
+      {
+        "input": "banana\na",
+        "expected": "3"
+      },
+      {
+        "input": "hello\nl",
+        "expected": "2"
+      }
+    ],
+    "hint": "字符串有现成的方法能统计某个字符出现几次——想想这个方法叫什么？它接收什么参数？",
+    "explain": "s.count(ch) 统计子串 ch 在 s 中出现的次数：banana 里有 3 个 a，hello 里有 2 个 l。",
+    "concept": [
+      "字符串",
+      "count",
+      "input"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「字符串进阶」一课 🎉\n\n**这一课你学会了**：\n1. 字符串是「字符的序列」：下标、切片、`len()`、`in` 全都能用\n2. **不可变**：方法都返回新字符串，不改原串\n3. 大小写与判断：`upper()`/`lower()`/`isdigit()`/`find()`（找不到返回 -1）\n4. 清洁与加工：`strip()` 去空格、`split()` 剪成列表、`join()` 粘成字符串（胶水在前）\n5. 格式化：**f-string** 是首选：`f\"{变量}\"`\n\n字条上的字母数清楚了！仓库里还有一种「不重样宝贝袋」——集合。下一课，去看看怎么用集合把重复的货单编号一键去重。"
+  },
+  "questions": [
+    {
+      "id": "u3_l3_p1",
+      "type": "choice",
+      "stem": "\"Hello World\".upper() 的结果是？",
+      "options": [
+        "HELLO WORLD",
+        "hello world",
+        "Hello World",
+        "HELLO world"
+      ],
+      "answer": 0,
+      "hint": "upper = 全部大写。",
+      "explain": "upper() 把所有字母变成大写：HELLO WORLD。注意它返回新字符串，不改原串。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "那是 lower() 的效果：upper() 是把字母转大写。"
+        },
+        {
+          "opt": 2,
+          "why": "那是 title() 的效果：upper 逐个字母转大写，全部变 HELLO WORLD。"
+        },
+        {
+          "opt": 3,
+          "why": "只转了一部分：upper 把每个字母都转大写。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "upper"
+      ]
+    },
+    {
+      "id": "u3_l3_p2",
+      "type": "fill",
+      "stem": "\"Python\"[1:4] 的结果是____。",
+      "answer": "yth",
+      "hint": "下标 0 是 P，从下标 1 切到 4（不含 4）。",
+      "explain": "切片左闭右开：取下标 1、2、3，即 y、t、h → 「yth」。",
+      "traps": [
+        {
+          "wrong": "Pyth",
+          "why": "切片起点写错：[1:4] 从下标 1 开始，取下标 1、2、3。"
+        },
+        {
+          "wrong": "ython",
+          "why": "以为切到末尾：左闭右开，只取到下标 3。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "切片"
+      ]
+    },
+    {
+      "id": "u3_l3_p3",
+      "type": "choice",
+      "stem": "s = \"  你好呀  \"，想去掉两边的空格，应该用哪个方法？",
+      "options": [
+        "s.strip()",
+        "s.split()",
+        "s.upper()",
+        "s.join()"
+      ],
+      "answer": 0,
+      "hint": "strip 的中文意思就是「剥掉」。",
+      "explain": "strip() 去掉两边的空白；split() 是分割，upper() 是大写，join() 是拼接。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "split 是分割字符串成列表，不是去空格。"
+        },
+        {
+          "opt": 2,
+          "why": "upper 是转大写，strip 才去空白。"
+        },
+        {
+          "opt": 3,
+          "why": "join 是拼接列表，去空格用 strip()。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "strip"
+      ]
+    },
+    {
+      "id": "u3_l3_p4",
+      "type": "choice",
+      "stem": "\"a,b,c\".split(\",\") 的结果是？",
+      "options": [
+        "['a', 'b', 'c']",
+        "['a,b,c']",
+        "('a', 'b', 'c')",
+        "\"a b c\""
+      ],
+      "answer": 0,
+      "hint": "split 的结果永远是列表。",
+      "explain": "split 按逗号把字符串剪成列表：['a', 'b', 'c']。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "split(\",\") 按逗号切成了 3 个元素。"
+        },
+        {
+          "opt": 2,
+          "why": "split 返回的是列表，不是元组。"
+        },
+        {
+          "opt": 3,
+          "why": "逗号不会变成空格，结果是列表 ['a','b','c']。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "split"
+      ]
+    },
+    {
+      "id": "u3_l3_p5",
+      "type": "fill",
+      "stem": "\"-\".join([\"2024\", \"1\", \"1\"]) 的结果是____。",
+      "answer": "2024-1-1",
+      "hint": "胶水在前，列表在后。",
+      "explain": "join 用前面的「-」当胶水，把列表里的字符串粘起来：2024-1-1。",
+      "traps": [
+        {
+          "wrong": "2024111",
+          "why": "忘了中间的胶水：join 会用 \"-\" 把每个元素连起来。"
+        },
+        {
+          "wrong": "2024,1,1",
+          "why": "胶水用错：胶水是 \"-\"，结果是 2024-1-1。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "join"
+      ]
+    },
+    {
+      "id": "u3_l3_p6",
+      "type": "fill",
+      "stem": "\"Python\"[::-1] 的结果是____。",
+      "answer": "nohtyP",
+      "hint": "步长 -1 = 反转，字符串和列表一样能切片。",
+      "explain": "步长为 -1 表示倒着取，整个字符串反转：nohtyP（注意原串末尾的大写 P 反转后在最前）。",
+      "traps": [
+        {
+          "wrong": "nohtyp",
+          "why": "大小写没保留：原串末尾是大写 P，反转后 P 在最前。"
+        },
+        {
+          "wrong": "Python",
+          "why": "以为没变化：[::-1] 步长为 -1，整个倒序。"
+        }
+      ],
+      "concept": [
+        "字符串",
+        "切片"
+      ]
+    },
+    {
+      "id": "u3_l3_p7",
+      "type": "code",
+      "stem": "已有列表 words = [\"我\", \"爱\", \"Python\"]，用 \"-\" 把列表拼成一个字符串并打印，再分两行打印这个字符串里大写字母 P 出现的次数。\n\n期望输出：\n```\n我-爱-Python\n1\n```",
+      "code": "words = [\"我\", \"爱\", \"Python\"]\n# 用 \"-\".join(words) 拼成字符串 s，然后 print(s) 和 print(s.count(\"P\"))\n",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "我-爱-Python\n1"
+        }
+      ],
+      "hint": "把列表拼成字符串用哪个方法？注意它的写法：谁在前谁在后？统计字母次数用哪个方法？它区分大小写吗？",
+      "explain": "\"-\".join(words) 用 - 把三个元素粘起来；s.count(\"P\") 只数大写 P（Python 里只有 1 个），小写 p 不算。",
+      "concept": [
+        "字符串",
+        "join",
+        "count"
+      ]
+    },
+    {
+      "id": "u3_l3_p8",
+      "type": "debug",
+      "stem": "下面的程序想判断用户是否成年，但会报错。找出并修复它（提示：类型错误 TypeError）。",
+      "code": "age = input()\nif age >= 18:\n    print(\"成年\")\nelse:\n    print(\"未成年\")",
+      "testcases": [
+        {
+          "input": "20",
+          "expected": "成年"
+        },
+        {
+          "input": "15",
+          "expected": "未成年"
+        }
+      ],
+      "hint": "input() 拿到的是字符串，字符串和数字 18 不能直接比较，要先转成整数。",
+      "explain": "input() 返回字符串，age >= 18 是字符串和数字比较，会报 TypeError；改成 age = int(input()) 就能正常比较了。",
+      "concept": [
+        "字符串",
+        "int",
+        "调试"
+      ]
+    }
+  ]
+}
