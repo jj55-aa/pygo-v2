@@ -1,0 +1,226 @@
+{
+  "lesson": "u8_l2",
+  "title": "时间与随机",
+  "questions": [
+    {
+      "id": "u8_l2_p1",
+      "type": "choice",
+      "stem": "已经写好了 `from datetime import datetime`，现在想拿到「当前这一刻」的时间，正确的写法是？",
+      "options": [
+        "datetime.now()",
+        "datetime.now",
+        "now()",
+        "datetime.date.now()"
+      ],
+      "answer": 0,
+      "hint": "想想魔法时钟是怎么报时的——方法调用要带什么？",
+      "explain": "datetime.now() 返回当前时刻的 datetime 对象，括号表示调用方法。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "datetime.now 少了括号：拿到的是「方法本身」（一个函数对象），不是当前时间。"
+        },
+        {
+          "opt": 2,
+          "why": "now() 前面漏了类名 datetime：now 是 datetime 类的方法，不能单独调用。"
+        },
+        {
+          "opt": 3,
+          "why": "date 是只管日期的类，没有 now() 这个用法；拿当前时刻要调 datetime.now()。"
+        }
+      ],
+      "concept": [
+        "datetime",
+        "datetime.now"
+      ]
+    },
+    {
+      "id": "u8_l2_p2",
+      "type": "choice",
+      "stem": "执行 `random.randint(1, 3)`，可能返回下面哪些数？",
+      "options": [
+        "只有 1 和 3",
+        "1、2、3 都有可能",
+        "只有 1 和 2",
+        "0、1、2、3 都有可能"
+      ],
+      "answer": 1,
+      "hint": "randint 的两个参数是闭区间还是开区间？",
+      "explain": "randint(a, b) 是闭区间：a 和 b 都算在内，所以 randint(1, 3) 可能返回 1、2、3 中的任意一个。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "randint 是闭区间，中间的 2 也包含在内，不是只取两端。"
+        },
+        {
+          "opt": 2,
+          "why": "这是 range(1, 3) 的「含头不含尾」逻辑；randint(1, 3) 的 3 也在范围内。"
+        },
+        {
+          "opt": 3,
+          "why": "randint 从第一个参数 a 开始，不会小于 a——randint(1, 3) 永远不会返回 0。"
+        }
+      ],
+      "concept": [
+        "random",
+        "randint"
+      ]
+    },
+    {
+      "id": "u8_l2_p3",
+      "type": "judge",
+      "stem": "random.shuffle(列表) 会返回一个打乱后的新列表，所以应该写成 lst = random.shuffle(lst)。",
+      "answer": false,
+      "hint": "shuffle 是原地打乱还是生成新列表？它返回什么？",
+      "explain": "shuffle 是原地打乱：直接改原列表，而且返回 None。写成 lst = random.shuffle(lst) 反而会把 lst 变成 None。",
+      "concept": [
+        "random",
+        "shuffle"
+      ]
+    },
+    {
+      "id": "u8_l2_p4",
+      "type": "fill",
+      "stem": "`from datetime import datetime` 之后，调用 datetime 类的哪个方法能拿到当前时间？（填方法名，如 xxx()）",
+      "answer": [
+        "datetime.now()",
+        "datetime.now",
+        "now()",
+        "now",
+        "当前时间",
+        "取当前时间"
+      ],
+      "hint": "魔法时钟是怎么报时的？方法名是三个字母。",
+      "explain": "datetime.now() 返回当前时刻的 datetime 对象，是拿「现在」的标准方法。",
+      "traps": [
+        {
+          "wrong": "date",
+          "why": "date 是只管年月日的「日期」类，拿含时分秒的当前时刻要用 datetime 的 now()。"
+        },
+        {
+          "wrong": "time",
+          "why": "time 类只管时分秒，不含日期；datetime.now() 才是年月日时分秒都有的当前时刻。"
+        }
+      ],
+      "concept": [
+        "datetime",
+        "datetime.now"
+      ]
+    },
+    {
+      "id": "u8_l2_p5",
+      "type": "fill",
+      "stem": "要从列表 names = [\"小明\", \"小红\", \"小刚\"] 里随机选一个名字，应调用 random 模块的哪个函数？（填函数名，如 xxx()）",
+      "answer": [
+        "random.choice()",
+        "random.choice",
+        "choice()",
+        "choice",
+        "随机选择",
+        "随机选一个",
+        "随机挑一个"
+      ],
+      "hint": "随机三兄弟里，谁负责「从列表里挑一个」？",
+      "explain": "random.choice(列表) 从列表里随机挑一个元素返回，抽签抽奖都靠它。",
+      "traps": [
+        {
+          "wrong": "randint",
+          "why": "randint(a, b) 是随机整数，从列表里挑元素应该用 choice。"
+        },
+        {
+          "wrong": "shuffle",
+          "why": "shuffle 是把整个列表打乱，不是挑出其中一个元素。"
+        }
+      ],
+      "concept": [
+        "random",
+        "choice"
+      ]
+    },
+    {
+      "id": "u8_l2_p6",
+      "type": "debug",
+      "stem": "下面的程序想打印 2026 年 3 月 15 日的年份和月份，但运行时报错 `NameError: name 'datetime' is not defined`。补上缺失的那行代码吧。",
+      "code": "# 打印 2026 年 3 月 15 日的年份和月份\nd = datetime(2026, 3, 15)\nprint(d.year, \"年\", d.month, \"月\")",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "2026 年 3 月"
+        }
+      ],
+      "hint": "datetime 是标准库里的类，用之前要先 import 它——补在最上面一行。",
+      "explain": "补上 `from datetime import datetime` 就能用了：d.year 是 2026，d.month 是 3，输出「2026 年 3 月」。",
+      "concept": [
+        "datetime",
+        "import",
+        "调试"
+      ]
+    },
+    {
+      "id": "u8_l2_p7",
+      "type": "code",
+      "stem": "写一个「掷双骰子」小程序：\n\n- 已经帮你写好 `import random` 和 `random.seed(42)`（固定种子，判题按它复现）\n- `d1`、`d2` 已掷好，是两个 1~6 的随机整数\n- 请在最后补一行代码：打印 d1、d2 和它们的总和（三个数用空格隔开）\n\nseed(42) 下期望输出：`6 1 7`",
+      "code": "import random\nrandom.seed(42)\n\nd1 = random.randint(1, 6)\nd2 = random.randint(1, 6)\n\n# 补全：打印 d1、d2 和它们的总和（三个数用空格隔开）",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "6 1 7"
+        }
+      ],
+      "hint": "想想怎么一次打印 d1、d2 和它们的和——print 传多个参数时，中间会自动加空格。三个数分别写什么？",
+      "explain": "seed(42) 下 d1=6、d2=1，print(d1, d2, d1 + d2) 输出「6 1 7」。",
+      "concept": [
+        "random",
+        "randint",
+        "seed"
+      ]
+    },
+    {
+      "id": "u8_l2_p8",
+      "type": "code",
+      "stem": "水果摊的「幸运抽奖」：从下面的水果列表里随机抽一个，打印中签水果。\n\n- 列表已经写好：fruits = [\"苹果\", \"香蕉\", \"橘子\", \"西瓜\"]\n- 已经帮你写好 `random.seed(42)` 固定种子（判题按它复现）\n- 请在最后补一行代码：用 random.choice 抽一个，打印 `中签水果： X`（冒号后有一个空格）",
+      "code": "import random\nrandom.seed(42)\n\nfruits = [\"苹果\", \"香蕉\", \"橘子\", \"西瓜\"]\n\n# 补全：用 random.choice 从 fruits 里抽一个，打印「中签水果： X」",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "中签水果： 苹果"
+        }
+      ],
+      "hint": "想想用 random 的哪个函数能从列表里随机抽一个？打印格式是「中签水果： X」——注意冒号后有一个空格。",
+      "explain": "seed(42) 下 random.choice 抽中的是列表第 0 个元素「苹果」，输出「中签水果： 苹果」。",
+      "concept": [
+        "random",
+        "choice",
+        "seed"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u8_l2_quest",
+    "title": "剧情任务：百宝箱幸运抽签",
+    "story": "你打开了「百宝箱」，里面滚出一个古色古香的抽签筒。老管家捋着胡子说：「这是镇箱之宝——幸运抽签筒！江湖规矩，每次开抽前都要念一句咒语 random.seed(42)，这样同一次仪式，谁来抽结果都一样。现在给你三个名字，把中签者抽出来吧！」",
+    "stem": "写一个「抽签程序」：\n\n- 读入 3 个名字（每行一个），依次存进列表 names（循环已经帮你写好）\n- 开头已经帮你写好 `random.seed(42)` 固定种子（判题按它复现）\n- 请在最后补一行代码：用 random.choice(names) 随机抽一个，打印 `中签： X`（冒号后有一个空格）",
+    "code": "import random\nrandom.seed(42)\n\nnames = []\nfor _ in range(3):\n    names.append(input())\n\n# 补全：用 random.choice(names) 抽一个，打印「中签： X」",
+    "testcases": [
+      {
+        "input": "小明\n小红\n小刚",
+        "expected": "中签： 小刚"
+      },
+      {
+        "input": "张伟\n王芳\n李娜",
+        "expected": "中签： 李娜"
+      }
+    ],
+    "hint": "想想怎么从 names 里随机抽一个（提示：random.choice）？打印格式「中签： X」里，冒号后记得留一个空格。",
+    "explain": "seed(42) 下 random.choice 会固定抽中第 2 个（下标 2）名字：第一组抽中「小刚」，第二组抽中「李娜」。抽签筒转起来了，老管家满意地点点头。",
+    "concept": [
+      "random",
+      "choice",
+      "seed",
+      "input"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你从「百宝箱」里取出了两件宝贝——时间与随机 🎉\n\n**这一课你学会了**：\n1. datetime 认识时间：`datetime.now()` 拿当前时刻，用 `.year` / `.month` / `.day` 拆出年月日\n2. 构造与比较固定日期：`datetime(2026, 1, 1)` 自己圈日历，能比大小、能相减算相差天数（`.days`）\n3. random 三兄弟：`randint(a, b)` 随机整数（含两端）、`choice(列表)` 随机选一个、`shuffle(列表)` 原地打乱（返回 None）\n4. seed 固定随机种子：`random.seed(42)` 让随机「可复现」，调试、判题、模拟都不慌\n\n**剧情推进**：幸运抽签筒转起来了，老管家却摆摆手说：「这才哪到哪！百宝箱里最传奇的宝贝，能让 Python 一夜之间装上成千上万种新工具。」他神秘一笑——下一站：pip 与第三方库，学会它，百宝箱才真正取之不尽！"
+  }
+}
