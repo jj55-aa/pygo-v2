@@ -1,0 +1,241 @@
+{
+  "lesson": "u8_l1",
+  "title": "标准库初探",
+  "questions": [
+    {
+      "id": "u8_l1_p1",
+      "type": "choice",
+      "stem": "关于 Python 的「标准库」，下列说法正确的是？",
+      "options": [
+        "标准库里的模块要先从网上下载安装，才能使用",
+        "标准库是 Python 自带的一批官方模块，装好 Python 就能直接用",
+        "标准库就是第三方库（比如 numpy、requests）的统称",
+        "标准库内容太多，必须全部背下来才能写程序"
+      ],
+      "answer": 1,
+      "hint": "想想「百宝箱」的比喻：新手机自带的相机，需要另外下载吗？",
+      "explain": "标准库是 Python 自带的官方模块集合：math、random、json、datetime 等，装好 Python 就齐了，import 就能用，不用下载安装。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "标准库不需要下载安装——它是 Python 自带的；需要另外下载安装的是第三方库。"
+        },
+        {
+          "opt": 2,
+          "why": "标准库和第三方库是两码事：标准库是官方自带的，numpy、requests 这类才需要另外安装。"
+        },
+        {
+          "opt": 3,
+          "why": "标准库不用全背，知道「有这号工具、随取随用」就够了，用到时再查即可。"
+        }
+      ],
+      "concept": [
+        "标准库",
+        "import"
+      ]
+    },
+    {
+      "id": "u8_l1_p2",
+      "type": "choice",
+      "stem": "想用 math 模块里的 sqrt 函数开平方，哪种写法是正确的？",
+      "options": [
+        "import sqrt from math，然后用 sqrt(16)",
+        "import math，然后用 math.sqrt(16)",
+        "sqrt math，然后用 math.sqrt(16)",
+        "from math import math，然后用 math.sqrt(16)"
+      ],
+      "answer": 1,
+      "hint": "标准写法是 import 模块名在前；`import math` 之后该怎么调用来着？",
+      "explain": "import math 把整个模块导入，之后用全名 math.sqrt(16) 调用。其余三种要么语序反了、要么少了 import、要么导错了名字。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "语序写反了：Python 是 from math import sqrt（先模块后函数），import sqrt from math 是语法错误。"
+        },
+        {
+          "opt": 2,
+          "why": "sqrt math 不是合法语句——导入必须用 import 关键字。"
+        },
+        {
+          "opt": 3,
+          "why": "math 模块里没有叫 math 的函数；from math import 后面要写模块里真实存在的名字（比如 sqrt）。"
+        }
+      ],
+      "concept": [
+        "import",
+        "math"
+      ]
+    },
+    {
+      "id": "u8_l1_p3",
+      "type": "judge",
+      "stem": "执行了 from math import sqrt 之后，可以直接写 sqrt(16) 来开平方，不需要再加 math. 前缀。",
+      "answer": true,
+      "hint": "想想「只拿一件工具」的写法：工具都拿到手里了，还需要隔着箱子喊吗？",
+      "explain": "from math import sqrt 把 sqrt 这个函数直接导入了当前程序，之后直接 sqrt(16) 即可；但注意此时 math 这个名字没被导入，写 math.sqrt(16) 反而会报 NameError。",
+      "concept": [
+        "from import",
+        "调用方式"
+      ]
+    },
+    {
+      "id": "u8_l1_p4",
+      "type": "fill",
+      "stem": "想使用标准库里的模块，需要先写哪个关键字把它「请」进程序？（填英文关键字）",
+      "answer": [
+        "import",
+        "导入",
+        "引入"
+      ],
+      "hint": "打开百宝箱的钥匙是哪个单词？",
+      "explain": "import 是导入模块的关键字：import math 就把 math 模块请了进来，之后才能用 math 里的工具。",
+      "traps": [
+        {
+          "wrong": "from",
+          "why": "from 是配合 import 用的（from math import sqrt），把模块请进来的关键字是 import。"
+        },
+        {
+          "wrong": "include",
+          "why": "include 不是 Python 的关键字，Python 里导入模块用的是 import。"
+        }
+      ],
+      "concept": [
+        "import",
+        "模块"
+      ]
+    },
+    {
+      "id": "u8_l1_p5",
+      "type": "fill",
+      "stem": "执行下面的代码，屏幕上会输出什么？（填数字）\n\nimport math\nprint(math.sqrt(16))",
+      "answer": [
+        "4.0",
+        "4"
+      ],
+      "hint": "sqrt 是开平方：哪个数自己乘自己等于 16？注意开方的结果一般是小数。",
+      "explain": "sqrt 求平方根：4 × 4 = 16，所以结果是 4.0（开方结果一般是浮点数）。",
+      "traps": [
+        {
+          "wrong": "16",
+          "why": "16 是开平方前的原数，不是结果——sqrt(16) 求的是 16 的平方根。"
+        },
+        {
+          "wrong": "8",
+          "why": "8 不是 16 的平方根（8×8=64）；sqrt(16) = 4.0，因为 4×4=16。"
+        }
+      ],
+      "concept": [
+        "math",
+        "sqrt"
+      ]
+    },
+    {
+      "id": "u8_l1_p6",
+      "type": "debug",
+      "stem": "下面的程序想读入一个数 n 并打印它的平方根，但一运行就报错：NameError: name 'sqrt' is not defined。原因很简单——你忘了把 sqrt 从百宝箱里请出来！补上 import（from math import sqrt 或 import math 都行），让程序跑通。",
+      "code": "n = int(input())\nresult = sqrt(n)\nprint(result)",
+      "testcases": [
+        {
+          "input": "16",
+          "expected": "4.0"
+        },
+        {
+          "input": "81",
+          "expected": "9.0"
+        }
+      ],
+      "hint": "报错说 sqrt 这个名字没定义——想想怎么把 sqrt 从 math 里「请」进来？导入之后，调用方式需不需要跟着改？",
+      "explain": "没有 import 时，Python 根本不认识 sqrt 这个名字，所以报 NameError。补上 from math import sqrt，或 import math 后用 math.sqrt(n)，两种修法都能通过。",
+      "concept": [
+        "import",
+        "NameError",
+        "调试"
+      ]
+    },
+    {
+      "id": "u8_l1_p7",
+      "type": "code",
+      "stem": "读入一个整数 n，用 math.sqrt 计算它的平方根并打印。\n\n提示：先 import math，再用 math.sqrt(n)。",
+      "code": "import math\n\nn = int(input())\n# 在这里调用 math.sqrt(n) 并打印结果",
+      "testcases": [
+        {
+          "input": "16",
+          "expected": "4.0"
+        },
+        {
+          "input": "2",
+          "expected": "1.4142135623730951"
+        },
+        {
+          "input": "81",
+          "expected": "9.0"
+        }
+      ],
+      "hint": "想想怎么调用 math 模块里的 sqrt 函数算出平方根，再把结果打印出来。",
+      "explain": "print(math.sqrt(n))：16 的平方根是 4.0，2 的平方根约 1.4142135623730951，81 的平方根是 9.0。",
+      "concept": [
+        "math",
+        "sqrt"
+      ]
+    },
+    {
+      "id": "u8_l1_p8",
+      "type": "code",
+      "stem": "读入圆的半径 r（整数），用 from math import pi 计算圆的周长并打印。\n\n周长公式：周长 = 2 × pi × r",
+      "code": "from math import pi\n\nr = int(input())\n# 在这里计算周长并打印",
+      "testcases": [
+        {
+          "input": "1",
+          "expected": "6.283185307179586"
+        },
+        {
+          "input": "7",
+          "expected": "43.982297150257104"
+        },
+        {
+          "input": "10",
+          "expected": "62.83185307179586"
+        }
+      ],
+      "hint": "周长公式是 2 × π × r——想想 π 用什么表示（提示：已经从 math 里导入了），再套公式打印。",
+      "explain": "周长 = 2 × pi × r：半径 1 → 6.283185307179586，半径 7 → 43.982297150257104，半径 10 → 62.83185307179586。",
+      "concept": [
+        "math",
+        "pi",
+        "from import"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u8_l1_quest",
+    "title": "剧情任务：百宝箱的圆面积计算器",
+    "story": "你来到「百宝箱」世界，守箱人老爷爷掀开箱子，里面整整齐齐摆满了工具：「这箱子里最常用的就是 math——圆形的面积，别自己硬算那一长串小数，交给 math.pi 就行。」他把一张图纸推到你面前：「做个圆面积计算器吧，半径进来，面积出去，保留两位小数。」",
+    "stem": "完成「圆面积计算器」：\n\n- 第一行读入半径 r（整数）\n- 用 math.pi * r * r 计算面积\n- 用 round(面积, 2) 保留两位小数并打印\n- 记得先 import math",
+    "code": "import math\n\nr = int(input())\n# 计算面积（保留两位小数）并打印",
+    "testcases": [
+      {
+        "input": "2",
+        "expected": "12.57"
+      },
+      {
+        "input": "5",
+        "expected": "78.54"
+      },
+      {
+        "input": "10",
+        "expected": "314.16"
+      }
+    ],
+    "hint": "想想圆的面积公式怎么用 math.pi 和 r 表示？结果的小数很长，用什么函数保留两位小数？",
+    "explain": "area = math.pi * r * r 得到完整小数，round(area, 2) 保留两位：半径 2 → 12.57，半径 5 → 78.54，半径 10 → 314.16。守箱人竖起大拇指：「标准库是不是比你自己造轮子香多了？」",
+    "concept": [
+      "math",
+      "pi",
+      "round",
+      "标准库"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你打开了「百宝箱」的第一层 🎉\n\n**这一课你学会了**：\n1. 标准库 = Python 自带的百宝箱：官方模块（math / random / json / datetime…）装好 Python 就齐了，不用安装\n2. import 三种写法：`import math`（全名调用）/ `from math import sqrt`（直接调用）/ `import math as m`（起别名）\n3. math 常用：`sqrt` 开平方、`ceil` 向上取整、`floor` 向下取整、`pi` 圆周率、`pow` 次方\n4. 报 NameError 先检查 import：忘了 import、或 from import 之后混用 math. 前缀都会翻车；`os` 管操作系统、`sys` 管解释器\n\n**剧情推进**：圆面积计算器运转起来，守箱人又摸出一把钥匙：「百宝箱里还有两位好手——`datetime` 管时间，`random` 管随机。下一站：时间与随机，用它们解决更多日常小问题！」"
+  }
+}
