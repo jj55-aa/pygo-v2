@@ -1,0 +1,253 @@
+{
+  "lesson": "u10_l1",
+  "title": "Excel 读写",
+  "questions": [
+    {
+      "id": "u10_l1_p1",
+      "type": "choice",
+      "stem": "车间主任递给你一份《车间工资表.xlsx》。老师说：一个 Excel 文件里可以有好几页表格，每页表格里又排满了一个个小格子。这套「从外到内」的三层结构依次是？",
+      "options": [
+        "工作簿 → 工作表 → 单元格",
+        "单元格 → 工作表 → 工作簿",
+        "工作表 → 工作簿 → 单元格",
+        "工作簿 → 单元格 → 工作表"
+      ],
+      "answer": 0,
+      "hint": "想想「从外到内」：整个文件像一本书，书里装的是什么？每一页上排满的最小单位又是什么？一层一层往里拆。",
+      "explain": "工作簿（整个 .xlsx 文件，像一本书）→ 工作表（书里的每一页）→ 单元格（页面上的格子，用坐标 A1 定位）。从外到内一层层拆开就对了。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "这是从内到外：格子最小、文件最大。题目问的是从外到内。"
+        },
+        {
+          "opt": 2,
+          "why": "工作表是工作簿里面的「页」，不可能比工作簿还大——层级顺序反了。"
+        },
+        {
+          "opt": 3,
+          "why": "单元格住在工作表里，工作表住在工作簿里——中间还夹着一层工作表，不能直接跳到单元格。"
+        }
+      ],
+      "concept": [
+        "Excel",
+        "工作簿",
+        "工作表",
+        "单元格"
+      ]
+    },
+    {
+      "id": "u10_l1_p2",
+      "type": "choice",
+      "stem": "你的电脑上 Python 装好了，想用 openpyxl 读取一份 .xlsx 工资报表。正确的第一步是？",
+      "options": [
+        "直接 import openpyxl，Python 自带这个库",
+        "先 pip install openpyxl 安装，再 import openpyxl",
+        "先安装 WPS / Office 办公软件",
+        "把 .xlsx 文件改名成 .py 后缀"
+      ],
+      "answer": 1,
+      "hint": "openpyxl 是第三方库——想想 u8 学的 pip：第三方库要先安装才能 import。",
+      "explain": "openpyxl 不是 Python 标准库，得先 pip install openpyxl 装上；没装就 import 会报 ModuleNotFoundError。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "openpyxl 是第三方库，Python 不自带；直接 import 会报 ModuleNotFoundError。"
+        },
+        {
+          "opt": 2,
+          "why": "WPS/Office 是给人用的办公软件，跟 Python 代码没关系——装它 openpyxl 还是 import 不了。"
+        },
+        {
+          "opt": 3,
+          "why": ".xlsx 是数据文件，改成 .py 只会让 Excel 和 Python 都打不开它，纯属帮倒忙。"
+        }
+      ],
+      "concept": [
+        "openpyxl",
+        "第三方库",
+        "pip"
+      ]
+    },
+    {
+      "id": "u10_l1_p3",
+      "type": "judge",
+      "stem": "Excel 的单元格坐标 A1 表示：第 1 列（字母 A）第 1 行（数字 1）。列用字母、行用数字，而且行列都从 1 开始数，没有「第 0 行」。",
+      "answer": true,
+      "hint": "坐标 = 列字母 + 行数字。A1 里的 A 是列，1 是行——行和列是不是都从 1 开始？",
+      "explain": "正确。坐标就是「列字母 + 行数字」：A1 = A 列第 1 行；行列编号都从 1 开始——这跟 Python 列表下标从 0 开始不一样，是最容易踩的坑。",
+      "concept": [
+        "单元格",
+        "坐标",
+        "A1"
+      ]
+    },
+    {
+      "id": "u10_l1_p4",
+      "type": "fill",
+      "stem": "Excel 单元格坐标是「列字母 + 行数字」：例如 A1 里的数字 1 表示第一______。",
+      "answer": [
+        "行",
+        "第1行",
+        "第一行",
+        "行号",
+        "row"
+      ],
+      "hint": "列是字母 A、B、C……，那数字管的是什么？",
+      "explain": "坐标 = 列字母 + 行数字：A1 里的 A 表示第一列（字母管列），1 表示第一行（数字管行）。行列都从 1 开始数。",
+      "traps": [
+        {
+          "wrong": "列",
+          "why": "列是字母管的：A1 里的 A 才是列。数字 1 表示的是行。"
+        },
+        {
+          "wrong": "坐标",
+          "why": "坐标是 A1 这个整体，1 是坐标里表示「第几行」的部分。"
+        }
+      ],
+      "concept": [
+        "单元格",
+        "坐标",
+        "行"
+      ]
+    },
+    {
+      "id": "u10_l1_p5",
+      "type": "fill",
+      "stem": "用 openpyxl 从零新建一个空白工作簿：wb = openpyxl.______()（填函数/类名）。",
+      "answer": [
+        "Workbook"
+      ],
+      "hint": "新建工作簿的方法名，和「工作簿」的英文单词一模一样（注意大写）。",
+      "explain": "wb = openpyxl.Workbook() 新建一个空白工作簿；再 wb.active 拿默认工作表、ws.append() 填数据，最后 wb.save() 保存。",
+      "traps": [
+        {
+          "wrong": "load_workbook",
+          "why": "load_workbook 是「打开已有的文件」，从零新建得用 Workbook()——没有 load 前缀。"
+        },
+        {
+          "wrong": "save",
+          "why": "save() 是最后保存到磁盘，不是新建工作簿；新建用 Workbook()。"
+        }
+      ],
+      "concept": [
+        "openpyxl",
+        "Workbook",
+        "写入"
+      ]
+    },
+    {
+      "id": "u10_l1_p6",
+      "type": "debug",
+      "stem": "车间里这段程序想统计《工资表》里 3 名员工的工资总和，可一运行就报 TypeError：`0 + '工资'` 这种把表头和字符串都当数字加的错，可不止一个坑。观察报错信息，把它们全修好，让程序输出正确的总和。",
+      "code": "import csv\nimport io\n\n# 输入共 4 行：第 1 行是表头，后面 3 行是「姓名,工资」\nlines = []\nfor _ in range(4):\n    lines.append(input())\n\ntext = \"\\n\".join(lines)\nrows = list(csv.reader(io.StringIO(text)))\n\ntotal = 0\nfor row in rows:             # ← 坑 1：没跳过表头，把 '工资' 也当数字加了\n    total = total + row[1]   # ← 坑 2：csv 读出来是字符串，没转成整数\n\nprint(total)",
+      "testcases": [
+        {
+          "input": "姓名,工资\n小明,5000\n小红,6000\n小刚,7000",
+          "expected": "18000"
+        },
+        {
+          "input": "姓名,工资\n小甲,1000\n小乙,2000\n小丙,3000",
+          "expected": "6000"
+        }
+      ],
+      "hint": "想想两个坑分别怎么修：表头那一行怎么跳过（提示：切片）？CSV 读出来的工资是字符串还是数字，要怎么转换才能相加？",
+      "explain": "两个坑都要补：① for row in rows 把表头 ['姓名','工资'] 也当数据，0 + '工资' 直接 TypeError——改成 for row in rows[1:] 跳过表头；② 工资是字符串，要 total = total + int(row[1])。都修好后：5000+6000+7000 = 18000。",
+      "concept": [
+        "调试",
+        "跳过表头",
+        "int转换",
+        "csv"
+      ]
+    },
+    {
+      "id": "u10_l1_p7",
+      "type": "code",
+      "stem": "车间主任给了你一份《临时工资表》：每行一条「姓名,工资」（没有表头）。用 csv + io.StringIO 解析，求出工资总和并打印。\n\n输入示例：\n```\n小明,5000\n小红,6000\n小刚,7000\n```\n期望输出：\n```\n18000\n```",
+      "code": "import csv\nimport io\nimport sys\n\n# 每行一条「姓名,工资」，整体读入后模拟成表格\ntext = sys.stdin.read()\nrows = list(csv.reader(io.StringIO(text)))\n\ntotal = 0\n# TODO: 遍历 rows，把每行的工资（row[1]）转成整数并累加\npass\n\nprint(total)",
+      "testcases": [
+        {
+          "input": "小明,5000\n小红,6000\n小刚,7000",
+          "expected": "18000"
+        },
+        {
+          "input": "小甲,1000\n小乙,2000\n小丙,3000\n小丁,4000",
+          "expected": "10000"
+        },
+        {
+          "input": "",
+          "expected": "0"
+        }
+      ],
+      "hint": "想想：每一行里工资在第几个位置？它是字符串还是数字？怎么转成数字再累加到 total？",
+      "explain": "for row in rows: total += int(row[1])——每行拆出工资、转 int 累加。5000+6000+7000 = 18000；输入为空时循环不执行，total 保持初值 0，输出 0。",
+      "concept": [
+        "csv",
+        "io.StringIO",
+        "求和",
+        "int转换"
+      ]
+    },
+    {
+      "id": "u10_l1_p8",
+      "type": "code",
+      "stem": "车间主任想知道《工资表》里一共有多少人、平均工资是多少。每行一条「姓名,工资」（没有表头）。用 csv + io.StringIO 解析，统计人数和平均工资（平均 = 总和 // 人数），打印「共N人，平均工资X」。\n\n输入示例：\n```\n小明,5000\n小红,6000\n小刚,7000\n```\n期望输出：\n```\n共3人，平均工资6000\n```",
+      "code": "import csv\nimport io\nimport sys\n\ntext = sys.stdin.read()\nrows = list(csv.reader(io.StringIO(text)))\n\ncount = 0\ntotal = 0\n# TODO: 遍历 rows：每行人数 +1，工资转整数累加\npass\n\n# TODO: 计算平均工资 avg = total // count，打印「共N人，平均工资X」\npass",
+      "testcases": [
+        {
+          "input": "小明,5000\n小红,6000\n小刚,7000",
+          "expected": "共3人，平均工资6000"
+        },
+        {
+          "input": "小甲,100\n小乙,200\n小丙,300\n小丁,400",
+          "expected": "共4人，平均工资250"
+        },
+        {
+          "input": "张三,8000\n李四,9000",
+          "expected": "共2人，平均工资8500"
+        }
+      ],
+      "hint": "想想循环里统计哪两样东西（人数、工资总和）？循环结束后平均工资怎么算（想想用哪种除法）？最后按「共N人，平均工资X」打印。",
+      "explain": "遍历时人数 +1、工资转 int 累加；平均 = total // count（整除）。18000 // 3 = 6000，输出「共3人，平均工资6000」；本课数据总和都能整除，所以 // 得到的就是精确平均。",
+      "concept": [
+        "csv",
+        "统计",
+        "平均",
+        "整除"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u10_l1_quest",
+    "title": "剧情任务：车间工资报表",
+    "story": "自动化车间的主任老周，把一张皱巴巴的《工资核算表》拍在你桌上：「车间一百多号人的工资，全靠我拿计算器一个一个按，加班加到天黑！你帮我写个程序把这张表扫一遍——统计有多少人、工资合计多少，再报给我。记住了：第 1 行那行『姓名,工资』是表头，别算进人数里！」你撸起袖子：让 Python 替老周干这活儿。",
+    "stem": "车间《工资核算表》以 CSV 文本形式给出：第 1 行是表头「姓名,工资」，后面是若干行数据（每行一条「姓名,工资」）。请用 csv + io.StringIO 解析（内容已整体读入变量 text）：\n- 跳过表头，逐行统计人数与工资总和\n- 一条数据都没有 → 打印「没有工资数据」\n- 有数据 → 打印「共N人，工资合计X」（N 是人数，X 是工资总和）\n\n输入示例：\n```\n姓名,工资\n小明,5000\n小红,6000\n小刚,7000\n```\n期望输出：\n```\n共3人，工资合计18000\n```",
+    "code": "import csv\nimport io\nimport sys\n\n# 车间《工资核算表》：第 1 行是表头，后面是数据行「姓名,工资」\ntext = sys.stdin.read()\nrows = list(csv.reader(io.StringIO(text)))\n\ncount = 0\ntotal = 0\n# TODO: 跳过表头 rows[1:]，逐行统计人数与工资总和（工资要先 int() 转数字）\npass\n\n# TODO: 一条数据都没有 → 打印「没有工资数据」；否则打印「共N人，工资合计X」\npass",
+    "testcases": [
+      {
+        "input": "姓名,工资\n小明,5000\n小红,6000\n小刚,7000",
+        "expected": "共3人，工资合计18000"
+      },
+      {
+        "input": "姓名,工资\n张三,8000\n李四,6500\n王五,9000\n赵六,7000",
+        "expected": "共4人，工资合计30500"
+      },
+      {
+        "input": "姓名,工资",
+        "expected": "没有工资数据"
+      }
+    ],
+    "hint": "想想：怎么跳过表头那一行？循环里统计人数和工资总和各怎么写？统计完怎么判断「一条数据都没有」（看看 count 的值）？",
+    "explain": "跳过表头后逐行统计：人数 +1、工资转 int 累加。18000 是工资合计、3 人是人数；当输入只剩表头（没有数据行）时 count 保持 0，兜底打印「没有工资数据」——报表再空，程序也不崩。老周看着「共3人，工资合计18000」当场愣住。",
+    "concept": [
+      "csv",
+      "io.StringIO",
+      "跳过表头",
+      "统计",
+      "工资报表"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「Excel 读写」一课 🎉\n\n**这一课你学会了**：\n1. **Excel 三件套**：工作簿（.xlsx 文件，像一本书）→ 工作表（Sheet，书里的页）→ 单元格（格子，坐标 A1 = 列字母 + 行数字，行列都从 1 开始）\n2. **读 Excel**：openpyxl.load_workbook() → wb.active → ws[\"A1\"].value / ws.cell(行, 列).value / iter_rows(values_only=True)；openpyxl 是第三方库，先 pip install 才能 import，没装就报 ModuleNotFoundError\n3. **写 Excel**：Workbook() 新建 → ws.append([...]) 加行 → wb.save() 保存；忘了 save() 一切白干，覆盖保存前先备份\n4. **怎么选**：简单通用、给程序用 → CSV；要样式/公式/多张表、给人看 → Excel；判题环境没有 openpyxl，练习用 csv + io.StringIO 模拟报表，记得 csv 读出来全是字符串、要 int() 转换\n\n**剧情推进**：车间主任老周盯着你打出的「共3人，工资合计18000」，眼睛瞪得溜圆：「三十秒？我这把年纪拿计算器要按一下午！」他大手一挥，指着车间角落的公告栏：「这还只是开胃菜！设备说明书、质检报告、给客户看的报价单——全是 Word 和 PDF 格式的，比 Excel 还难缠。下一站：Word 与 PDF，让 Python 连文档都替你写！」"
+  }
+}
