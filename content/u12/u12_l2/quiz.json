@@ -1,0 +1,138 @@
+{
+  "lesson": "u12_l2",
+  "title": "增删改查",
+  "questions": [
+    {
+      "id": "u12_l2_p1",
+      "type": "choice",
+      "stem": "往地堡的 players 表新增一条档案（姓名「剑圣」、等级 50），正确的 INSERT 语句是？",
+      "options": [
+        "INSERT players VALUES ('剑圣', 50);",
+        "INSERT INTO players (name, level) VALUES ('剑圣', 50);",
+        "ADD INTO players VALUES ('剑圣', 50);",
+        "INSERT TO players SET name='剑圣', level=50;"
+      ],
+      "answer": 1,
+      "hint": "关键词是 INSERT INTO ... VALUES：先想清楚\"进哪张表\"，再填值。",
+      "explain": "只给部分列赋值时，要在表名后写明列名：INSERT INTO players (name, level) VALUES ('剑圣', 50)。漏掉 INTO、写成 ADD/TO/SET 都是错的——SET 是 UPDATE 改数据用的。",
+      "traps": [
+        { "opt": 0, "why": "漏了 INTO：INSERT 必须跟 INTO 表名，否则语法错误。" },
+        { "opt": 2, "why": "没有 ADD INTO 这种写法，新增行用 INSERT INTO。" },
+        { "opt": 3, "why": "SET 是 UPDATE 改数据用的，INSERT 后面跟的是 VALUES。" }
+      ],
+      "concept": ["INSERT", "增", "SQL"]
+    },
+    {
+      "id": "u12_l2_p2",
+      "type": "choice",
+      "stem": "执行 UPDATE players SET level = 1;（没有 WHERE）会发生什么？",
+      "options": [
+        "语法错误，直接报错",
+        "只有第一行档案的等级变成 1",
+        "所有档案的等级都被改成 1",
+        "没有任何变化"
+      ],
+      "answer": 2,
+      "hint": "想一想概念卡 3 的\"史上第一坑\"。",
+      "explain": "UPDATE 不带 WHERE = 全表更新：每一行的 level 都被改成 1，全表档案遭殃！写 UPDATE 之前先问自己：我的 WHERE 呢？",
+      "traps": [
+        { "opt": 0, "why": "语法是合法的，不会报错——但它会悄悄改掉所有行，比报错更危险。" },
+        { "opt": 1, "why": "不只第一行：没有 WHERE 时所有行都会中招。" },
+        { "opt": 3, "why": "变化可大了——全表档案的等级都被改成 1。" }
+      ],
+      "concept": ["UPDATE", "WHERE", "全表更新"]
+    },
+    {
+      "id": "u12_l2_p3",
+      "type": "judge",
+      "stem": "执行 DELETE FROM players;（不带 WHERE）会删除 players 表里的所有行，但表结构（列）仍然保留。",
+      "answer": true,
+      "hint": "DELETE 删的是\"行\"，不是\"表\"。",
+      "explain": "不带 WHERE 的 DELETE 会把所有行删光、只剩一张空表；表结构（列）还在——连结构一起删的是 DROP TABLE。这正是\"不带 WHERE 就是全表操作\"的危险。",
+      "concept": ["DELETE", "WHERE", "全表删除"]
+    },
+    {
+      "id": "u12_l2_p4",
+      "type": "fill",
+      "stem": "INSERT 语句里，字符串类型的值（比如姓名「剑圣」）必须用什么包起来？",
+      "answer": ["引号", "单引号", "双引号", "引号包起来", "引号括起来"],
+      "hint": "和 Python 里写字符串的习惯一样。",
+      "explain": "字符串必须加引号：'剑圣' 才是字符串，裸写 剑圣 会被当成列名/变量；数字（等级 50）不用加引号。",
+      "traps": [
+        { "wrong": "括号", "why": "字符串不用括号；提示：单引号或双引号包起来。" },
+        { "wrong": "中括号", "why": "中括号是 Python 列表的写法；提示：SQL 字符串用引号。" }
+      ],
+      "concept": ["INSERT", "字符串", "引号"]
+    },
+    {
+      "id": "u12_l2_p5",
+      "type": "fill",
+      "stem": "DELETE FROM players ____ nickname = '剑圣'; 横线处应填什么英文关键字？它决定\"删哪些行\"。",
+      "answer": ["WHERE", "where", "Where"],
+      "hint": "和 UPDATE 一样容易忘的那个词——没有它就会全表删光。",
+      "explain": "WHERE 决定删哪些行：DELETE FROM players WHERE nickname = '剑圣' 只删剑圣那一行；不写 WHERE 就是清空整张表。",
+      "traps": [
+        { "wrong": "SET", "why": "SET 是 UPDATE 里\"改成什么\"用的；删行的筛选条件用 WHERE。" },
+        { "wrong": "HAVING", "why": "HAVING 是配合 GROUP BY 聚合分组用的；行筛选用 WHERE。" },
+        { "wrong": "FROM", "why": "FROM 已经写在 DELETE 后面了，横线处要的是筛行条件的关键字 WHERE。" }
+      ],
+      "concept": ["DELETE", "WHERE"]
+    },
+    {
+      "id": "u12_l2_p6",
+      "type": "debug",
+      "stem": "地堡管理员想把 id=1 的档案等级 +1，但程序跑完等级根本没变。找出 bug 并修复，让输出变成：\n```\n1 剑圣 51\n2 奶茶猫 32\n3 熬夜冠军 18\n```",
+      "code": "# 地堡档案表：dict，键是 id，值是 [姓名, 等级]\narchives = {\n    1: [\"剑圣\", 50],\n    2: [\"奶茶猫\", 32],\n    3: [\"熬夜冠军\", 18],\n}\n\n# 模拟 UPDATE ... SET level = level + 1 WHERE id = 1\nfor key in archives:\n    if key == 1:\n        key += 1          # 想给 id=1 的等级 +1\n\n# 盘点打印\nfor key in sorted(archives):\n    print(key, archives[key][0], archives[key][1])",
+      "testcases": [
+        { "input": "", "expected": "1 剑圣 51\n2 奶茶猫 32\n3 熬夜冠军 18" }
+      ],
+      "hint": "循环变量 key 是\"钥匙\"（id），改它不等于改档案内容——要改的是 archives[key] 里的值。",
+      "explain": "key += 1 只是把循环变量加了 1，字典里的数据纹丝不动。正确写法是 archives[key][1] += 1：找到 id==1 那份档案，把它列表里的第 2 项（等级）加 1。",
+      "concept": ["调试", "UPDATE", "字典", "dict模拟"]
+    },
+    {
+      "id": "u12_l2_p7",
+      "type": "code",
+      "stem": "管理员想查一份档案。读入一个 id：\n- 查得到：打印 `名字 等级`（中间一个空格）\n- 查不到：打印 `查无此档案`\n\n提示：SQL 的 `SELECT name, level FROM players WHERE id = ?`，在 dict 模拟里就是\"看键在不在，在就把值取出来\"。\n\n期望示例（输入 2）：\n```\n奶茶猫 32\n```",
+      "code": "# 地堡档案表：dict，键是 id，值是 [姓名, 等级]\narchives = {\n    1: [\"剑圣\", 50],\n    2: [\"奶茶猫\", 32],\n    3: [\"熬夜冠军\", 18],\n}\n\n# 读入要查的 id（SELECT ... WHERE id = ? 模拟）\ntarget = int(input())\n\n# TODO：在 archives 里查找并打印（查不到打印：查无此档案）",
+      "testcases": [
+        { "input": "2", "expected": "奶茶猫 32" },
+        { "input": "3", "expected": "熬夜冠军 18" },
+        { "input": "9", "expected": "查无此档案" }
+      ],
+      "hint": "想想：怎么判断要查的 id 在不在字典里（提示：in）？查到了怎么取出 [姓名, 等级] 打印？查不到打印什么？",
+      "explain": "target in archives 判断 id 在不在表里（对应 SQL 的 WHERE id = ?）；存在则取出 [姓名, 等级] 打印，不存在走 else 打印\"查无此档案\"。注意别用 archives[target] 直接取值——键不存在会抛 KeyError。",
+      "concept": ["SELECT", "WHERE", "字典", "dict模拟"]
+    },
+    {
+      "id": "u12_l2_p8",
+      "type": "code",
+      "stem": "用 dict 模拟档案表，依次完成四个操作：\n1. 新增：id=3 的档案「熬夜冠军」，等级 18（INSERT 模拟）\n2. 升级：id=1 的档案等级 +1（UPDATE ... WHERE id=1 模拟）\n3. 删除：删掉 id=2 的档案（DELETE ... WHERE id=2 模拟）\n4. 盘点：按 id 升序打印剩余档案，每行 `id 姓名 等级`\n\n期望输出：\n```\n1 剑圣 51\n3 熬夜冠军 18\n```",
+      "code": "# 地堡档案表：dict，键是 id，值是 [姓名, 等级]\narchives = {\n    1: [\"剑圣\", 50],\n    2: [\"奶茶猫\", 32],\n}\n\n# ① 新增 id=3 的档案（INSERT 模拟）\n# TODO：archives[3] = ...\n\n# ② id=1 的档案等级 +1（UPDATE 模拟）\n# TODO：循环里 if key == 1: archives[key][1] += 1\n\n# ③ 删除 id=2 的档案（DELETE 模拟）\n# TODO：del archives[2]\n\n# ④ 按 id 升序打印剩余档案\n# TODO：for key in sorted(archives): print(key, archives[key][0], archives[key][1])",
+      "testcases": [
+        { "input": "", "expected": "1 剑圣 51\n3 熬夜冠军 18" }
+      ],
+      "hint": "想想四个操作分别怎么写：新增=给新键赋值；升级=循环里找到 id 为 1 的档案再改它的等级；删除=用 del 删掉键；盘点=按 id 排序后遍历打印。",
+      "explain": "四步正好对应 SQL 四兄弟：给新键赋值 = INSERT；循环 + if 改值 = UPDATE ... WHERE；del 删键 = DELETE ... WHERE；sorted 遍历打印 = SELECT ... ORDER BY id。id=2 已被删除，剩下的只有 1（等级 51）和 3。",
+      "concept": ["INSERT", "UPDATE", "DELETE", "SELECT", "dict模拟"]
+    }
+  ],
+  "quest": {
+    "id": "u12_l2_quest",
+    "title": "剧情任务：地堡档案管理员",
+    "story": "你走进「数据地堡」的档案室。管理员老陈把三份纸质档案拍在桌上，推了推老花镜：「新来的，帮我录入系统！地堡守则三条：一、新档案（id=4）入库；二、id=1 的档案等级 +1；三、id=2 的档案作废销毁。最后按 id 升序盘点一遍，把幸存档案念给我听。」——增、改、删、查，SQL 四兄弟今天你全都要亲手用一遍。",
+    "stem": "读入 3 条档案（每行一条：`id 姓名 等级`），存进 dict（键是 id，值是 [姓名, 等级]）。然后按守则操作：\n1. 新增一条档案：id=4，姓名「守门人」，等级 9\n2. id=1 的档案等级 +1\n3. 删除 id=2 的档案\n4. 按 id 升序打印剩余档案，每行 `id 姓名 等级`\n\n期望输出示例（输入 1 剑圣 50 / 2 奶茶猫 32 / 3 熬夜冠军 18）：\n```\n1 剑圣 51\n3 熬夜冠军 18\n4 守门人 9\n```",
+    "code": "# 地堡档案表：dict，键是 id，值是 [姓名, 等级]\narchives = {}\n\n# 读入 3 条档案（每行：id 姓名 等级）\nfor _ in range(3):\n    line = input().split()\n    archives[int(line[0])] = [line[1], int(line[2])]\n\n# ① 新增 id=4 的档案（INSERT 模拟）\n# TODO\n\n# ② id=1 的档案等级 +1（UPDATE 模拟）\n# TODO\n\n# ③ 删除 id=2 的档案（DELETE 模拟）\n# TODO\n\n# ④ 按 id 升序打印剩余档案\n# TODO",
+    "testcases": [
+      { "input": "1 剑圣 50\n2 奶茶猫 32\n3 熬夜冠军 18", "expected": "1 剑圣 51\n3 熬夜冠军 18\n4 守门人 9" },
+      { "input": "3 王五 30\n1 张三 10\n2 李四 20", "expected": "1 张三 11\n3 王五 30\n4 守门人 9" },
+      { "input": "5 机灵鬼 7\n2 摸鱼侠 22\n1 大力士 99", "expected": "1 大力士 100\n4 守门人 9\n5 机灵鬼 7" }
+    ],
+    "hint": "想想四个操作分别怎么写：新增=给新键赋值；升级=找到 id 为 1 的档案把等级 +1；删除=删掉 id 为 2 的键；盘点=按 id 排序后遍历打印。",
+    "explain": "四步 = SQL 的 INSERT / UPDATE / DELETE / SELECT。读入用 split() 把一行拆成 id、姓名、等级三份，id 和等级要 int() 转数字；按 id 升序打印用 sorted(archives)。注意 id=2 已被删除，别让它出现在盘点输出里。",
+    "concept": ["INSERT", "SELECT", "UPDATE", "DELETE", "dict模拟", "数据地堡"]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「增删改查」一课 🎉\n\n**这一课你学会了**：\n1. 增 INSERT：`INSERT INTO 表名 VALUES (...)`——往地堡放新档案；字符串要加引号\n2. 查 SELECT：`SELECT 列 FROM 表 WHERE 条件`——取档案只读不改；WHERE 判断相等用 `=` 不是 `==`\n3. 改 UPDATE：`UPDATE 表 SET 列=值 WHERE 条件`——**忘写 WHERE = 全表遭殃**\n4. 删 DELETE：`DELETE FROM 表 WHERE 条件`——**不带 WHERE = 清空整张表**；DELETE 删行不删结构\n\n另外记住：判题环境用 dict 模拟表（增 = 赋值、查 = in/遍历、改 = 循环+if、删 = del），SQL 的套路在 Python 里全都有对应。\n\n**剧情推进**：三份档案录入完毕——id=1 升了级，id=2 正式作废，新档案「守门人」成功入库。管理员老陈满意地点头：「CRUD 你已经上手了。不过地堡里封存着几千份档案——想按等级排序、分组统计、找出最厉害的那一批，得用查询的大招。」下一站：进阶查询！"
+  }
+}
