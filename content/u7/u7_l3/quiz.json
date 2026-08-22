@@ -1,0 +1,244 @@
+{
+  "lesson": "u7_l3",
+  "title": "JSON 序列化",
+  "questions": [
+    {
+      "id": "u7_l3_p1",
+      "type": "choice",
+      "stem": "关于「序列化」，下列说法正确的是？",
+      "options": [
+        "把 Python 对象（字典、列表）打包成能存文件、能传输的文本",
+        "把文件里的文本读进内存，还原成 Python 对象",
+        "把 Python 程序打包成 exe 安装包",
+        "给数据加密，防止别人偷看"
+      ],
+      "answer": 0,
+      "hint": "想想「万能档案袋」：序列化是把数据装进袋子，还是把袋子拆开？",
+      "explain": "序列化（打包）= 把内存里的 Python 对象变成能存能传的文本（比如 JSON 字符串）；把文本还原回对象是反序列化（拆包）。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "这是反序列化（拆包）！序列化方向相反：把对象变成文本。"
+        },
+        {
+          "opt": 2,
+          "why": "打包成安装包是编译/发布工具干的事，和数据序列化是两码事。"
+        },
+        {
+          "opt": 3,
+          "why": "加密是保护数据不被偷看；序列化只是换成「能存能传」的文本格式，两者不同。"
+        }
+      ],
+      "concept": [
+        "序列化",
+        "反序列化"
+      ]
+    },
+    {
+      "id": "u7_l3_p2",
+      "type": "choice",
+      "stem": "执行下面的代码后，变量 s 是什么类型？\n\n```python\nimport json\ns = json.dumps({\"name\": \"小明\"}, ensure_ascii=False)\n```",
+      "options": [
+        "字典 dict",
+        "JSON 对象",
+        "字符串 str",
+        "列表 list"
+      ],
+      "answer": 2,
+      "hint": "dumps = dump-string，看看名字里的 string！",
+      "explain": "json.dumps 把字典打包成 JSON 字符串，返回的是 str 类型。想取回字典，得用 json.loads 拆包。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "dumps 是「打包」，返回的是字符串；字典要等 loads 拆包后才回来。"
+        },
+        {
+          "opt": 1,
+          "why": "Python 里没有「JSON 对象」这种类型——JSON 只是文本格式，转换完就是普通字符串。"
+        },
+        {
+          "opt": 3,
+          "why": "dumps 不会返回列表；它返回的是 str。"
+        }
+      ],
+      "concept": [
+        "json.dumps",
+        "序列化",
+        "字符串"
+      ]
+    },
+    {
+      "id": "u7_l3_p3",
+      "type": "judge",
+      "stem": "用 json.dumps(data) 打包含中文的字典时，如果不加 ensure_ascii=False，程序会直接报错。",
+      "answer": false,
+      "hint": "想想概念卡 3 的对比代码：不加会怎样——报错，还是只是输出变样？",
+      "explain": "不会报错！只是中文会被转成 \\uXXXX 转义符（如 小明 → \\u5c0f\\u660e），人看不懂。想保留中文必须加 ensure_ascii=False。",
+      "concept": [
+        "ensure_ascii",
+        "json.dumps"
+      ]
+    },
+    {
+      "id": "u7_l3_p4",
+      "type": "fill",
+      "stem": "在 JSON 里，表示「没有值 / 什么都没有」的关键字是什么？（填英文，注意小写）",
+      "answer": [
+        "null"
+      ],
+      "hint": "Python 的 None 在 JSON 里叫什么？注意是小写。",
+      "explain": "Python 的 None 在 JSON 里写作小写的 null，表示「没有值」。",
+      "traps": [
+        {
+          "wrong": "None",
+          "why": "None 是 Python 的写法；JSON 里要小写——null。"
+        },
+        {
+          "wrong": "none",
+          "why": "很接近！但 JSON 里是 null（两个 l），不是 none。"
+        }
+      ],
+      "concept": [
+        "JSON",
+        "null"
+      ]
+    },
+    {
+      "id": "u7_l3_p5",
+      "type": "fill",
+      "stem": "用 json.dumps 打包含中文的字典时，想保留中文（不让它变成 \\uXXXX），需要给 dumps 加哪个参数？（形如 xxx=False）",
+      "answer": [
+        "ensure_ascii=False",
+        "ensure_ascii",
+        "保留中文",
+        "不转义"
+      ],
+      "hint": "概念卡 3 里那个神奇的参数叫什么？它等于 False 时中文原样保留。",
+      "explain": "加 ensure_ascii=False：json.dumps(data, ensure_ascii=False)，中文就会原样保留。",
+      "traps": [
+        {
+          "wrong": "indent",
+          "why": "indent=2 是让 JSON 带缩进、排版好看，和保留中文无关。"
+        },
+        {
+          "wrong": "utf-8",
+          "why": "encoding=\"utf-8\" 是写文件时用的参数；dumps 保留中文用的是 ensure_ascii=False。"
+        }
+      ],
+      "concept": [
+        "ensure_ascii",
+        "json.dumps",
+        "中文"
+      ]
+    },
+    {
+      "id": "u7_l3_p6",
+      "type": "pair",
+      "stem": "把左边的 Python 写法与它在 JSON 里的对应写法配对（注意大小写和关键字）。",
+      "leftOptions": [
+        "True",
+        "False",
+        "None",
+        "[1, 2, 3]"
+      ],
+      "rightOptions": [
+        "null",
+        "true",
+        "false",
+        "[1, 2, 3]"
+      ],
+      "answer": [
+        [0, 1],
+        [1, 2],
+        [2, 0],
+        [3, 3]
+      ],
+      "hint": "想想 JSON 对大小写的要求：Python 的 True / False 到了 JSON 里要变成什么？None 又对应哪个关键字？列表在 JSON 里叫数组，写法变不变？",
+      "explain": "True→true，False→false，None→null；[1, 2, 3] 是列表，在 JSON 里叫数组，写法不变。",
+      "concept": [
+        "JSON",
+        "序列化",
+        "数据类型"
+      ]
+    },
+    {
+      "id": "u7_l3_p7",
+      "type": "code",
+      "stem": "档案馆来了一份玩家档案：第一行读入玩家姓名（中文），分数固定 100。构造字典 player = {\"name\": 姓名, \"score\": 100}，用 json.dumps 把它打包成 JSON 字符串并打印（**记得保留中文！**）。\n\n期望输出（输入 小明）：\n```\n{\"name\": \"小明\", \"score\": 100}\n```",
+      "code": "import json\n\nname = input()\nplayer = {\"name\": name, \"score\": 100}\n# 用 json.dumps 打包（保留中文！）并打印\n",
+      "testcases": [
+        {
+          "input": "小明",
+          "expected": "{\"name\": \"小明\", \"score\": 100}"
+        },
+        {
+          "input": "李华",
+          "expected": "{\"name\": \"李华\", \"score\": 100}"
+        }
+      ],
+      "hint": "打包用 json.dumps 这个函数——想想它接收哪几个参数？想保留中文，别忘了加哪个参数（值等于 False）？",
+      "explain": "json.dumps(player, ensure_ascii=False) 把字典打包成 JSON 字符串，中文原样保留；print 即可。",
+      "concept": [
+        "json.dumps",
+        "ensure_ascii",
+        "序列化"
+      ]
+    },
+    {
+      "id": "u7_l3_p8",
+      "type": "code",
+      "stem": "隔壁数据中心把档案发回来了：第一行是一份 JSON 字符串（含玩家姓名和分数）。用 json.loads 把它拆包回字典，再取出**名字**字段打印。\n\n期望输出（输入 {\"name\": \"小红\", \"score\": 92}）：\n```\n小红\n```",
+      "code": "import json\n\ns = input()\ndata = json.loads(s)\n# 取出名字字段并打印\n",
+      "testcases": [
+        {
+          "input": "{\"name\": \"小红\", \"score\": 92}",
+          "expected": "小红"
+        },
+        {
+          "input": "{\"name\": \"阿强\", \"score\": 88}",
+          "expected": "阿强"
+        }
+      ],
+      "hint": "拆包后 data 是什么类型？名字存在哪个键里？用字典的什么语法取出那个键的值并打印？",
+      "explain": "json.loads(s) 把 JSON 字符串还原成字典，data[\"name\"] 取名字并打印。",
+      "concept": [
+        "json.loads",
+        "反序列化",
+        "字典"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u7_l3_quest",
+    "title": "剧情任务：档案跨系统传输",
+    "story": "档案馆的卷宗要传给隔壁的数据中心，可那边的系统不认 Python 的字典！老馆长把「万能档案袋」递给你：「这些档案先装进 JSON 袋子发过去——打包成字符串打印出来；到了那边再拆包，把名字读出来。记住，袋子上有中文，别让它变成 \\uXXXX！」",
+    "stem": "读入玩家姓名和分数（第一行姓名，第二行分数），构造字典 player = {\"name\": 姓名, \"score\": 分数}，然后：\n\n1. 用 json.dumps(player, ensure_ascii=False) 打包成 JSON 字符串并打印\n2. 把打包结果用 json.loads 拆包回字典，打印其中的名字字段\n\n期望输出（输入 小明 / 95）：\n```\n{\"name\": \"小明\", \"score\": 95}\n小明\n```",
+    "code": "import json\n\nname = input()\nscore = int(input())\n\n# 档案馆要跨系统传输的玩家档案\nplayer = {\"name\": name, \"score\": score}\n# 1. 用 json.dumps 打包（保留中文！）并打印\n# 2. 用 json.loads 拆包回来，打印名字字段\n",
+    "testcases": [
+      {
+        "input": "小明\n95",
+        "expected": "{\"name\": \"小明\", \"score\": 95}\n小明"
+      },
+      {
+        "input": "李华\n80",
+        "expected": "{\"name\": \"李华\", \"score\": 80}\n李华"
+      },
+      {
+        "input": "阿珍\n100",
+        "expected": "{\"name\": \"阿珍\", \"score\": 100}\n阿珍"
+      }
+    ],
+    "hint": "想想两步：第一步打包——dumps 怎么用、保留中文加什么参数？第二步拆包——loads 接收什么、返回什么类型？名字字段怎么取出来？",
+    "explain": "打包：s = json.dumps(player, ensure_ascii=False)（保留中文）；拆包：back = json.loads(s)，back[\"name\"] 就是名字。老馆长接过档案袋，朝隔壁数据中心挥了挥手。",
+    "concept": [
+      "json.dumps",
+      "json.loads",
+      "ensure_ascii",
+      "序列化",
+      "反序列化"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「JSON 序列化」一课 🎉\n\n**这一课你学会了**：\n1. 序列化 = 把 Python 对象打包成「能存能传」的文本；反序列化 = 拆包还原\n2. JSON 结构：对象↔字典（键用双引号）、数组↔列表、`true`/`false`/`null` 小写\n3. `json.dumps` 打包、`json.loads` 拆包——**带 s 的是字符串版**\n4. 含中文的字典打包时，**一定要加 `ensure_ascii=False`**，否则中文变 `\\uXXXX`\n\n**剧情推进**：万能档案袋派上用场，玩家的档案顺利跨系统传输！但老馆长还有更大的难题：档案馆的卷宗成千上万，散装的文件读写、表格、JSON 还理不清。下一站：综合实战，把文件读写、CSV 和 JSON 串成一条龙，彻底整理好这座档案馆！"
+  }
+}
