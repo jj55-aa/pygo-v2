@@ -1,0 +1,255 @@
+<style>
+  /* ===================== 设置页 settings.html ===================== */
+  .page.settings { max-width: 720px; margin: 0 auto; padding: 20px 20px 60px; }
+  .se-head { margin-bottom: 20px; }
+  .se-title { font-size: 20px; font-weight: 700; color: var(--text); }
+
+  .se-group { margin-bottom: 24px; }
+  .se-group-title { font-size: 13px; font-weight: 600; color: var(--text-3); margin-bottom: 8px; padding-left: 2px; }
+  .se-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card); box-shadow: var(--shadow-card); overflow: hidden; animation: cardIn .25s var(--ease) both; }
+  .se-row { display: flex; align-items: center; gap: 14px; padding: 16px 18px; border-bottom: 1px solid var(--border); }
+  .se-row:last-child { border-bottom: none; }
+  .se-row .lbl { flex: 1; min-width: 0; }
+  .se-row .lbl .t { font-size: 14px; color: var(--text); font-weight: 500; }
+  .se-row .lbl .s { font-size: 12px; color: var(--text-3); margin-top: 2px; }
+
+  /* 分段选择（每日目标） */
+  .seg { display: flex; gap: 6px; background: #F1F2F6; border-radius: var(--r-btn); padding: 3px; }
+  .seg button { padding: 7px 14px; border: none; border-radius: 4px; background: transparent; color: var(--text-2); font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s var(--ease); }
+  .seg button.on { background: var(--card); color: var(--accent); box-shadow: 0 1px 3px rgba(0,0,0,.08); }
+
+  /* 开关 */
+  .switch { position: relative; width: 44px; height: 24px; flex: none; }
+  .switch input { opacity: 0; width: 0; height: 0; }
+  .switch .slider { position: absolute; inset: 0; background: #D0D6E0; border-radius: 999px; cursor: pointer; transition: background .2s var(--ease); }
+  .switch .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .2s var(--ease); box-shadow: 0 1px 3px rgba(0,0,0,.2); }
+  .switch input:checked + .slider { background: var(--accent); }
+  .switch input:checked + .slider::before { transform: translateX(20px); }
+
+  /* 危险按钮 */
+  .btn-danger { padding: 10px 16px; border: 1px solid #FECACA; border-radius: var(--r-btn); background: #FEF2F2; color: #B91C1C; font-size: 13px; font-weight: 600; cursor: pointer; transition: all .15s var(--ease); }
+  .btn-danger:hover { background: #FEE2E2; border-color: #FCA5A5; }
+
+  /* 确认弹窗 */
+  .modal-mask { position: fixed; inset: 0; background: rgba(10,10,10,.4); display: flex; align-items: center; justify-content: center; z-index: 1000; animation: modalFade .2s var(--ease) both; }
+  .modal { width: 360px; max-width: calc(100vw - 40px); background: var(--card); border-radius: var(--r-modal); box-shadow: var(--shadow-float); padding: 24px; animation: modalUp .2s var(--ease) both; }
+  .modal h3 { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+  .modal p { font-size: 14px; color: var(--text-2); line-height: 1.7; margin-bottom: 20px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; }
+  .btn-ghost { padding: 9px 16px; border: 1px solid var(--border-2); border-radius: var(--r-btn); background: #fff; color: var(--text-2); font-size: 14px; cursor: pointer; transition: all .15s var(--ease); }
+  .btn-ghost:hover { color: var(--text); border-color: var(--text-3); }
+  .btn-confirm { padding: 9px 16px; border: none; border-radius: var(--r-btn); background: var(--bad); color: #fff; font-size: 14px; font-weight: 600; cursor: pointer; transition: background .15s var(--ease); }
+  .btn-confirm:hover { background: #DC2626; }
+  @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes modalUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+
+<div class="page settings" id="page-settings">
+  <div class="se-head"><h1 class="se-title">设置</h1></div>
+
+  <!-- 版本与激活 -->
+  <div class="se-group">
+    <div class="se-group-title">版本</div>
+    <div class="se-card">
+      <div class="se-row">
+        <div class="lbl">
+          <div class="t" id="licTitle">免费版</div>
+          <div class="s" id="licSub">新手村 4 课免费试玩，激活完整版解锁全部 87 课</div>
+        </div>
+        <button class="btn-ghost" id="btnLicToggle">激活完整版</button>
+        <button class="btn-ghost" id="btnLicDeactivate" style="display:none">注销授权</button>
+      </div>
+      <div class="se-row" id="rowLicInput" style="display:none">
+        <input type="text" id="inpLicCode" placeholder="粘贴激活码（PYGO-…）"
+               style="flex:1;min-width:0;padding:9px 12px;border:1px solid var(--border-2);border-radius:var(--r-btn);font-size:14px;font-family:Consolas,Menlo,monospace;">
+        <button class="btn-ghost" id="btnLicActivate">激活</button>
+      </div>
+      <div class="se-row" id="rowLicMsg" style="display:none">
+        <div class="lbl"><div class="s" id="licMsg"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="se-group">
+    <div class="se-group-title">学习</div>
+    <div class="se-card">
+      <div class="se-row">
+        <div class="lbl"><div class="t">每日目标</div><div class="s">每天至少学习多少分钟</div></div>
+        <div class="seg" id="segGoal">
+          <button data-v="5">5</button>
+          <button data-v="10">10</button>
+          <button data-v="15">15</button>
+          <button data-v="20">20</button>
+        </div>
+      </div>
+      <div class="se-row">
+        <div class="lbl"><div class="t">学习提醒</div><div class="s">每天提醒我继续学习</div></div>
+        <label class="switch">
+          <input type="checkbox" id="swRemind">
+          <span class="slider"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="se-group">
+    <div class="se-group-title">数据</div>
+    <div class="se-card">
+      <div class="se-row">
+        <div class="lbl"><div class="t">重置学习进度</div><div class="s">清空所有进度、经验与连胜（不可恢复）</div></div>
+        <button class="btn-danger" id="btnReset">重置</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="ui/pages/_shared.js"></script>
+<script>
+(function () {
+  'use strict';
+  var App = window.App;
+  var UI = window.PyGoUI;
+  var state = App.state;
+
+  var api = UI.bindPage(onState);
+
+  function onState(s) {
+    var st = s.settings || {};
+    renderGoal(st);
+    renderRemind(st);
+    renderLicense(s.license);
+  }
+
+  // ---------- 版本与激活 ----------
+  function renderLicense(lic) {
+    lic = lic || {};
+    var unlocked = !!lic.unlocked;
+    var info = lic.info || {};
+    var title = document.getElementById('licTitle');
+    var sub = document.getElementById('licSub');
+    var btnToggle = document.getElementById('btnLicToggle');
+    var btnDeact = document.getElementById('btnLicDeactivate');
+    if (!title) return;
+
+    if (unlocked) {
+      title.textContent = info.type === 'trial' ? '试用版（剩余 ' + trialDaysLeft(info) + ' 天）' : '完整版 ✅';
+      sub.textContent = info.note ? ('已激活：' + info.note + ' · 换机次数 ' + (info.migrates || 0) + '/3') : '已激活完整版，全部 87 课已解锁';
+      btnToggle.style.display = 'none';
+      btnDeact.style.display = '';
+    } else {
+      title.textContent = '免费版';
+      sub.textContent = info && info.expired ? '试用期已结束，激活完整版解锁全部 87 课' : '新手村 4 课免费试玩，激活完整版解锁全部 87 课';
+      btnToggle.style.display = '';
+      btnDeact.style.display = 'none';
+    }
+    // 未解锁且无错误信息时，隐藏上一次的错误提示
+    if (unlocked) hideLicMsg();
+  }
+
+  function trialDaysLeft(info) {
+    if (!info || !info.activatedAt || info.type !== 'trial') return 0;
+    var exp = info.exp || 0;
+    if (!exp) return 0;
+    return Math.max(0, Math.ceil((exp - Date.now()) / 86400000));
+  }
+
+  function showLicMsg(text, isError) {
+    var row = document.getElementById('rowLicMsg');
+    var msg = document.getElementById('licMsg');
+    if (!row || !msg) return;
+    msg.textContent = text;
+    msg.style.color = isError ? 'var(--bad)' : 'var(--ok)';
+    row.style.display = '';
+  }
+  function hideLicMsg() {
+    var row = document.getElementById('rowLicMsg');
+    if (row) row.style.display = 'none';
+  }
+
+  function toggleLicInput() {
+    var row = document.getElementById('rowLicInput');
+    if (!row) return;
+    var show = row.style.display === 'none';
+    row.style.display = show ? '' : 'none';
+    if (show) { var inp = document.getElementById('inpLicCode'); if (inp) inp.focus(); }
+  }
+
+  document.getElementById('btnLicToggle').addEventListener('click', toggleLicInput);
+  document.getElementById('btnLicActivate').addEventListener('click', async function () {
+    var inp = document.getElementById('inpLicCode');
+    var code = (inp && inp.value || '').trim();
+    if (!code) { showLicMsg('请先粘贴激活码', true); return; }
+    showLicMsg('正在验证激活码…', false);
+    var r = await App.actions.activateLicense(code);
+    if (r && r.ok) {
+      showLicMsg('✅ 激活成功！全部 87 课已解锁', false);
+      if (inp) inp.value = '';
+      var row = document.getElementById('rowLicInput');
+      if (row) row.style.display = 'none';
+    } else {
+      showLicMsg('❌ ' + ((r && r.error) || '激活失败，请检查激活码'), true);
+    }
+  });
+  document.getElementById('inpLicCode').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') document.getElementById('btnLicActivate').click();
+  });
+  document.getElementById('btnLicDeactivate').addEventListener('click', async function () {
+    await App.actions.deactivateLicense();
+    showLicMsg('已注销授权（学习进度不受影响）', false);
+  });
+
+  function renderGoal(st) {
+    var v = st.dailyGoalMin || 10;
+    document.querySelectorAll('#segGoal button').forEach(function (b) {
+      b.classList.toggle('on', +b.getAttribute('data-v') === v);
+    });
+  }
+
+  function renderRemind(st) {
+    var sw = document.getElementById('swRemind');
+    if (sw) sw.checked = !!st.remindEnabled;
+  }
+
+  // 每日目标：即时生效
+  document.querySelectorAll('#segGoal button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      App.actions.setSetting('dailyGoalMin', +b.getAttribute('data-v'));
+    });
+  });
+
+  // 提醒开关：即时生效
+  document.getElementById('swRemind').addEventListener('change', function (e) {
+    App.actions.setSetting('remindEnabled', e.target.checked);
+  });
+
+  // 重置：确认弹窗
+  function openResetModal() {
+    var mask = document.createElement('div');
+    mask.className = 'modal-mask';
+    mask.innerHTML = '<div class="modal">' +
+      '<h3>重置学习进度？</h3>' +
+      '<p>这将清空你的所有学习进度、经验值、连胜记录与已解锁内容，且<b>无法恢复</b>。确定要继续吗？</p>' +
+      '<div class="modal-actions">' +
+        '<button class="btn-ghost" id="mCancel">取消</button>' +
+        '<button class="btn-confirm" id="mConfirm">确定重置</button>' +
+      '</div></div>';
+    document.body.appendChild(mask);
+    mask.addEventListener('click', function (e) { if (e.target === mask) close(); });
+    mask.querySelector('#mCancel').addEventListener('click', close);
+    mask.querySelector('#mConfirm').addEventListener('click', function () {
+      if (App.actions.resetProgress) App.actions.resetProgress();
+      close();
+    });
+    function close() { mask.remove(); }
+  }
+  document.getElementById('btnReset').addEventListener('click', openResetModal);
+
+  // Esc 关弹窗
+  UI.onKey(null, 'Escape', function () {
+    var mask = document.querySelector('.modal-mask');
+    if (mask) mask.remove();
+  });
+
+  onState(state);
+})();
+</script>
