@@ -1,0 +1,266 @@
+{
+  "lesson": "u6_l1",
+  "title": "异常处理",
+  "questions": [
+    {
+      "id": "u6_l1_p1",
+      "type": "choice",
+      "stem": "程序运行中抛出异常（比如执行 10 / 0），而且没有任何处理时，会发生什么？",
+      "options": [
+        "程序自动跳过这行，继续执行后面的代码",
+        "程序立即崩溃退出，后面的代码不再执行",
+        "程序弹出一个警告，然后照常运行",
+        "Python 会自动修复错误，重新运行一遍"
+      ],
+      "answer": 1,
+      "hint": "想想概念卡 1：程序踩雷那一刻会发生什么？",
+      "explain": "没有 try/except 兜底时，异常会让程序当场崩溃退出，报错点之后的代码一行都不执行。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "程序不会自动跳过错误——踩雷那一刻它就停了，后面的代码根本没机会执行。"
+        },
+        {
+          "opt": 2,
+          "why": "异常不是警告：它会让程序崩溃退出，不会照常运行。"
+        },
+        {
+          "opt": 3,
+          "why": "Python 不会自动修复代码，报错需要我们自己用 try/except 处理。"
+        }
+      ],
+      "concept": [
+        "异常",
+        "程序崩溃"
+      ]
+    },
+    {
+      "id": "u6_l1_p2",
+      "type": "choice",
+      "stem": "有一段可能出错的代码（比如 int(input()) 把输入转成整数），想让它出错时不要崩溃，应该把它放进哪种结构？",
+      "options": [
+        "for 循环",
+        "if 判断",
+        "try-except 结构",
+        "while 循环"
+      ],
+      "answer": 2,
+      "hint": "防弹衣叫什么名字？",
+      "explain": "try-except 就是给可能出错的代码穿的防弹衣：try 试探执行，except 捕获异常，程序不崩溃。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "for 是循环结构，用来重复执行，不是用来兜住异常的。"
+        },
+        {
+          "opt": 1,
+          "why": "if 能提前判断（比如检查是否等于 0），但拦不住 int(\"abc\") 这种运行时错误——得靠 try-except。"
+        },
+        {
+          "opt": 3,
+          "why": "while 也是循环结构，不负责处理异常。"
+        }
+      ],
+      "concept": [
+        "try",
+        "except",
+        "异常处理"
+      ]
+    },
+    {
+      "id": "u6_l1_p3",
+      "type": "judge",
+      "stem": "异常被 except 捕获并处理后，程序会继续执行 try 块之后的代码，而不是崩溃退出。",
+      "answer": true,
+      "hint": "穿上防弹衣踩雷之后，人会怎样？",
+      "explain": "这正是异常处理的意义：except 接住了异常，程序活了下来，继续往下执行后面的代码。",
+      "concept": [
+        "异常处理",
+        "except"
+      ]
+    },
+    {
+      "id": "u6_l1_p4",
+      "type": "fill",
+      "stem": "执行 10 / 0 会抛出什么异常？（填英文异常类名，形如 XxxError）",
+      "answer": [
+        "ZeroDivisionError",
+        "除零错误",
+        "除数为0",
+        "除数为零",
+        "0不能作除数"
+      ],
+      "hint": "除数是 0 时会抛什么？注意大小写：Python 的异常类名以 Error 结尾。",
+      "explain": "除数为 0 抛出 ZeroDivisionError（除零错误），因为 0 不能作除数。",
+      "traps": [
+        {
+          "wrong": "ValueError",
+          "why": "ValueError 是值不对（如 int(\"abc\")），而 10/0 是除数为 0，对应 ZeroDivisionError。"
+        },
+        {
+          "wrong": "TypeError",
+          "why": "TypeError 是类型不匹配（如 \"1\" + 1），10/0 是除数为 0，对应 ZeroDivisionError。"
+        }
+      ],
+      "concept": [
+        "ZeroDivisionError",
+        "异常类型"
+      ]
+    },
+    {
+      "id": "u6_l1_p5",
+      "type": "fill",
+      "stem": "try 语句中，负责「捕获并处理异常」的代码块，要写在哪个关键字后面？（填英文关键字）",
+      "answer": [
+        "except",
+        "捕获",
+        "捕获异常"
+      ],
+      "hint": "try 后面跟的兄弟关键字是什么？",
+      "explain": "try 负责尝试执行，except 负责捕获处理异常：except ValueError: 后面的缩进块就是救援方案。",
+      "traps": [
+        {
+          "wrong": "catch",
+          "why": "catch 是 Java 等语言的关键字，Python 里叫 except。"
+        },
+        {
+          "wrong": "finally",
+          "why": "finally 是最后一定会执行的收尾块，捕获异常用的是 except。"
+        }
+      ],
+      "concept": [
+        "try",
+        "except"
+      ]
+    },
+    {
+      "id": "u6_l1_p6",
+      "type": "pair",
+      "stem": "把异常类型和触发它的代码配对，检验你的「认雷」功力。",
+      "leftOptions": [
+        "ZeroDivisionError",
+        "ValueError",
+        "TypeError",
+        "NameError",
+        "IndexError",
+        "KeyError"
+      ],
+      "rightOptions": [
+        "[1, 2, 3][9]",
+        "int(\"abc\")",
+        "10 / 0",
+        "{\"a\": 1}[\"b\"]",
+        "\"1\" + 1",
+        "print(age)（age 未定义）"
+      ],
+      "answer": [
+        [0, 2],
+        [1, 1],
+        [2, 4],
+        [3, 5],
+        [4, 0],
+        [5, 3]
+      ],
+      "hint": "先想每种出错场景对应哪个异常：下标越界、字典键不存在、除以 0、字符串转数字失败——分别是什么 Error？",
+      "explain": "10/0→ZeroDivisionError；int(\"abc\")→ValueError；\"1\"+1→TypeError；age 未定义→NameError；[1,2,3][9]→IndexError；{\"a\":1}[\"b\"]→KeyError。",
+      "concept": [
+        "异常类型",
+        "ZeroDivisionError",
+        "ValueError",
+        "TypeError",
+        "NameError",
+        "IndexError",
+        "KeyError"
+      ]
+    },
+    {
+      "id": "u6_l1_p7",
+      "type": "debug",
+      "stem": "下面的程序想安全地计算 10 ÷ n，但还缺一种「防弹衣」：当 n = 0 时程序会崩溃。观察报错信息，补上对应的 except 分支吧。",
+      "code": "try:\n    n = int(input())\n    print(10 / n)\nexcept ValueError:\n    print(\"请输入数字！\")",
+      "testcases": [
+        {
+          "input": "0",
+          "expected": "除数不能为 0！"
+        },
+        {
+          "input": "abc",
+          "expected": "请输入数字！"
+        },
+        {
+          "input": "2",
+          "expected": "5.0"
+        }
+      ],
+      "hint": "想想 n = 0 时除法会抛什么异常？程序现在缺哪种「防弹衣」？该补一个什么样的 except 分支、里面做什么？",
+      "explain": "除数为 0 会抛 ZeroDivisionError，补一个 except ZeroDivisionError: print(\"除数不能为 0！\") 就齐了。",
+      "concept": [
+        "调试",
+        "ZeroDivisionError",
+        "异常处理"
+      ]
+    },
+    {
+      "id": "u6_l1_p8",
+      "type": "code",
+      "stem": "完成「安全除法」四件套：读入 n，计算 10 ÷ n。\n\n- try：包住读入和计算\n- except ValueError：打印 `请输入数字！`\n- except ZeroDivisionError：打印 `除数不能为 0！`\n- else：没出错时打印 `结果： X`（冒号后有一个空格）\n- finally：最后打印 `计算结束`\n\n期望输出示例（输入 2）：\n```\n结果： 5.0\n计算结束\n```",
+      "code": "n = int(input())\nresult = 10 / n\n",
+      "testcases": [
+        {
+          "input": "2",
+          "expected": "结果： 5.0\n计算结束"
+        },
+        {
+          "input": "0",
+          "expected": "除数不能为 0！\n计算结束"
+        },
+        {
+          "input": "abc",
+          "expected": "请输入数字！\n计算结束"
+        }
+      ],
+      "hint": "回忆 try 语句的完整结构：哪个子句放可能出错的代码？哪个放出错时的处理？哪个放正常时才执行的代码？哪个无论是否出错都会执行？顺序怎么排？",
+      "explain": "try 包住 int(input()) 和除法；两个 except 分别接住两种异常；else 只在成功时打印结果；finally 无论成败都执行。",
+      "concept": [
+        "try",
+        "except",
+        "else",
+        "finally",
+        "异常处理"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "u6_l1_quest",
+    "title": "剧情任务：给除法穿上防弹衣",
+    "story": "你走进了「排雷工坊」。工头递给你一张雷区图纸：这是一段会算除法的程序，里面埋着三颗雷——输入不是数字会炸，除数是 0 也会炸！工头的命令很简单：「用 try/except 给它穿上防弹衣，踩雷时别让程序倒下，给个友好提示就行。」",
+    "stem": "把下面的程序改造成「防弹版」：\n\n- 用 try 包住读入和计算\n- 输入不是数字（ValueError）时打印：`请输入数字，雷区只收数字！`\n- 除数为 0（ZeroDivisionError）时打印：`除数不能为 0，绕开这颗雷！`\n- 正常时打印：`结果： X`（冒号后有一个空格）",
+    "code": "print(\"排雷工坊开工！\")\na = int(input())\nb = int(input())\nresult = a / b\nprint(\"结果：\", result)",
+    "testcases": [
+      {
+        "input": "10\n2",
+        "expected": "排雷工坊开工！\n结果： 5.0"
+      },
+      {
+        "input": "10\n0",
+        "expected": "排雷工坊开工！\n除数不能为 0，绕开这颗雷！"
+      },
+      {
+        "input": "10\nabc",
+        "expected": "排雷工坊开工！\n请输入数字，雷区只收数字！"
+      }
+    ],
+    "hint": "哪几行代码可能出错（读入转换、除法）？把它们包进 try。两种出错分别是什么异常？正常时才执行的打印该放哪个子句？",
+    "explain": "try 包住 int(input()) 和 a / b；except ValueError 处理非数字输入，except ZeroDivisionError 处理除数为 0；else 在成功时打印结果。程序从此踩雷不崩溃，工头给你竖了个大拇指。",
+    "concept": [
+      "try",
+      "except",
+      "ZeroDivisionError",
+      "ValueError",
+      "异常处理"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「异常处理」一课 🎉\n\n**这一课你学会了**：\n1. 异常 = 程序踩到的「雷」：不处理就会当场崩溃，后面的代码不执行\n2. try/except = 防弹衣：try 试探执行，except 捕获对应异常，程序活下来继续跑\n3. 6 种常见异常：ZeroDivisionError、ValueError、TypeError、NameError、IndexError、KeyError\n4. else（没出错才执行）/ finally（一定执行）两个可选块，加上「能提前检查就提前检查」的防御习惯\n\n**剧情推进**：防弹衣穿好了，排雷工坊的第一片雷区顺利通过！但工头提醒：有些雷是「埋伏」在代码里的逻辑错误——光靠防弹衣可拆不掉。下一站：调试技巧，学会用探测器精准拆雷！"
+  }
+}
