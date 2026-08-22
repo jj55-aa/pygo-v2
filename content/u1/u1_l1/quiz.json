@@ -1,0 +1,174 @@
+{
+  "lesson": "u1_l1",
+  "title": "第一个程序",
+  "quest": {
+    "id": "u1_l1_quest",
+    "title": "剧情任务：村口欢迎牌",
+    "story": "你刚踏进新手村，村长交给你第一个任务：在村口竖起一块欢迎牌。用 print 打印三句欢迎语，让每个进村的冒险者都能看到。",
+    "stem": "用 print 分三行打印：欢迎来到新手村 / 一起学Python / 加油，冒险者！",
+    "code": "print('欢迎来到新手村')\n# 再打印两行\n",
+    "testcases": [
+      {
+        "input": "",
+        "expected": "欢迎来到新手村\n一起学Python\n加油，冒险者！"
+      }
+    ],
+    "hint": "每行一句 print，一共三个 print。",
+    "explain": "print 一次打印一行，三句欢迎语就是三个 print。",
+    "concept": [
+      "print",
+      "字符串"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你完成了「第一个程序」一课 🎉\n\n**这一课你学会了**：\n1. Python 是什么、能干什么\n2. 代码写在 .py 文件里，用 IDE 编写和运行（PyCharm 是最流行的 Python IDE）\n3. 第一个函数 print：把内容打印到屏幕\n4. 英文标点（括号/引号/逗号）是新手最大的坑\n\n**你的新手村之旅开始了**：下一步学「变量」，帮小卖部老板解决找零难题！"
+  },
+  "questions": [
+    {
+      "id": "u1_l1_p1",
+      "type": "choice",
+      "stem": "Python 语言的作者是？",
+      "options": [
+        "詹姆斯·高斯林（Java 之父）",
+        "吉多·范罗苏姆",
+        "丹尼斯·里奇（C 语言之父）",
+        "比尔·盖茨"
+      ],
+      "answer": 1,
+      "hint": "Python 的名字和一部英国喜剧团有关。",
+      "explain": "Python 由荷兰人吉多·范罗苏姆创造，名字致敬他喜欢的喜剧团 Monty Python。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "把 Java 之父记成了 Python 之父。吉多是荷兰人，和高斯林是两个人。"
+        },
+        {
+          "opt": 2,
+          "why": "C 语言之父不是 Python 作者。Python 作者是吉多·范罗苏姆。"
+        },
+        {
+          "opt": 3,
+          "why": "比尔·盖茨是微软创始人，和编程语言无关。"
+        }
+      ],
+      "concept": [
+        "Python"
+      ]
+    },
+    {
+      "id": "u1_l1_p2",
+      "type": "fill",
+      "stem": "Python 脚本文件的扩展名是？（填 . 开头的三个字符）",
+      "answer": [
+        ".py",
+        "py"
+      ],
+      "hint": "想想 Python 源文件以什么结尾——看看文件名 hello.py 的最后三个字符。",
+      "explain": "Python 源文件以 .py 结尾，比如 hello.py。",
+      "traps": [
+        {
+          "wrong": "exe",
+          "why": ".exe 是 Windows 可执行文件。Python 脚本固定用 .py。"
+        },
+        {
+          "wrong": "txt",
+          "why": ".txt 只是普通文本，Python 脚本要用 .py。"
+        }
+      ],
+      "concept": [
+        "Python"
+      ]
+    },
+    {
+      "id": "u1_l1_p3",
+      "type": "choice",
+      "stem": "PyCharm 是什么？",
+      "options": [
+        "Python 的 IDE（集成开发环境）",
+        "Python 的解释器",
+        "一种网页浏览器",
+        "一款杀毒软件"
+      ],
+      "answer": 0,
+      "hint": "想想平时用什么软件写 Python 代码、运行和调试？这类「写代码的软件」有个三字母的英文缩写，它和解释器 python.exe 是一回事吗？",
+      "explain": "PyCharm 是 JetBrains 出品的 Python IDE（集成开发环境），集成了写代码、运行、调试等功能，是 Python 开发最常用的工具之一。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "解释器是执行代码的程序（如 python.exe），PyCharm 是帮你写代码的软件。"
+        },
+        {
+          "opt": 2,
+          "why": "浏览器是上网用的，PyCharm 是开发软件。"
+        },
+        {
+          "opt": 3,
+          "why": "PyCharm 和杀毒软件没关系，它是 Python 的 IDE。"
+        }
+      ],
+      "concept": [
+        "Python",
+        "IDE"
+      ]
+    },
+    {
+      "id": "u1_l1_p4",
+      "type": "choice",
+      "stem": "下面哪个【不是】Python 的常见应用领域？",
+      "options": [
+        "网络爬虫",
+        "数据分析与人工智能",
+        "直接修改电脑主板 BIOS",
+        "Web 开发"
+      ],
+      "answer": 2,
+      "hint": "题目问「不是」——Python 专注软件世界。",
+      "explain": "Python 擅长爬虫、数据分析、AI、Web 开发等软件领域，但不能直接改硬件 BIOS。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "爬虫确实是 Python 常见应用。注意题目是反向设问。"
+        },
+        {
+          "opt": 1,
+          "why": "数据分析与 AI 正是 Python 主战场。"
+        },
+        {
+          "opt": 3,
+          "why": "Web 开发是 Python 常见应用（Django/Flask）。"
+        }
+      ],
+      "concept": [
+        "Python"
+      ]
+    },
+    {
+      "id": "u1_l1_p5",
+      "type": "judge",
+      "stem": "print \"你好\"（没有括号）在 Python 3 中是正确写法。",
+      "answer": false,
+      "hint": "print 是函数，调用必须带括号。",
+      "explain": "print 是函数，必须写成 print(\"你好\")。print \"你好\" 是 Python 2 的旧写法，Python 3 会报语法错误。",
+      "concept": [
+        "print"
+      ]
+    },
+    {
+      "id": "u1_l1_p6",
+      "type": "code",
+      "stem": "用 print 打印：你好，世界！（编程界的第一句话）",
+      "code": "# 在这里写代码\n",
+      "testcases": [
+        {
+          "input": "",
+          "expected": "你好，世界！"
+        }
+      ],
+      "hint": "把文字打印到屏幕上用哪个函数？文字要放在引号里，函数名后面要带括号。",
+      "explain": "print(\"你好，世界！\") 会把引号里的内容原样打印出来。",
+      "concept": [
+        "print"
+      ]
+    }
+  ]
+}
