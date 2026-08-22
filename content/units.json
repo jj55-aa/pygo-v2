@@ -1,0 +1,390 @@
+{
+  "units": [
+    {
+      "id": "u1",
+      "name": "初见Python",
+      "icon": "🚀",
+      "locked": false,
+      "story": {
+        "theme": "新手村",
+        "hook": "小卖部老板的找零难题",
+        "quest": "用变量写一个找零程序"
+      },
+      "lessons": [
+        { "id": "u1_l1", "title": "第一个程序" },
+        { "id": "u1_l2", "title": "变量" },
+        { "id": "u1_l3", "title": "数字与字符串" },
+        { "id": "u1_l4", "title": "报错初识" }
+      ]
+    },
+    {
+      "id": "u2",
+      "name": "流程控制",
+      "icon": "🔀",
+      "locked": false,
+      "story": {
+        "theme": "岔路口森林",
+        "hook": "森林里有无数条岔路，走错一步就迷路",
+        "quest": "用分支与循环走出迷宫"
+      },
+      "lessons": [
+        { "id": "u2_l1", "title": "分支结构 if" },
+        { "id": "u2_l2", "title": "循环结构" },
+        { "id": "u2_l3", "title": "分支与循环应用" }
+      ]
+    },
+    {
+      "id": "u3",
+      "name": "序列与容器",
+      "icon": "📦",
+      "locked": false,
+      "story": {
+        "theme": "容器仓库",
+        "hook": "仓库里堆满了货箱，每种箱子装法都不一样",
+        "quest": "用列表帮仓库做盘点"
+      },
+      "lessons": [
+        { "id": "u3_l1", "title": "列表" },
+        { "id": "u3_l2", "title": "元组" },
+        { "id": "u3_l3", "title": "字符串进阶" },
+        { "id": "u3_l4", "title": "集合" },
+        { "id": "u3_l5", "title": "字典" }
+      ]
+    },
+    {
+      "id": "u4",
+      "name": "函数与模块",
+      "icon": "🧩",
+      "locked": false,
+      "story": {
+        "theme": "函数工坊",
+        "hook": "工坊里的老师傅把每道工序都打包成了工具",
+        "quest": "把重复劳动封装成函数"
+      },
+      "lessons": [
+        { "id": "u4_l1", "title": "函数与模块" },
+        { "id": "u4_l2", "title": "函数的应用" },
+        { "id": "u4_l3", "title": "函数使用进阶" },
+        { "id": "u4_l4", "title": "函数的高级应用" }
+      ]
+    },
+    {
+      "id": "u5",
+      "name": "面向对象",
+      "icon": "🏛️",
+      "locked": false,
+      "story": {
+        "theme": "魔法学院",
+        "hook": "学院教你给每个魔法生物建一份「档案」",
+        "quest": "用类造出你的第一只魔法生物"
+      },
+      "lessons": [
+        { "id": "u5_l1", "title": "面向对象入门" },
+        { "id": "u5_l2", "title": "面向对象进阶" },
+        { "id": "u5_l3", "title": "面向对象应用" }
+      ]
+    },
+    {
+      "id": "u6",
+      "name": "异常与调试",
+      "icon": "🛠️",
+      "locked": false,
+      "story": {
+        "theme": "排雷工坊",
+        "hook": "工坊里埋满了地雷，学会读报错才能活着走出去",
+        "quest": "用 try/except 给代码穿上防弹衣"
+      },
+      "lessons": [
+        { "id": "u6_l1", "title": "异常处理" },
+        { "id": "u6_l2", "title": "调试技巧" },
+        { "id": "u6_l3", "title": "防御式编程" }
+      ]
+    },
+    {
+      "id": "u7",
+      "name": "文件与数据",
+      "icon": "📄",
+      "locked": false,
+      "story": {
+        "theme": "档案馆",
+        "hook": "档案馆的卷宗堆积如山，学会读写文件才能整理它们",
+        "quest": "把数据存进文件再读出来"
+      },
+      "lessons": [
+        { "id": "u7_l1", "title": "文件读写" },
+        { "id": "u7_l2", "title": "CSV 与 Excel" },
+        { "id": "u7_l3", "title": "JSON 序列化" },
+        { "id": "u7_l4", "title": "综合实战" }
+      ]
+    },
+    {
+      "id": "u8",
+      "name": "常用库",
+      "icon": "🎒",
+      "locked": false,
+      "story": {
+        "theme": "百宝箱",
+        "hook": "百宝箱里装满了现成的工具，随取随用",
+        "quest": "用标准库解决日常小问题"
+      },
+      "lessons": [
+        { "id": "u8_l1", "title": "标准库初探" },
+        { "id": "u8_l2", "title": "时间与随机" },
+        { "id": "u8_l3", "title": "pip 与第三方库" },
+        { "id": "u8_l4", "title": "requests 初探" }
+      ]
+    },
+    {
+      "id": "u9",
+      "name": "正则与文本",
+      "icon": "🧬",
+      "locked": false,
+      "story": {
+        "theme": "文字迷宫",
+        "hook": "迷宫墙上刻满神秘符文，需要一套「模式语言」来解读",
+        "quest": "用正则表达式破解迷宫口令"
+      },
+      "lessons": [
+        { "id": "u9_l1", "title": "元字符" },
+        { "id": "u9_l2", "title": "量词与分组" },
+        { "id": "u9_l3", "title": "re 模块实战" }
+      ]
+    },
+    {
+      "id": "u10",
+      "name": "办公自动化",
+      "icon": "⚙️",
+      "locked": false,
+      "story": {
+        "theme": "自动化车间",
+        "hook": "车间里全是重复的体力活，让 Python 替你干",
+        "quest": "批量整理一份 Excel 报表"
+      },
+      "lessons": [
+        { "id": "u10_l1", "title": "Excel 读写" },
+        { "id": "u10_l2", "title": "Word 与 PDF" },
+        { "id": "u10_l3", "title": "图像处理" },
+        { "id": "u10_l4", "title": "邮件自动化" },
+        { "id": "u10_l5", "title": "综合实战" }
+      ]
+    },
+    {
+      "id": "u11",
+      "name": "网络爬虫",
+      "icon": "🕷️",
+      "locked": false,
+      "story": {
+        "theme": "蜘蛛峡谷",
+        "hook": "峡谷里藏着海量信息，织一张网把它们抓回来",
+        "quest": "抓取网页数据并保存"
+      },
+      "lessons": [
+        { "id": "u11_l1", "title": "HTTP 与 requests" },
+        { "id": "u11_l2", "title": "解析 HTML" },
+        { "id": "u11_l3", "title": "反爬与应对" },
+        { "id": "u11_l4", "title": "并发抓取" },
+        { "id": "u11_l5", "title": "抓取实战" },
+        { "id": "u11_l6", "title": "综合项目" }
+      ]
+    },
+    {
+      "id": "u12",
+      "name": "数据库与进阶",
+      "icon": "🗄️",
+      "locked": false,
+      "story": {
+        "theme": "数据地堡",
+        "hook": "地堡里封存着海量数据，SQL 是开启它们的钥匙",
+        "quest": "用 SQL 查询地堡档案"
+      },
+      "lessons": [
+        { "id": "u12_l1", "title": "SQLite 入门" },
+        { "id": "u12_l2", "title": "增删改查" },
+        { "id": "u12_l3", "title": "进阶查询" }
+      ]
+    },
+    {
+      "id": "p1",
+      "name": "学生管理系统",
+      "icon": "🎓",
+      "locked": false,
+      "story": {
+        "theme": "教务楼",
+        "hook": "班主任被学生档案淹没了，用 Python 做个系统替她分忧",
+        "quest": "做一个能增删改查学生信息的系统"
+      },
+      "lessons": [
+        { "id": "p1_l1", "title": "系统设计" },
+        { "id": "p1_l2", "title": "增删改查实现" },
+        { "id": "p1_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "p2",
+      "name": "爬虫实战·豆瓣电影",
+      "icon": "🎬",
+      "locked": false,
+      "story": {
+        "theme": "影评峡谷",
+        "hook": "豆瓣电影榜藏着好片，织一张网把它们抓下来分析",
+        "quest": "抓取电影榜单数据并统计"
+      },
+      "lessons": [
+        { "id": "p2_l1", "title": "抓取与解析" },
+        { "id": "p2_l2", "title": "提取与统计" },
+        { "id": "p2_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "p3",
+      "name": "数据分析·Excel",
+      "icon": "📊",
+      "locked": false,
+      "story": {
+        "theme": "数据工坊",
+        "hook": "一堆 Excel 报表等着被拆分、拼接、统计",
+        "quest": "批量处理一份销售报表"
+      },
+      "lessons": [
+        { "id": "p3_l1", "title": "读取与清洗" },
+        { "id": "p3_l2", "title": "统计与汇总" },
+        { "id": "p3_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "p4",
+      "name": "桌面小工具·Tkinter",
+      "icon": "🖥️",
+      "locked": false,
+      "story": {
+        "theme": "桌面工坊",
+        "hook": "做一个带界面的小工具，告别黑乎乎的终端",
+        "quest": "做出一个能用的桌面程序"
+      },
+      "lessons": [
+        { "id": "p4_l1", "title": "窗口与控件" },
+        { "id": "p4_l2", "title": "事件与交互" },
+        { "id": "p4_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "p5",
+      "name": "小游戏·Pygame",
+      "icon": "🎮",
+      "locked": false,
+      "story": {
+        "theme": "像素游乐园",
+        "hook": "游戏循环、精灵、事件——用 Pygame 造一个能玩的小游戏",
+        "quest": "做一个能玩的小游戏"
+      },
+      "lessons": [
+        { "id": "p5_l1", "title": "游戏循环" },
+        { "id": "p5_l2", "title": "精灵与碰撞" },
+        { "id": "p5_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "p6",
+      "name": "Web 后端·Flask",
+      "icon": "🌐",
+      "locked": false,
+      "story": {
+        "theme": "网络驿站",
+        "hook": "让 Python 跑在网页上，做一个能访问的后端服务",
+        "quest": "做一个带接口的网页服务"
+      },
+      "lessons": [
+        { "id": "p6_l1", "title": "路由与接口" },
+        { "id": "p6_l2", "title": "数据与模板" },
+        { "id": "p6_l3", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "w1",
+      "name": "网站与 Web 基础",
+      "icon": "🌍",
+      "locked": false,
+      "story": {
+        "theme": "网络新大陆",
+        "hook": "先看懂网站是怎么组成的，再谈造网站",
+        "quest": "看懂一个网站的结构"
+      },
+      "lessons": [
+        { "id": "w1_l1", "title": "网站是由什么组成的" },
+        { "id": "w1_l2", "title": "前后端分工" },
+        { "id": "w1_l3", "title": "网络常识" }
+      ]
+    },
+    {
+      "id": "w2",
+      "name": "AI 编程立项",
+      "icon": "📋",
+      "locked": false,
+      "story": {
+        "theme": "立项大厅",
+        "hook": "动手前先和 AI 把需求聊清楚，项目才不烂尾",
+        "quest": "给一个项目写立项文档"
+      },
+      "lessons": [
+        { "id": "w2_l1", "title": "需求讨论" },
+        { "id": "w2_l2", "title": "技术栈选择" },
+        { "id": "w2_l3", "title": "项目计划与保险" },
+        { "id": "w2_l4", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "w3",
+      "name": "开发认知",
+      "icon": "🛠️",
+      "locked": false,
+      "story": {
+        "theme": "建造工地",
+        "hook": "前端、后端、数据库、Git——看懂 AI 在帮你写什么",
+        "quest": "看懂 AI 写出的项目骨架"
+      },
+      "lessons": [
+        { "id": "w3_l1", "title": "前端骨架" },
+        { "id": "w3_l2", "title": "后端业务" },
+        { "id": "w3_l3", "title": "数据库设计" },
+        { "id": "w3_l4", "title": "Git 与协作" },
+        { "id": "w3_l5", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "w4",
+      "name": "部署上线",
+      "icon": "🚀",
+      "locked": false,
+      "story": {
+        "theme": "发射台",
+        "hook": "代码写好不算完，部署上线才是见真章",
+        "quest": "把一个项目部署上线"
+      },
+      "lessons": [
+        { "id": "w4_l1", "title": "认识服务器" },
+        { "id": "w4_l2", "title": "域名与网络" },
+        { "id": "w4_l3", "title": "环境搭建" },
+        { "id": "w4_l4", "title": "部署流程" },
+        { "id": "w4_l5", "title": "独立挑战" }
+      ]
+    },
+    {
+      "id": "w5",
+      "name": "安全与运维",
+      "icon": "🛡️",
+      "locked": false,
+      "story": {
+        "theme": "守卫塔",
+        "hook": "上线只是开始，安全审计和日常运维让项目活得更久",
+        "quest": "给项目做一次上线前审计"
+      },
+      "lessons": [
+        { "id": "w5_l1", "title": "上线前审计" },
+        { "id": "w5_l2", "title": "安全闭坑" },
+        { "id": "w5_l3", "title": "服务器安全" },
+        { "id": "w5_l4", "title": "运维与清理" },
+        { "id": "w5_l5", "title": "独立挑战" }
+      ]
+    }
+  ]
+}
