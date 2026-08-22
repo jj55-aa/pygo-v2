@@ -1,0 +1,258 @@
+{
+  "lesson": "w3_l1",
+  "title": "前端骨架",
+  "questions": [
+    {
+      "id": "w3_l1_p1",
+      "type": "choice",
+      "stem": "建造工地的「门面」（前端）由三件套共同完成。下面哪一组对应关系完全正确？",
+      "options": [
+        "HTML 管交互，CSS 管结构，JS 管样式",
+        "HTML 管结构，CSS 管样式，JS 管交互",
+        "HTML 管样式，CSS 管交互，JS 管结构",
+        "三件套只是三种写法，随便哪一种都能干完所有活"
+      ],
+      "answer": 1,
+      "hint": "承重墙管结构、装修管好看、电梯管能动——谁是谁？",
+      "explain": "HTML 管结构（骨架）、CSS 管样式（好看）、JS 管交互（能动），这就是前端三件套的分工。",
+      "traps": [
+        {
+          "opt": 0,
+          "why": "说反了：管结构的是 HTML，管交互的是 JS，管样式的是 CSS。"
+        },
+        {
+          "opt": 2,
+          "why": "又错位了：CSS 管样式、JS 管交互，不是反着来。"
+        },
+        {
+          "opt": 3,
+          "why": "三件套分工不同、缺一不可：没有 HTML 就没有骨架，没有 CSS 是毛坯房，没有 JS 页面动不起来。"
+        }
+      ],
+      "concept": [
+        "前端三件套",
+        "HTML",
+        "CSS",
+        "JS"
+      ]
+    },
+    {
+      "id": "w3_l1_p2",
+      "type": "choice",
+      "stem": "AI 给你生成了一段「前端骨架」。它最常见的形态是什么？",
+      "options": [
+        "一个 .html 文件，里面内嵌 <style> 和 <script>，浏览器打开就能跑",
+        "必须先装几十个依赖包，再执行一堆命令才能打开",
+        "一段必须存进数据库才能运行的代码",
+        "只能放在后端服务器上、浏览器看不到的代码"
+      ],
+      "answer": 0,
+      "hint": "最小可运行的前端骨架长什么样？一个文件够不够？",
+      "explain": "AI 写的最小前端骨架通常就是一个 .html 文件：内嵌 <style> 管样式、<script> 管交互，浏览器双击就能跑。",
+      "traps": [
+        {
+          "opt": 1,
+          "why": "装依赖、跑命令是复杂工程项目的启动方式，看懂最小骨架不需要这些。"
+        },
+        {
+          "opt": 2,
+          "why": "前端页面由浏览器渲染，和数据存不存数据库没关系。"
+        },
+        {
+          "opt": 3,
+          "why": "前端代码跑在用户浏览器里（用户看得见），不是藏在后端服务器上的。"
+        }
+      ],
+      "concept": [
+        "前端骨架",
+        "HTML",
+        "AI编程"
+      ]
+    },
+    {
+      "id": "w3_l1_p3",
+      "type": "judge",
+      "stem": "前端三件套里，负责「页面好不好看」（颜色、字号、间距）的是 JS 文件。",
+      "answer": false,
+      "hint": "管好看的是哪个工种？JS 管的是什么？",
+      "explain": "管「好不好看」的是 CSS（样式）；JS 管「动不动得了」——点击、弹窗、跳转、发请求这些交互。",
+      "concept": [
+        "CSS",
+        "JS",
+        "前端三件套"
+      ]
+    },
+    {
+      "id": "w3_l1_p4",
+      "type": "fill",
+      "stem": "搭建网页「结构」的标记语言，英文缩写是____（四个字母）。",
+      "answer": [
+        "HTML",
+        "超文本标记语言",
+        "超文本标记"
+      ],
+      "hint": "HyperText Markup Language 的缩写，四个字母。",
+      "explain": "HTML（HyperText Markup Language，超文本标记语言）用标签搭页面结构——标题、按钮、图片都在它里面。",
+      "traps": [
+        {
+          "wrong": "CSS",
+          "why": "CSS 管样式（颜色、字号），不管结构；搭结构的是 HTML。"
+        },
+        {
+          "wrong": "XML",
+          "why": "XML 是通用标记语言，网页结构用的是 HTML。"
+        }
+      ],
+      "concept": [
+        "HTML",
+        "前端三件套"
+      ]
+    },
+    {
+      "id": "w3_l1_p5",
+      "type": "fill",
+      "stem": "想让页面「动起来」——点击按钮弹提示、跳转页面、向后端发请求，靠的是前端三件套里的哪一种？（填英文缩写，两个字母）",
+      "answer": [
+        "JS",
+        "JavaScript",
+        "Javascript",
+        "javascript"
+      ],
+      "hint": "JavaScript 的缩写，两个字母。",
+      "explain": "JS（JavaScript）管交互：点击、弹窗、跳转、发请求，让页面从「死」变「活」。",
+      "traps": [
+        {
+          "wrong": "CSS",
+          "why": "CSS 管好看（样式），不管「动起来」；交互是 JS 的活。"
+        },
+        {
+          "wrong": "HTML",
+          "why": "HTML 只搭结构，页面动起来靠 JS。"
+        }
+      ],
+      "concept": [
+        "JS",
+        "JavaScript",
+        "交互"
+      ]
+    },
+    {
+      "id": "w3_l1_p6",
+      "type": "pair",
+      "stem": "把「前端文件/标签」和它们各自的作用配对：",
+      "leftOptions": [
+        ".html 文件",
+        ".css 文件",
+        ".js 文件",
+        "div 标签"
+      ],
+      "rightOptions": [
+        "放页面结构：标题、按钮、图片在哪",
+        "放页面样式：颜色、字号、间距",
+        "放页面交互：点击、弹窗、发请求",
+        "页面里一个盛放内容的盒子（区块）"
+      ],
+      "answer": [
+        [0, 0],
+        [1, 1],
+        [2, 2],
+        [3, 3]
+      ],
+      "hint": "结构→.html、样式→.css、交互→.js，剩下的 div 是装内容的盒子。",
+      "explain": ".html 存结构、.css 存样式、.js 存交互；div 是页面里分组的「盒子」，哪都有它。",
+      "concept": [
+        "HTML",
+        "CSS",
+        "JS",
+        "div"
+      ]
+    },
+    {
+      "id": "w3_l1_p7",
+      "type": "code",
+      "stem": "包工头递给你一段 AI 写的「模拟 HTML」（一行文本），里面可能包含四种元素：标题（<h1>/<h2>）、按钮（<button>）、链接（<a>）、图片（<img>）。\n\n请**按顺序**输出 HTML 里**包含**的元素清单，每行一个：\n- 有标题 → 输出 `含标题`\n- 有按钮 → 输出 `含按钮`\n- 有链接 → 输出 `含链接`\n- 有图片 → 输出 `含图片`\n\n只输出 HTML 里有的（没有就不输出）。\n\n期望输出示例（输入 `<h1>工地</h1><button>开工</button>`）：\n```\n含标题\n含按钮\n```",
+      "code": "html = input()  # 读入一行模拟 HTML\n\n# 判断提示：用 in 检查元素是否出现\nhas_title = \"<h1>\" in html or \"<h2>\" in html\nhas_button = \"<button>\" in html\nhas_link = \"<a\" in html\nhas_img = \"<img\" in html\n\n# TODO: 按顺序输出「含标题」「含按钮」「含链接」「含图片」，只输出 HTML 里有的",
+      "testcases": [
+        {
+          "input": "<h1>工地大门</h1><button>开工</button>",
+          "expected": "含标题\n含按钮"
+        },
+        {
+          "input": "<h2>项目计划</h2><a href=\"plan.html\">看计划</a><img src=\"logo.png\">",
+          "expected": "含标题\n含链接\n含图片"
+        },
+        {
+          "input": "<html><body><button>报名</button><button>请假</button></body></html>",
+          "expected": "含按钮"
+        }
+      ],
+      "hint": "四个布尔值分别对应哪类元素？每个为真时打印对应的「含XX」——怎么依次判断？",
+      "explain": "has_xxx 变量已经算好，四个 if 按「标题→按钮→链接→图片」的顺序依次打印即可；没出现的元素对应的 if 不成立，自然不会输出。",
+      "concept": [
+        "HTML",
+        "字符串",
+        "in 判断"
+      ]
+    },
+    {
+      "id": "w3_l1_p8",
+      "type": "code",
+      "stem": "升级版「元素体检」：这次不给你现成的 has_xxx 变量，全要自己写。\n\n读入一行模拟 HTML，判断四种元素（标题 <h1>/<h2>、按钮 <button>、链接 <a>、图片 <img>）哪些出现了，然后：\n1. 按顺序输出含有的元素：`含标题`、`含按钮`、`含链接`、`含图片`（每行一个）\n2. 最后输出一行：`共X类元素`（X 是出现了几类，重复出现的标签只算 1 类）\n\n期望输出示例（输入含标题和 2 个按钮）：\n```\n含标题\n含按钮\n共2类元素\n```",
+      "code": "html = input()  # 读入一行模拟 HTML\n\n# TODO: 自己判断标题/按钮/链接/图片是否出现\n# 1. 按顺序输出含有的元素（每行一个）\n# 2. 最后输出「共X类元素」（X 是出现的类别数）",
+      "testcases": [
+        {
+          "input": "<h1>工地大门</h1><button>开工</button><button>完工</button>",
+          "expected": "含标题\n含按钮\n共2类元素"
+        },
+        {
+          "input": "<a href=\"map.html\">工地地图</a><img src=\"crane.png\">",
+          "expected": "含链接\n含图片\n共2类元素"
+        },
+        {
+          "input": "<h2>进度</h2><h1>总览</h1><button>刷新</button><a href=\"report.html\">报表</a><img src=\"sky.png\">",
+          "expected": "含标题\n含按钮\n含链接\n含图片\n共4类元素"
+        }
+      ],
+      "hint": "怎么把四个布尔值变成「出现了几类」的个数？布尔值可以直接相加吗？打印时数字要转成什么类型？",
+      "explain": "has_title = \"<h1>\" in html or \"<h2>\" in html；has_button = \"<button>\" in html；has_link = \"<a\" in html；has_img = \"<img\" in html。四个布尔值相加就是类别数（True=1、False=0），再按顺序打印清单和统计行。",
+      "concept": [
+        "HTML",
+        "布尔值",
+        "统计",
+        "in 判断"
+      ]
+    }
+  ],
+  "quest": {
+    "id": "w3_l1_quest",
+    "title": "剧情任务：包工头的验收——看懂 AI 的前端骨架",
+    "story": "建造工地的包工头把你拉到临时板房前：「咱们要盖一栋智能办公楼，AI 已经把大门的『前端骨架』写出来了！」他递过一张纸条，上面是一行密密麻麻的模拟 HTML：「AI 写的代码，你敢不敢看？数数这里面有几个标题、几个按钮、几个链接、几张图片——数得清，你才算真正看懂了这页门面，我才放心让你管后面的大楼！」",
+    "stem": "读入一行模拟 HTML（AI 写的前端骨架），统计并输出四种元素各出现几次：\n\n- 标题：`<h1>` 或 `<h2>` 标签（提示：`html.count(\"<h1\") + html.count(\"<h2\")`）\n- 按钮：`<button>` 标签\n- 链接：`<a` 标签\n- 图片：`<img` 标签\n\n输出格式（一行，各段之间用一个空格）：\n```\n标题N个 按钮N个 链接N个 图片N个\n```\n\n期望输出示例（输入含 1 个标题、2 个按钮）：\n```\n标题1个 按钮2个 链接0个 图片0个\n```",
+    "code": "html = input()  # 包工头递来的模拟 HTML（一行文本）\n\n# 统计提示：用 str.count 数关键词出现次数\n# 标题：html.count(\"<h1\") + html.count(\"<h2\")\n# 按钮：html.count(\"<button\")\n# 链接：html.count(\"<a\")\n# 图片：html.count(\"<img\")\n\n# TODO: 输出「标题N个 按钮N个 链接N个 图片N个」",
+    "testcases": [
+      {
+        "input": "<h1>智能办公楼</h1><button>开工</button><a href=\"plan.html\">施工计划</a><img src=\"tower.png\">",
+        "expected": "标题1个 按钮1个 链接1个 图片1个"
+      },
+      {
+        "input": "<h2>今日安排</h2><button>签到</button><button>报进度</button><a href=\"map.html\">工地地图</a><a href=\"team.html\">项目团队</a>",
+        "expected": "标题1个 按钮2个 链接2个 图片0个"
+      },
+      {
+        "input": "<img src=\"crane.png\"><img src=\"truck.png\"><p>今天暂无更多内容</p>",
+        "expected": "标题0个 按钮0个 链接0个 图片2个"
+      }
+    ],
+    "hint": "统计每种元素出现次数用什么方法？标签字符串要加引号吗？最后一行输出四个数时怎么分隔？",
+    "explain": "用 str.count 数每个关键词的出现次数：标题数 <h1> 和 <h2>，按钮数 <button>，链接数 <a>（闭标签 </a> 不以 <a 开头，不会被多算），图片数 <img>。最后 print(f\"标题{titles}个 按钮{buttons}个 链接{links}个 图片{imgs}个\")。四种元素数得清清楚楚，包工头给你盖了「验收通过」的章！",
+    "concept": [
+      "HTML",
+      "str.count",
+      "前端骨架",
+      "统计"
+    ]
+  },
+  "summary": {
+    "body": "恭喜！你在建造工地看懂了 AI 写的第一份「前端骨架」🎉\n\n**这一课你学会了**：\n1. 前端三件套：HTML 管结构（骨架）、CSS 管样式（好看）、JS 管交互（能动）——门面的每一块都是它们的分工\n2. HTML 骨架怎么读：从 `<html>`、`<body>` 到 `<h1>/<h2>` 标题、`<button>` 按钮、`<a>` 链接、`<img>` 图片，标签是读懂页面的钥匙\n3. AI 生成的前端骨架最常见就是一个 `.html` 文件：内嵌 `<style>` 和 `<script>`，浏览器打开就能跑\n4. 从哪看起：先找 `<body>` → 再数结构元素（标题/按钮/链接/图片）→ 最后看样式和脚本\n\n**剧情推进**：包工头验过了你的本事——AI 写的那行 HTML，你数得清标题、按钮、链接和图片，门面这一关过了！但他嘿嘿一笑：「门面只是壳，这栋楼要能真正干活——报名、签到、算进度——靠的是藏在后面的『后端业务』。」下一站：后端业务，看看 AI 给大楼写的『账房』里藏着什么！"
+  }
+}
